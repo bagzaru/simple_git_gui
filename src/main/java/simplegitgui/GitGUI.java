@@ -81,51 +81,29 @@ public class GitGUI {
     /** Title of the application */
     public static final String APP_TITLE = "Simple Git GUI Application";
     /** Used to open/edit/print files. */
-    private Desktop desktop;
+    public static Desktop desktop;
     /** Provides nice icons and names for files. */
-    private FileSystemView fileSystemView;
+    public static FileSystemView fileSystemView;
 
     /** currently selected File. */
-    private File currentFile;
+    public static File currentFile;
 
     /** Main GUI container */
-    private JPanel gui;
+    public static JPanel gui;
 
     /** File-system tree. Built Lazily */
-    private JTree tree;
-    private DefaultTreeModel treeModel;
+    public static JTree tree;
+    public static DefaultTreeModel treeModel;
 
     /** Directory listing */
-    private JTable table;
-    private JProgressBar progressBar;
+    public static JTable table;
+    public static JProgressBar progressBar;
+
     /** Table model for File[]. */
-    private FileTableModel fileTableModel;
-    private ListSelectionListener listSelectionListener;
-    private boolean cellSizesSet = false;
-    private int rowIconPadding = 6;
-
-    /* File controls. */
-    private JButton openFile;
-    private JButton printFile;
-    private JButton editFile;
-    private JButton deleteFile;
-    private JButton newFile;
-    private JButton copyFile;
-    /* File details. */
-    private JLabel fileName;
-    private JTextField path;
-    private JLabel date;
-    private JLabel size;
-    private JCheckBox readable;
-    private JCheckBox writable;
-    private JCheckBox executable;
-    private JRadioButton isDirectory;
-    private JRadioButton isFile;
-
-    /* GUI options/containers for new File/Directory creation.  Created lazily. */
-    private JPanel newFilePanel;
-    private JRadioButton newTypeFile;
-    private JTextField name;
+    public static FileTableModel fileTableModel;
+    public static ListSelectionListener listSelectionListener;
+    public static boolean cellSizesSet = false;
+    public static int rowIconPadding = 6;
 
     GitGUI() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -167,230 +145,30 @@ public class GitGUI {
 
             fileSystemView = FileSystemView.getFileSystemView();
             desktop = Desktop.getDesktop();
-
-            table = new JTable();
-            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            table.setAutoCreateRowSorter(true);
-            table.setShowVerticalLines(false);
-
-            listSelectionListener = new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent lse) {
-                    int row = table.getSelectionModel().getLeadSelectionIndex();
-                    setFileDetails( ((FileTableModel)table.getModel()).getFile(row) );
-                }
-            };
-            table.getSelectionModel().addListSelectionListener(listSelectionListener);
-            JScrollPane tableScroll = new JScrollPane(table);
-            Dimension d = tableScroll.getPreferredSize();
-            tableScroll.setPreferredSize(new Dimension((int)d.getWidth(), (int)d.getHeight()/2));
-
-            // the File tree
-            DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-            treeModel = new DefaultTreeModel(root);
-
-            TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-                public void valueChanged(TreeSelectionEvent tse){
-                    DefaultMutableTreeNode node =
-                        (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
-                    showChildren(node);
-                    setFileDetails((File)node.getUserObject());
-                }
-            };
-
-            // show the file system roots.
-            File[] roots = fileSystemView.getRoots();
-            for (File fileSystemRoot : roots) {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
-                root.add( node );
-                //showChildren(node);
-                //
-                File[] files = fileSystemView.getFiles(fileSystemRoot, true);
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        node.add(new DefaultMutableTreeNode(file));
-                    }
-                }
-                //
-            }
-
-            tree = new JTree(treeModel);
-            tree.setRootVisible(false);
-            tree.addTreeSelectionListener(treeSelectionListener);
-            tree.setCellRenderer(new FileTreeCellRenderer());
-            tree.expandRow(0);
-            JScrollPane treeScroll = new JScrollPane(tree);
-
-            // as per trashgod tip
-            tree.setVisibleRowCount(15);
-
-            Dimension preferredSize = treeScroll.getPreferredSize();
-            Dimension widePreferred = new Dimension(
-                200,
-                (int)preferredSize.getHeight());
-            treeScroll.setPreferredSize( widePreferred );
-
-            // details for a File
-            JPanel fileMainDetails = new JPanel(new BorderLayout(4,2));
-            fileMainDetails.setBorder(new EmptyBorder(0,6,0,6));
-
-            JPanel fileDetailsLabels = new JPanel(new GridLayout(0,1,2,2));
-            fileMainDetails.add(fileDetailsLabels, BorderLayout.WEST);
-
-            JPanel fileDetailsValues = new JPanel(new GridLayout(0,1,2,2));
-            fileMainDetails.add(fileDetailsValues, BorderLayout.CENTER);
-
-            fileDetailsLabels.add(new JLabel("File", JLabel.TRAILING));
-            fileName = new JLabel();
-            fileDetailsValues.add(fileName);
-            fileDetailsLabels.add(new JLabel("Path/name", JLabel.TRAILING));
-            path = new JTextField(5);
-            path.setEditable(false);
-            fileDetailsValues.add(path);
-            fileDetailsLabels.add(new JLabel("Last Modified", JLabel.TRAILING));
-            date = new JLabel();
-            fileDetailsValues.add(date);
-            fileDetailsLabels.add(new JLabel("File size", JLabel.TRAILING));
-            size = new JLabel();
-            fileDetailsValues.add(size);
-            fileDetailsLabels.add(new JLabel("Type", JLabel.TRAILING));
-
-            JPanel flags = new JPanel(new FlowLayout(FlowLayout.LEADING,4,0));
-            isDirectory = new JRadioButton("Directory");
-            isDirectory.setEnabled(false);
-            flags.add(isDirectory);
-
-            isFile = new JRadioButton("File");
-            isFile.setEnabled(false);
-            flags.add(isFile);
-            fileDetailsValues.add(flags);
-
-            int count = fileDetailsLabels.getComponentCount();
-            for (int ii=0; ii<count; ii++) {
-                fileDetailsLabels.getComponent(ii).setEnabled(false);
-            }
-
-            JToolBar toolBar = new JToolBar();
-            // mnemonics stop working in a floated toolbar
-            toolBar.setFloatable(false);
-
-            openFile = new JButton("Open");
-            openFile.setMnemonic('o');
-
-            openFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        desktop.open(currentFile);
-                    } catch(Throwable t) {
-                        showThrowable(t);
-                    }
-                    gui.repaint();
-                }
-            });
-            toolBar.add(openFile);
-
-            editFile = new JButton("Edit");
-            editFile.setMnemonic('e');
-            editFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        desktop.edit(currentFile);
-                    } catch(Throwable t) {
-                        showThrowable(t);
-                    }
-                }
-            });
-            toolBar.add(editFile);
-
-            printFile = new JButton("Print");
-            printFile.setMnemonic('p');
-            printFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    try {
-                        desktop.print(currentFile);
-                    } catch(Throwable t) {
-                        showThrowable(t);
-                    }
-                }
-            });
-            toolBar.add(printFile);
-
-            // Check the actions are supported on this platform!
-            openFile.setEnabled(desktop.isSupported(Desktop.Action.OPEN));
-            editFile.setEnabled(desktop.isSupported(Desktop.Action.EDIT));
-            printFile.setEnabled(desktop.isSupported(Desktop.Action.PRINT));
-
-            toolBar.addSeparator();
-
-            newFile = new JButton("New");
-            newFile.setMnemonic('n');
-            newFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    newFile();
-                }
-            });
-            toolBar.add(newFile);
-
-            copyFile = new JButton("Copy");
-            copyFile.setMnemonic('c');
-            copyFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    showErrorMessage("'Copy' not implemented.", "Not implemented.");
-                }
-            });
-            toolBar.add(copyFile);
-
-            JButton renameFile = new JButton("Rename");
-            renameFile.setMnemonic('r');
-            renameFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    renameFile();
-                }
-            });
-            toolBar.add(renameFile);
-
-            deleteFile = new JButton("Delete");
-            deleteFile.setMnemonic('d');
-            deleteFile.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent ae) {
-                    deleteFile();
-                }
-            });
-            toolBar.add(deleteFile);
-
-            toolBar.addSeparator();
-
-            readable = new JCheckBox("Read  ");
-            readable.setMnemonic('a');
-            //readable.setEnabled(false);
-            toolBar.add(readable);
-
-            writable = new JCheckBox("Write  ");
-            writable.setMnemonic('w');
-            //writable.setEnabled(false);
-            toolBar.add(writable);
-
-            executable = new JCheckBox("Execute");
-            executable.setMnemonic('x');
-            //executable.setEnabled(false);
-            toolBar.add(executable);
+            FileDetail fileDetail = new FileDetail();
 
             JPanel fileManage = new JPanel(new BorderLayout(3, 3));
+            fileManage.add(new FileTable(fileDetail), BorderLayout.CENTER);
+            fileManage.add(new FileToolBar(),BorderLayout.SOUTH);
 
-            fileManage.add(tableScroll, BorderLayout.CENTER);
-            fileManage.add(toolBar,BorderLayout.SOUTH);
+            JPanel filePanel = new JPanel(new BorderLayout(3,3));
+            filePanel.add(fileManage, BorderLayout.CENTER);
+            filePanel.add(new StagedFileList(), BorderLayout.SOUTH);
 
-            JPanel detailView = new JPanel(new BorderLayout(3,3));
+            JPanel gitMenuPanel = new JPanel(new FlowLayout()); //임시
+            //JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
+            //gitMenuPanel.add(new fileGitMenu(),BorderLayout.CENTER);
+            //gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
+            gitMenuPanel.setPreferredSize(new Dimension(150, 200)); //임시로 크기 설정
 
-            detailView.add(fileManage, BorderLayout.CENTER);
-            detailView.add(fileMainDetails, BorderLayout.SOUTH);
-
-            JPanel gitPanel = new JPanel(new GridLayout(2, 2, 3, 3));
+            JPanel gitPanel = new JPanel(new BorderLayout(3,3));
+            gitPanel.add(filePanel, BorderLayout.CENTER);
+            gitPanel.add(gitMenuPanel, BorderLayout.EAST);
 
             JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                treeScroll,
-                detailView);
+                new FileTree(fileDetail),
+                gitPanel);
             gui.add(splitPane, BorderLayout.CENTER);
 
             JPanel simpleOutput = new JPanel(new BorderLayout(3,3));
@@ -409,210 +187,8 @@ public class GitGUI {
         tree.setSelectionInterval(0,0);
     }
 
-    private TreePath findTreePath(File find) {
-        for (int ii=0; ii<tree.getRowCount(); ii++) {
-            TreePath treePath = tree.getPathForRow(ii);
-            Object object = treePath.getLastPathComponent();
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)object;
-            File nodeFile = (File)node.getUserObject();
-
-            if (nodeFile==find) {
-                return treePath;
-            }
-        }
-        // not found!
-        return null;
-    }
-
-    private void renameFile() {
-        if (currentFile==null) {
-            showErrorMessage("No file selected to rename.","Select File");
-            return;
-        }
-
-        String renameTo = JOptionPane.showInputDialog(gui, "New Name");
-        if (renameTo!=null) {
-            try {
-                boolean directory = currentFile.isDirectory();
-                TreePath parentPath = findTreePath(currentFile.getParentFile());
-                DefaultMutableTreeNode parentNode =
-                    (DefaultMutableTreeNode)parentPath.getLastPathComponent();
-
-                boolean renamed = currentFile.renameTo(new File(
-                    currentFile.getParentFile(), renameTo));
-                if (renamed) {
-                    if (directory) {
-                        // rename the node..
-
-                        // delete the current node..
-                        TreePath currentPath = findTreePath(currentFile);
-                        System.out.println(currentPath);
-                        DefaultMutableTreeNode currentNode =
-                            (DefaultMutableTreeNode)currentPath.getLastPathComponent();
-
-                        treeModel.removeNodeFromParent(currentNode);
-
-                        // add a new node..
-                    }
-
-                    showChildren(parentNode);
-                } else {
-                    String msg = "The file '" +
-                        currentFile +
-                        "' could not be renamed.";
-                    showErrorMessage(msg,"Rename Failed");
-                }
-            } catch(Throwable t) {
-                showThrowable(t);
-            }
-        }
-        gui.repaint();
-    }
-
-    private void deleteFile() {
-        if (currentFile==null) {
-            showErrorMessage("No file selected for deletion.","Select File");
-            return;
-        }
-
-        int result = JOptionPane.showConfirmDialog(
-            gui,
-            "Are you sure you want to delete this file?",
-            "Delete File",
-            JOptionPane.ERROR_MESSAGE
-            );
-        if (result==JOptionPane.OK_OPTION) {
-            try {
-                System.out.println("currentFile: " + currentFile);
-                TreePath parentPath = findTreePath(currentFile.getParentFile());
-                System.out.println("parentPath: " + parentPath);
-                DefaultMutableTreeNode parentNode =
-                    (DefaultMutableTreeNode)parentPath.getLastPathComponent();
-                System.out.println("parentNode: " + parentNode);
-
-                boolean directory = currentFile.isDirectory();
-                boolean deleted = currentFile.delete();
-                if (deleted) {
-                    if (directory) {
-                        // delete the node..
-                        TreePath currentPath = findTreePath(currentFile);
-                        System.out.println(currentPath);
-                        DefaultMutableTreeNode currentNode =
-                            (DefaultMutableTreeNode)currentPath.getLastPathComponent();
-
-                        treeModel.removeNodeFromParent(currentNode);
-                    }
-
-                    showChildren(parentNode);
-                } else {
-                    String msg = "The file '" +
-                        currentFile +
-                        "' could not be deleted.";
-                    showErrorMessage(msg,"Delete Failed");
-                }
-            } catch(Throwable t) {
-                showThrowable(t);
-            }
-        }
-        gui.repaint();
-    }
-
-    private void newFile() {
-        if (currentFile==null) {
-            showErrorMessage("No location selected for new file.","Select Location");
-            return;
-        }
-
-        if (newFilePanel==null) {
-            newFilePanel = new JPanel(new BorderLayout(3,3));
-
-            JPanel southRadio = new JPanel(new GridLayout(1,0,2,2));
-            newTypeFile = new JRadioButton("File", true);
-            JRadioButton newTypeDirectory = new JRadioButton("Directory");
-            ButtonGroup bg = new ButtonGroup();
-            bg.add(newTypeFile);
-            bg.add(newTypeDirectory);
-            southRadio.add( newTypeFile );
-            southRadio.add( newTypeDirectory );
-
-            name = new JTextField(15);
-
-            newFilePanel.add( new JLabel("Name"), BorderLayout.WEST );
-            newFilePanel.add( name );
-            newFilePanel.add( southRadio, BorderLayout.SOUTH );
-        }
-
-        int result = JOptionPane.showConfirmDialog(
-            gui,
-            newFilePanel,
-            "Create File",
-            JOptionPane.OK_CANCEL_OPTION);
-        if (result==JOptionPane.OK_OPTION) {
-            try {
-                boolean created;
-                File parentFile = currentFile;
-                if (!parentFile.isDirectory()) {
-                    parentFile = parentFile.getParentFile();
-                }
-                File file = new File( parentFile, name.getText() );
-                if (newTypeFile.isSelected()) {
-                    created = file.createNewFile();
-                } else {
-                    created = file.mkdir();
-                }
-                if (created) {
-
-                    TreePath parentPath = findTreePath(parentFile);
-                    DefaultMutableTreeNode parentNode =
-                        (DefaultMutableTreeNode)parentPath.getLastPathComponent();
-
-                    if (file.isDirectory()) {
-                        // add the new node..
-                        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
-
-                        TreePath currentPath = findTreePath(currentFile);
-                        DefaultMutableTreeNode currentNode =
-                            (DefaultMutableTreeNode)currentPath.getLastPathComponent();
-
-                        treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
-                    }
-
-                    showChildren(parentNode);
-                } else {
-                    String msg = "The file '" +
-                        file +
-                        "' could not be created.";
-                    showErrorMessage(msg, "Create Failed");
-                }
-            } catch(Throwable t) {
-                showThrowable(t);
-            }
-        }
-        gui.repaint();
-    }
-
-    private void showErrorMessage(String errorMessage, String errorTitle) {
-        JOptionPane.showMessageDialog(
-            gui,
-            errorMessage,
-            errorTitle,
-            JOptionPane.ERROR_MESSAGE
-            );
-    }
-
-    private void showThrowable(Throwable t) {
-        t.printStackTrace();
-        JOptionPane.showMessageDialog(
-            gui,
-            t.toString(),
-            t.getMessage(),
-            JOptionPane.ERROR_MESSAGE
-            );
-        gui.repaint();
-    }
-
     /** Update the table on the EDT */
-    private void setTableData(final File[] files) {
+    public static void setTableData(final File[] files) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (fileTableModel==null) {
@@ -639,7 +215,7 @@ public class GitGUI {
         });
     }
 
-    private void setColumnWidth(int column, int width) {
+    public static void setColumnWidth(int column, int width) {
         TableColumn tableColumn = table.getColumnModel().getColumn(column);
         if (width<0) {
             // use the preferred width of the header..
@@ -655,7 +231,7 @@ public class GitGUI {
 
     /** Add the files that are contained within the directory of this node.
     Thanks to Hovercraft Full Of Eels. */
-    private void showChildren(final DefaultMutableTreeNode node) {
+    public static void showChildren(final DefaultMutableTreeNode node) {
         tree.setEnabled(false);
         progressBar.setVisible(true);
         progressBar.setIndeterminate(true);
@@ -695,33 +271,6 @@ public class GitGUI {
         worker.execute();
     }
 
-    /** Update the File details view with the details of this File. */
-    private void setFileDetails(File file) {
-        currentFile = file;
-        Icon icon = fileSystemView.getSystemIcon(file);
-        fileName.setIcon(icon);
-        fileName.setText(fileSystemView.getSystemDisplayName(file));
-        path.setText(file.getPath());
-        date.setText(new Date(file.lastModified()).toString());
-        size.setText(file.length() + " bytes");
-        readable.setSelected(file.canRead());
-        writable.setSelected(file.canWrite());
-        executable.setSelected(file.canExecute());
-        isDirectory.setSelected(file.isDirectory());
-
-        isFile.setSelected(file.isFile());
-
-        JFrame f = (JFrame)gui.getTopLevelAncestor();
-        if (f!=null) {
-            f.setTitle(
-                APP_TITLE +
-                " :: " +
-                fileSystemView.getSystemDisplayName(file) );
-        }
-
-        gui.repaint();
-    }
-
     public static boolean copyFile(File from, File to) throws IOException {
 
         boolean created = to.createNewFile();
@@ -750,6 +299,442 @@ public class GitGUI {
             }
         }
         return created;
+    }
+}
+
+class FileTree extends JScrollPane {
+    FileTree(FileDetail fileDetail) {
+        // the File tree
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        GitGUI.treeModel = new DefaultTreeModel(root);
+
+        TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
+            public void valueChanged(TreeSelectionEvent tse){
+                DefaultMutableTreeNode node =
+                        (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
+                GitGUI.showChildren(node);
+                fileDetail.setFileDetails((File)node.getUserObject());
+            }
+        };
+
+        // show the file system roots.
+        File[] roots = GitGUI.fileSystemView.getRoots();
+        for (File fileSystemRoot : roots) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
+            root.add( node );
+            //showChildren(node);
+            //
+            File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    node.add(new DefaultMutableTreeNode(file));
+                }
+            }
+            //
+        }
+
+        GitGUI.tree = new JTree(GitGUI.treeModel);
+        GitGUI.tree.setRootVisible(false);
+        GitGUI.tree.addTreeSelectionListener(treeSelectionListener);
+        GitGUI.tree.setCellRenderer(new FileTreeCellRenderer());
+        GitGUI.tree.expandRow(0);
+        this.setViewportView(GitGUI.tree);
+
+        // as per trashgod tip
+        GitGUI.tree.setVisibleRowCount(15);
+
+        Dimension preferredSize = getPreferredSize();
+        Dimension widePreferred = new Dimension(
+                200,
+                (int)preferredSize.getHeight());
+        setPreferredSize( widePreferred );
+    }
+}
+
+class FileTable extends JScrollPane {
+    FileTable(FileDetail fileDetail) {
+        GitGUI.table = new JTable();
+        GitGUI.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        GitGUI.table.setAutoCreateRowSorter(true);
+        GitGUI.table.setShowVerticalLines(false);
+
+        GitGUI.listSelectionListener = new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                int row = GitGUI.table.getSelectionModel().getLeadSelectionIndex();
+                fileDetail.setFileDetails( ((FileTableModel)GitGUI.table.getModel()).getFile(row) );
+            }
+        };
+        GitGUI.table.getSelectionModel().addListSelectionListener(GitGUI.listSelectionListener);
+
+        this.setViewportView(GitGUI.table);
+        Dimension d = getPreferredSize();
+        setPreferredSize(new Dimension((int)d.getWidth(), (int)d.getHeight()/2));
+    }
+}
+
+class FileToolBar extends JToolBar {
+    /* File controls. */
+    private JButton openFile;
+    private JButton printFile;
+    private JButton editFile;
+    private JButton deleteFile;
+    private JButton newFile;
+    private JButton copyFile;
+
+    /* GUI options/containers for new File/Directory creation.  Created lazily. */
+    private JPanel newFilePanel;
+    private JRadioButton newTypeFile;
+    private JTextField name;
+
+    FileToolBar() {
+        setFloatable(false);
+
+        openFile = new JButton("Open");
+        openFile.setMnemonic('o');
+
+        openFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    GitGUI.desktop.open(GitGUI.currentFile);
+                } catch(Throwable t) {
+                    showThrowable(t);
+                }
+                GitGUI.gui.repaint();
+            }
+        });
+        add(openFile);
+
+        editFile = new JButton("Edit");
+        editFile.setMnemonic('e');
+        editFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    GitGUI.desktop.edit(GitGUI.currentFile);
+                } catch(Throwable t) {
+                    showThrowable(t);
+                }
+            }
+        });
+        add(editFile);
+
+        printFile = new JButton("Print");
+        printFile.setMnemonic('p');
+        printFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    GitGUI.desktop.print(GitGUI.currentFile);
+                } catch(Throwable t) {
+                    showThrowable(t);
+                }
+            }
+        });
+        add(printFile);
+
+        // Check the actions are supported on this platform!
+        openFile.setEnabled(GitGUI.desktop.isSupported(Desktop.Action.OPEN));
+        editFile.setEnabled(GitGUI.desktop.isSupported(Desktop.Action.EDIT));
+        printFile.setEnabled(GitGUI.desktop.isSupported(Desktop.Action.PRINT));
+
+        addSeparator();
+
+        newFile = new JButton("New");
+        newFile.setMnemonic('n');
+        newFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                newFile();
+            }
+        });
+        add(newFile);
+
+        copyFile = new JButton("Copy");
+        copyFile.setMnemonic('c');
+        copyFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                showErrorMessage("'Copy' not implemented.", "Not implemented.");
+            }
+        });
+        add(copyFile);
+
+        JButton renameFile = new JButton("Rename");
+        renameFile.setMnemonic('r');
+        renameFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                renameFile();
+            }
+        });
+        add(renameFile);
+
+        deleteFile = new JButton("Delete");
+        deleteFile.setMnemonic('d');
+        deleteFile.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae) {
+                deleteFile();
+            }
+        });
+        add(deleteFile);
+    }
+
+    private void renameFile() {
+        if (GitGUI.currentFile==null) {
+            showErrorMessage("No file selected to rename.","Select File");
+            return;
+        }
+
+        String renameTo = JOptionPane.showInputDialog(GitGUI.gui, "New Name");
+        if (renameTo!=null) {
+            try {
+                boolean directory = GitGUI.currentFile.isDirectory();
+                TreePath parentPath = findTreePath(GitGUI.currentFile.getParentFile());
+                DefaultMutableTreeNode parentNode =
+                        (DefaultMutableTreeNode)parentPath.getLastPathComponent();
+
+                boolean renamed = GitGUI.currentFile.renameTo(new File(
+                        GitGUI.currentFile.getParentFile(), renameTo));
+                if (renamed) {
+                    if (directory) {
+                        // rename the node..
+
+                        // delete the current node..
+                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        System.out.println(currentPath);
+                        DefaultMutableTreeNode currentNode =
+                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
+
+                        GitGUI.treeModel.removeNodeFromParent(currentNode);
+
+                        // add a new node..
+                    }
+
+                    GitGUI.showChildren(parentNode);
+                } else {
+                    String msg = "The file '" +
+                            GitGUI.currentFile +
+                            "' could not be renamed.";
+                    showErrorMessage(msg,"Rename Failed");
+                }
+            } catch(Throwable t) {
+                showThrowable(t);
+            }
+        }
+        GitGUI.gui.repaint();
+    }
+
+    private void deleteFile() {
+        if (GitGUI.currentFile==null) {
+            showErrorMessage("No file selected for deletion.","Select File");
+            return;
+        }
+
+        int result = JOptionPane.showConfirmDialog(
+                GitGUI.gui,
+                "Are you sure you want to delete this file?",
+                "Delete File",
+                JOptionPane.ERROR_MESSAGE
+        );
+        if (result==JOptionPane.OK_OPTION) {
+            try {
+                System.out.println("currentFile: " + GitGUI.currentFile);
+                TreePath parentPath = findTreePath(GitGUI.currentFile.getParentFile());
+                System.out.println("parentPath: " + parentPath);
+                DefaultMutableTreeNode parentNode =
+                        (DefaultMutableTreeNode)parentPath.getLastPathComponent();
+                System.out.println("parentNode: " + parentNode);
+
+                boolean directory = GitGUI.currentFile.isDirectory();
+                boolean deleted = GitGUI.currentFile.delete();
+                if (deleted) {
+                    if (directory) {
+                        // delete the node..
+                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        System.out.println(currentPath);
+                        DefaultMutableTreeNode currentNode =
+                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
+
+                        GitGUI.treeModel.removeNodeFromParent(currentNode);
+                    }
+
+                    GitGUI.showChildren(parentNode);
+                } else {
+                    String msg = "The file '" +
+                            GitGUI.currentFile +
+                            "' could not be deleted.";
+                    showErrorMessage(msg,"Delete Failed");
+                }
+            } catch(Throwable t) {
+                showThrowable(t);
+            }
+        }
+        GitGUI.gui.repaint();
+    }
+
+    private void newFile() {
+        if (GitGUI.currentFile==null) {
+            showErrorMessage("No location selected for new file.","Select Location");
+            return;
+        }
+
+        if (newFilePanel==null) {
+            newFilePanel = new JPanel(new BorderLayout(3,3));
+
+            JPanel southRadio = new JPanel(new GridLayout(1,0,2,2));
+            newTypeFile = new JRadioButton("File", true);
+            JRadioButton newTypeDirectory = new JRadioButton("Directory");
+            ButtonGroup bg = new ButtonGroup();
+            bg.add(newTypeFile);
+            bg.add(newTypeDirectory);
+            southRadio.add( newTypeFile );
+            southRadio.add( newTypeDirectory );
+
+            name = new JTextField(15);
+
+            newFilePanel.add( new JLabel("Name"), BorderLayout.WEST );
+            newFilePanel.add( name );
+            newFilePanel.add( southRadio, BorderLayout.SOUTH );
+        }
+
+        int result = JOptionPane.showConfirmDialog(
+                GitGUI.gui,
+                newFilePanel,
+                "Create File",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (result==JOptionPane.OK_OPTION) {
+            try {
+                boolean created;
+                File parentFile = GitGUI.currentFile;
+                if (!parentFile.isDirectory()) {
+                    parentFile = parentFile.getParentFile();
+                }
+                File file = new File( parentFile, name.getText() );
+                if (newTypeFile.isSelected()) {
+                    created = file.createNewFile();
+                } else {
+                    created = file.mkdir();
+                }
+                if (created) {
+
+                    TreePath parentPath = findTreePath(parentFile);
+                    DefaultMutableTreeNode parentNode =
+                            (DefaultMutableTreeNode)parentPath.getLastPathComponent();
+
+                    if (file.isDirectory()) {
+                        // add the new node..
+                        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
+
+                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        DefaultMutableTreeNode currentNode =
+                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
+
+                        GitGUI.treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
+                    }
+
+                    GitGUI.showChildren(parentNode);
+                } else {
+                    String msg = "The file '" +
+                            file +
+                            "' could not be created.";
+                    showErrorMessage(msg, "Create Failed");
+                }
+            } catch(Throwable t) {
+                showThrowable(t);
+            }
+        }
+        GitGUI.gui.repaint();
+    }
+
+    private void showErrorMessage(String errorMessage, String errorTitle) {
+        JOptionPane.showMessageDialog(
+                GitGUI.gui,
+                errorMessage,
+                errorTitle,
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    private void showThrowable(Throwable t) {
+        t.printStackTrace();
+        JOptionPane.showMessageDialog(
+                GitGUI.gui,
+                t.toString(),
+                t.getMessage(),
+                JOptionPane.ERROR_MESSAGE
+        );
+        GitGUI.gui.repaint();
+    }
+
+    private TreePath findTreePath(File find) {
+        for (int ii=0; ii<GitGUI.tree.getRowCount(); ii++) {
+            TreePath treePath = GitGUI.tree.getPathForRow(ii);
+            Object object = treePath.getLastPathComponent();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)object;
+            File nodeFile = (File)node.getUserObject();
+
+            if (nodeFile==find) {
+                return treePath;
+            }
+        }
+        // not found!
+        return null;
+    }
+}
+
+class StagedFileList extends JPanel {
+    //아직 미구현
+    StagedFileList() {
+        super(new BorderLayout(4,2));
+        setPreferredSize(new Dimension(100, 150));
+    }
+}
+
+class FileDetail {
+    /* File details. */
+    JLabel fileName;
+    JTextField path;
+    JLabel date;
+    JLabel size;
+    JCheckBox readable;
+    JCheckBox writable;
+    JCheckBox executable;
+    JRadioButton isDirectory;
+    JRadioButton isFile;
+
+    FileDetail() {
+        fileName = new JLabel();
+        path = new JTextField(5);
+        date = new JLabel();
+        size = new JLabel();
+        readable = new JCheckBox("Read ");
+        writable = new JCheckBox("Write ");
+        executable = new JCheckBox("Execute");
+        isDirectory = new JRadioButton("Directory");
+        isFile = new JRadioButton("File");
+    }
+
+    /** Update the File details view with the details of this File. */
+    public void setFileDetails(File file) {
+        GitGUI.currentFile = file;
+        Icon icon = GitGUI.fileSystemView.getSystemIcon(file);
+        fileName.setIcon(icon);
+        fileName.setText(GitGUI.fileSystemView.getSystemDisplayName(file));
+        path.setText(file.getPath());
+        date.setText(new Date(file.lastModified()).toString());
+        size.setText(file.length() + " bytes");
+        readable.setSelected(file.canRead());
+        writable.setSelected(file.canWrite());
+        executable.setSelected(file.canExecute());
+        isDirectory.setSelected(file.isDirectory());
+
+        isFile.setSelected(file.isFile());
+
+        JFrame f = (JFrame)GitGUI.gui.getTopLevelAncestor();
+        if (f!=null) {
+            f.setTitle(
+                    GitGUI.APP_TITLE +
+                            " :: " +
+                            GitGUI.fileSystemView.getSystemDisplayName(file) );
+        }
+
+        GitGUI.gui.repaint();
     }
 }
 
