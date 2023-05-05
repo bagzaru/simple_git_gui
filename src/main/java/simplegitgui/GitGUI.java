@@ -79,7 +79,7 @@ TODO Functionality
 public class GitGUI {
 
     /** Title of the application */
-    public static final String APP_TITLE = "FileMan";
+    public static final String APP_TITLE = "Simple Git GUI Application";
     /** Used to open/edit/print files. */
     private Desktop desktop;
     /** Provides nice icons and names for files. */
@@ -168,9 +168,6 @@ public class GitGUI {
             fileSystemView = FileSystemView.getFileSystemView();
             desktop = Desktop.getDesktop();
 
-            JPanel detailView = new JPanel(new BorderLayout(3,3));
-            //fileTableModel = new FileTableModel();
-
             table = new JTable();
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setAutoCreateRowSorter(true);
@@ -187,7 +184,6 @@ public class GitGUI {
             JScrollPane tableScroll = new JScrollPane(table);
             Dimension d = tableScroll.getPreferredSize();
             tableScroll.setPreferredSize(new Dimension((int)d.getWidth(), (int)d.getHeight()/2));
-            detailView.add(tableScroll, BorderLayout.CENTER);
 
             // the File tree
             DefaultMutableTreeNode root = new DefaultMutableTreeNode();
@@ -379,12 +375,17 @@ public class GitGUI {
             //executable.setEnabled(false);
             toolBar.add(executable);
 
-            JPanel fileView = new JPanel(new BorderLayout(3,3));
+            JPanel fileManage = new JPanel(new BorderLayout(3, 3));
 
-            fileView.add(toolBar,BorderLayout.NORTH);
-            fileView.add(fileMainDetails,BorderLayout.CENTER);
+            fileManage.add(tableScroll, BorderLayout.CENTER);
+            fileManage.add(toolBar,BorderLayout.SOUTH);
 
-            detailView.add(fileView, BorderLayout.SOUTH);
+            JPanel detailView = new JPanel(new BorderLayout(3,3));
+
+            detailView.add(fileManage, BorderLayout.CENTER);
+            detailView.add(fileMainDetails, BorderLayout.SOUTH);
+
+            JPanel gitPanel = new JPanel(new GridLayout(2, 2, 3, 3));
 
             JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
@@ -631,11 +632,6 @@ public class GitGUI {
                     setColumnWidth(3,60);
                     table.getColumnModel().getColumn(3).setMaxWidth(120);
                     setColumnWidth(4,-1);
-                    setColumnWidth(5,-1);
-                    setColumnWidth(6,-1);
-                    setColumnWidth(7,-1);
-                    setColumnWidth(8,-1);
-                    setColumnWidth(9,-1);
 
                     cellSizesSet = true;
                 }
@@ -768,11 +764,7 @@ class FileTableModel extends AbstractTableModel {
         "Path/name",
         "Size",
         "Last Modified",
-        "R",
-        "W",
-        "E",
-        "D",
-        "F",
+        "File Status"
     };
 
     FileTableModel() {
@@ -797,15 +789,7 @@ class FileTableModel extends AbstractTableModel {
             case 4:
                 return file.lastModified();
             case 5:
-                return file.canRead();
-            case 6:
-                return file.canWrite();
-            case 7:
-                return file.canExecute();
-            case 8:
-                return file.isDirectory();
-            case 9:
-                return file.isFile();
+                return ""; //파일 상태(staged, tracked, untracked 등등을 호출하는 함수 들어가야함
             default:
                 System.err.println("Logic Error");
         }
@@ -825,11 +809,6 @@ class FileTableModel extends AbstractTableModel {
             case 4:
                 return Date.class;
             case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                return Boolean.class;
         }
         return String.class;
     }
