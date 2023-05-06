@@ -18,6 +18,7 @@
 package main.java.simplegitgui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Desktop;
@@ -155,11 +156,11 @@ public class GitGUI {
             filePanel.add(fileManage, BorderLayout.CENTER);
             filePanel.add(new StagedFileList(), BorderLayout.SOUTH);
 
-            JPanel gitMenuPanel = new JPanel(new FlowLayout()); //임시
-            //JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
-            //gitMenuPanel.add(new fileGitMenu(),BorderLayout.CENTER);
-            //gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
-            gitMenuPanel.setPreferredSize(new Dimension(150, 200)); //임시로 크기 설정
+            //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
+            JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
+            gitMenuPanel.add(new fileGitMenu(),BorderLayout.CENTER);
+            gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
+            gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
 
             JPanel gitPanel = new JPanel(new BorderLayout(3,3));
             gitPanel.add(filePanel, BorderLayout.CENTER);
@@ -299,6 +300,25 @@ public class GitGUI {
             }
         }
         return created;
+    }
+}
+
+class fileGitMenu extends JPanel{//위치에 따라 바뀌는 버튼을 위한 패널
+
+    fileGitMenu(){
+        setPreferredSize(new Dimension(290, 150));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        JLabel titleLabel=new JLabel("Mode");
+        titleLabel.setForeground(Color.BLACK);
+        add(titleLabel);
+    }
+    
+}
+
+class GitMenu extends JPanel{//커밋 같은 일반적인 깃 버튼을 위한 패널
+    GitMenu(){
+        setPreferredSize(new Dimension(290, 150));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }
 }
 
@@ -815,6 +835,8 @@ class FileTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 }
+
+
 
 /** A TreeCellRenderer for a File. */
 class FileTreeCellRenderer extends DefaultTreeCellRenderer {
