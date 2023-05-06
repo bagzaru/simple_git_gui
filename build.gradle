@@ -10,6 +10,12 @@ repositories {
 }
 
 dependencies {
+    //Jgit dependency
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+
+
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
