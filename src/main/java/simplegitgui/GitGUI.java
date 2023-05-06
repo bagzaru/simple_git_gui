@@ -1,81 +1,80 @@
 /*
- * $Id$
- *
- * Copyright 2015 Valentyn Kolesnikov
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+The MIT License
+
+Copyright (c) 2015-2023 Valentyn Kolesnikov (https://github.com/javadev/file-manager)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
  */
 package main.java.simplegitgui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Container;
-import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.*;
-
+import java.awt.image.*;
+import java.io.*;
+import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.table.*;
 import javax.swing.filechooser.FileSystemView;
-
-import javax.imageio.ImageIO;
-
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-
-import java.io.*;
-import java.nio.channels.FileChannel;
-
-import java.net.URL;
+import javax.swing.table.*;
+import javax.swing.tree.*;
+import org.apache.commons.io.FileUtils;
 
 /**
-A basic File Manager.  Requires 1.6+ for the Desktop &amp; SwingWorker
-classes, amongst other minor things.
-
-Includes support classes FileTableModel &amp; FileTreeCellRenderer.
-
-TODO Bugs
-<ul>
-<li>Still throws occasional AIOOBEs and NPEs, so some update on
-the EDT must have been missed.
-<li>Fix keyboard focus issues - especially when functions like
-rename/delete etc. are called that update nodes &amp; file lists.
-<li>Needs more testing in general.
-
-TODO Functionality
-<li>Implement Read/Write/Execute checkboxes
-<li>Implement Copy
-<li>Extra prompt for directory delete (camickr suggestion)
-<li>Add File/Directory fields to FileTableModel
-<li>Double clicking a directory in the table, should update the tree
-<li>Move progress bar?
-<li>Add other file display modes (besides table) in CardLayout?
-<li>Menus + other cruft?
-<li>Implement history/back
-<li>Allow multiple selection
-<li>Add file search
-</ul>
-
-@author Andrew Thompson
-@version 2011-06-01
-*/
+ * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
+ * minor things.
+ *
+ * <p>Includes support classes FileTableModel &amp; FileTreeCellRenderer.
+ *
+ * <p>TODO Bugs
+ *
+ * <ul>
+ *   <li>Still throws occasional AIOOBEs and NPEs, so some update on the EDT must have been missed.
+ *   <li>Fix keyboard focus issues - especially when functions like rename/delete etc. are called
+ *       that update nodes &amp; file lists.
+ *   <li>Needs more testing in general.
+ *       <p>TODO Functionality
+ *   <li>Implement Read/Write/Execute checkboxes
+ *   <li>Implement Copy
+ *   <li>Extra prompt for directory delete (camickr suggestion)
+ *   <li>Add File/Directory fields to FileTableModel
+ *   <li>Double clicking a directory in the table, should update the tree
+ *   <li>Move progress bar?
+ *   <li>Add other file display modes (besides table) in CardLayout?
+ *   <li>Menus + other cruft?
+ *   <li>Implement history/back
+ *   <li>Allow multiple selection
+ *   <li>Add file search
+ * </ul>
+ */
 public class GitGUI {
 
     /** Title of the application */
@@ -116,7 +115,6 @@ public class GitGUI {
                 }
                 JFrame f = new JFrame(APP_TITLE);
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
                 f.setContentPane(getGui());
 
                 try {
@@ -321,7 +319,7 @@ class FileTree extends JScrollPane {
         File[] roots = GitGUI.fileSystemView.getRoots();
         for (File fileSystemRoot : roots) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
-            root.add( node );
+            root.add(node);
             //showChildren(node);
             //
             File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);
@@ -344,10 +342,8 @@ class FileTree extends JScrollPane {
         GitGUI.tree.setVisibleRowCount(15);
 
         Dimension preferredSize = getPreferredSize();
-        Dimension widePreferred = new Dimension(
-                200,
-                (int)preferredSize.getHeight());
-        setPreferredSize( widePreferred );
+        Dimension widePreferred = new Dimension(200, (int)preferredSize.getHeight());
+        setPreferredSize(widePreferred);
     }
 }
 
@@ -542,24 +538,21 @@ class FileToolBar extends JToolBar {
                 System.out.println("parentNode: " + parentNode);
 
                 boolean directory = GitGUI.currentFile.isDirectory();
-                boolean deleted = GitGUI.currentFile.delete();
-                if (deleted) {
+                if (FileUtils.deleteQuietly(GitGUI.currentFile)) {
                     if (directory) {
                         // delete the node..
                         TreePath currentPath = findTreePath(GitGUI.currentFile);
                         System.out.println(currentPath);
                         DefaultMutableTreeNode currentNode =
-                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
+                                (DefaultMutableTreeNode) currentPath.getLastPathComponent();
 
                         GitGUI.treeModel.removeNodeFromParent(currentNode);
                     }
 
                     GitGUI.showChildren(parentNode);
                 } else {
-                    String msg = "The file '" +
-                            GitGUI.currentFile +
-                            "' could not be deleted.";
-                    showErrorMessage(msg,"Delete Failed");
+                    String msg = "The file '" + GitGUI.currentFile + "' could not be deleted.";
+                    showErrorMessage(msg, "Delete Failed");
                 }
             } catch(Throwable t) {
                 showThrowable(t);
@@ -583,14 +576,14 @@ class FileToolBar extends JToolBar {
             ButtonGroup bg = new ButtonGroup();
             bg.add(newTypeFile);
             bg.add(newTypeDirectory);
-            southRadio.add( newTypeFile );
-            southRadio.add( newTypeDirectory );
+            southRadio.add(newTypeFile);
+            southRadio.add(newTypeDirectory);
 
             name = new JTextField(15);
 
-            newFilePanel.add( new JLabel("Name"), BorderLayout.WEST );
-            newFilePanel.add( name );
-            newFilePanel.add( southRadio, BorderLayout.SOUTH );
+            newFilePanel.add(new JLabel("Name"), BorderLayout.WEST);
+            newFilePanel.add(name);
+            newFilePanel.add(southRadio, BorderLayout.SOUTH);
         }
 
         int result = JOptionPane.showConfirmDialog(
@@ -612,7 +605,6 @@ class FileToolBar extends JToolBar {
                     created = file.mkdir();
                 }
                 if (created) {
-
                     TreePath parentPath = findTreePath(parentFile);
                     DefaultMutableTreeNode parentNode =
                             (DefaultMutableTreeNode)parentPath.getLastPathComponent();
@@ -669,7 +661,7 @@ class FileToolBar extends JToolBar {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)object;
             File nodeFile = (File)node.getUserObject();
 
-            if (nodeFile==find) {
+            if (nodeFile.equals(find)) {
                 return treePath;
             }
         }
