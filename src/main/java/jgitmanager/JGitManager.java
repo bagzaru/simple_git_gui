@@ -31,7 +31,32 @@ public class JGitManager {
         }
     }
 
+    //gitRestore:
+    // modified 상태인 커밋을 가장 최근 상태로 되돌립니다.
+    public void gitRestore(File fileToRestore, File dotGit) throws IOException, GitAPIException{
+        //JGit doesn't have git restore method. So we used 'git checkout <filename>', ref to our OSS class Lecture5-part3
+        System.out.println("Start: gitRestore");
+        try (Repository repository = openRepository(dotGit)) {
+            //git checkout <filename>의 filename은 상대경로이므로, 상대 경로를 추출합니다.
+            String relativeFilePath;
+            try{
+                relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+            }catch (IllegalArgumentException e){
+                System.out.println("Failed to 'git restore "+fileToRestore.getPath()+" : invalid file path");
+                return;
+            }
 
+            //실제 Git 명령어를 수행합니다.
+            try (Git git = new Git(repository)) {
+                // revert the changes
+                // git checkout <filename>
+                System.out.println("try: git checkout "+relativeFilePath);
+                git.checkout().addPath(relativeFilePath).call();
+                System.out.println("End: gitRestore");
+            }
+        }
+
+    }
 
     //Modified 상태인 특정 file을 Unmodified로 되돌립니다.
     //fileToRestore
