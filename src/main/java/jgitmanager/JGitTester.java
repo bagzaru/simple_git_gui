@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class JGitTester {
-    public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
-    public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
-    public static String testFile = testPath+"\\src\\src\\a.txt";
+    public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
+    public static String testPath = "D:\\open_prj1\\git_test";
+    public static String testFile = testPath+"\\a.txt";
 
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");

@@ -139,5 +139,19 @@ public class JGitManager {
             throw new IllegalArgumentException("Failed to get relative Exception");
         }
     }
+    
+    
+    /*
+     * ------------------------------------------------------------------------------
+     * ------------------------------min-jp_part-------------------------------------
+     * ------------------------------------------------------------------------------
+     * */
+    
+    //gitAdd:
+    //staged area로 올림
+    public void gitAdd(File fileToRestore, File dotGit) throws IOException, GitAPIException {
+        
+
+    }
 
 }
