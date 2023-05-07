@@ -1,5 +1,7 @@
 package jgitmanager;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -21,11 +23,13 @@ public class JGitTester {
         File tempPath;
         try {
             tempPath = jGitManager.createTempPath();
+            jGitManager.gitInit(tempPath);
         } catch (IOException e) {
             System.out.println("Cannot create temp path: " + e.toString());
             return;
+        }catch (GitAPIException e){
+            System.out.println("Cannot git init temp path: " + e.toString());
         }
-        jGitManager.gitInit(tempPath);
     }
 
     public void gitRestoreTest(JGitManager jGitManager){
