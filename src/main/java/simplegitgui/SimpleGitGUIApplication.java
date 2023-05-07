@@ -1,7 +1,7 @@
-package main.java.simplegitgui;
+package simplegitgui;
 
 public class SimpleGitGUIApplication {
     public static void main(String[] args){
-        GitGUI gitGUI = new GitGUI();
+        main.java.simplegitgui.GitGUI gitGUI = new main.java.simplegitgui.GitGUI();
     }
 }

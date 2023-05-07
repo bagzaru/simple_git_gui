@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package main.java.simplegitgui;
+package simplegitgui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
