@@ -13,7 +13,8 @@ public class JGitTester {
         JGitManager jGitManager = new JGitManager();
         //tester.gitInitTest(jGitManager);
         //tester.gitRestoreStagedTest(jGitManager);
-        tester.gitRestoreTest(jGitManager);
+        //tester.gitRestoreTest(jGitManager);
+        tester.gitMvTest(jGitManager);
     }
 
     public void gitInitTest(JGitManager jGitManager) {
@@ -41,6 +42,16 @@ public class JGitTester {
         try {
             //git restore --staged
             jGitManager.gitRestoreStaged(new File(testPath+"\\test.txt"),new File(testPathDotGit));
+
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.toString());
+        }
+    }
+
+    public void gitMvTest(JGitManager jGitManager){
+        try {
+            //git restore --staged
+            jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());

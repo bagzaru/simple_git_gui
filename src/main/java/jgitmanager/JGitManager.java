@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -86,6 +87,41 @@ public class JGitManager {
                 System.out.println("End: gitRestoreStaged");
             }
         }
+    }
+
+    //git mv:
+    // git mv A B를 실행합니다.
+    // 이름을 변경할 때 사용할 수 있습니다.
+    public void gitMv(File fileToRename, String newName, File dotGit) throws IOException, GitAPIException {
+        //jgit api에서는 git mv를 지원하지 않습니다.
+        //git mv <oldname> <newname>은, mv oldname newname, git add newname, git rm oldname과 같습니다.
+        //  source: https://stackoverflow.com/questions/1094269/whats-the-purpose-of-git-mv
+
+        System.out.println("Start: gitMv ");
+        try (Repository repository = openRepository(dotGit)) {
+            //fileToRename의 workTree부터의 상대경로를 추출합니다.
+            File newFile = new File(repository.getWorkTree().toString()+"\\"+newName);
+            System.out.println("newFIle.path: "+newFile.getPath());
+            if(fileToRename.renameTo(newFile)){
+                System.out.println("Rename completed, path: "+fileToRename.getPath()+", name: "+fileToRename.getName());
+            }
+            else{
+                throw new IOException("Failed to 'git mv, failed to Rename from"+fileToRename.getName()+" to "+newName);
+            }
+
+            try (Git git = new Git(repository)) {
+                // rename the file
+                // git add newName
+                // git rm oldName
+
+                System.out.println("try: git mv "+newFile.getName()+" "+newFile.getName());
+                git.add().addFilepattern(newFile.getName()).call();
+                git.rm().addFilepattern(fileToRename.getName()).call();
+
+                System.out.println("End: git mv "+fileToRename.getName()+" "+newFile.getName());
+            }
+        }
+
     }
 
     //openRepository:
