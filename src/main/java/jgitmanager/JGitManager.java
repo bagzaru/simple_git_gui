@@ -73,15 +73,24 @@ public class JGitManager {
         try (Repository repository = openRepository(dotGit)) {
             //mv <oldname> <newname>을 실행합니다.
             //JAVA File의 파일명 변경을 수행합니다.
-            File newFile = new File(repository.getWorkTree().toString() + "\\" + newName);
+            File newFile = new File(fileToRename.getParent() + "\\" + newName);
             if (!fileToRename.renameTo(newFile)) {
                 throw new IOException("Failed to 'git mv, failed to Rename from " + fileToRename.getName() + " to " + newName);
             }
 
+            //파일명 변경이 수행되었으니, 두 파일의 상대 경로를 구합니다.
+            String relativeOldFilePath, relativeNewFilePath;
+            try {
+                relativeOldFilePath = extractRepositoryRelativePath(fileToRename, repository);
+                relativeNewFilePath = extractRepositoryRelativePath(newFile, repository);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Failed to 'git mv: invalid file path");
+            }
+
             // git add newName, git rm oldName
             try (Git git = new Git(repository)){
-                git.add().addFilepattern(newFile.getName()).call();
-                git.rm().addFilepattern(fileToRename.getName()).call();
+                git.add().addFilepattern(relativeNewFilePath).call();
+                git.rm().addFilepattern(relativeOldFilePath).call();
             }
         }
 
@@ -124,8 +133,8 @@ public class JGitManager {
         Path targetPath = target.toPath();
         Path workTreePath = repository.getWorkTree().toPath();
         try {
-            Path relativePath = workTreePath.relativize(targetPath);
-            return relativePath.toString();
+            String relativePath = workTreePath.relativize(targetPath).toString().replace('\\','/');
+            return relativePath;
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Failed to get relative Exception");
         }
