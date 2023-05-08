@@ -1,10 +1,13 @@
 package jgitmanager;
 
+import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.api.Status;
 
 import java.io.File;
 import java.io.IOException;
@@ -147,11 +150,114 @@ public class JGitManager {
      * ------------------------------------------------------------------------------
      * */
     
-    //gitAdd:
-    //staged area로 올림
-    public void gitAdd(File fileToRestore, File dotGit) throws IOException, GitAPIException {
-        
+    // gitAdd:
+    // staged area로 올림
+    // success: 1 / fail: 0
+    public int gitAdd(File fileToRestore, File dotGit) {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            //파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+            
+            // 파일 추가
+            AddCommand add = git.add();
+            add.addFilepattern(relativeFilePath).call();
+            
+            // Git 저장소 닫기
+            git.close();
+            
+            System.out.println("add success");
 
+            // add 성공
+            return 1;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
     }
+    
+    // gitDoCommit:
+    // commit을 실행함
+    // success: 1 / fail: 0
+    public int gitDoCommit(File fileToRestore, File dotGit, String commitMessage) {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+
+            // 파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+
+            // commit 실행
+            CommitCommand commit = git.commit();
+            commit.setMessage(commitMessage).call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("commit success");
+
+            // commit 성공
+            return 1;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
+    }
+
+    // checkFileStatus:
+    // 파일의 상태 확인
+    // fail: 0 / Untracked: 1 / Modified : 2 / Deleted : 3 / Unmodified : 4 / status not found : 5
+    public int checkFileStatus(File fileToCheck, File dotGit) {
+        try {
+            // Git 저장소 열기
+        	Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            // 파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToCheck, repository);
+            
+            // 상태 확인
+            Status status = git.status().addPath(relativeFilePath).call();
+            
+            int returnValue = 0;
+
+            // 파일의 상태 확인
+            if (status.getUntracked().contains(relativeFilePath)) {
+                System.out.println("Untracked file");
+                returnValue = 1;
+            } else if (status.getModified().contains(relativeFilePath)) {
+                System.out.println("Modified file");
+                returnValue = 2;
+            } else if (status.getMissing().contains(relativeFilePath)) {
+                System.out.println("Deleted file");
+                returnValue = 3;
+            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+                System.out.println("Staged file");
+                returnValue = 4;
+            } else {
+                System.out.println("Unmodified file");
+                returnValue = 5;
+            }
+            
+            // Git 저장소 닫기
+            git.close();
+
+            return returnValue;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
+    }
+
 
 }
