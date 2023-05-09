@@ -12,6 +12,8 @@ import org.eclipse.jgit.api.Status;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Set;
+import java.util.HashSet;
 
 //JGit의 기능을 직접 사용하여 Git init, add, ... 등으로 단순화하는 클래스입니다.
 //git의 특정 명령어를 직접 사용하려면 이 클래스를 사용합니다.
@@ -215,7 +217,7 @@ public class JGitManager {
     // checkFileStatus:
     // 파일의 상태 확인
     // fail: 0 / Untracked: 1 / Modified : 2 / Deleted : 3 / Unmodified : 4 / status not found : 5
-    public int checkFileStatus(File fileToCheck, File dotGit) {
+    public int gitCheckFileStatus(File fileToCheck, File dotGit) {
         try {
             // Git 저장소 열기
         	Repository repository = openRepository(dotGit);
@@ -259,5 +261,51 @@ public class JGitManager {
         }
     }
 
+    // gitStagedList:
+    // Staged된 파일 리스트
+    // fail: null / success : Set<String> 
+    public Set<String> gitStagedList(File dotGit) {
+        try {
+            // Git 저장소 열기
+        	Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            // 상태 확인
+            Status status = git.status().call();
+            
+            // Staged File 리스트
+            Set<String> stagedAdded = status.getAdded();
+            Set<String> stagedChanged = status.getChanged();
+            Set<String> stagedFiles = new HashSet<>();
+            stagedFiles.addAll(stagedAdded);
+            stagedFiles.addAll(stagedChanged);
+
+            // Git 저장소 닫기
+            git.close();
+
+            return stagedFiles;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // findGitRepository:
+    // 폴더의 상태를 확인
+    // managed by git: 1 / not managed by git: 0
+    public int findGitRepository(File folder) {
+        // Git 경로 찾기
+            FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+            repositoryBuilder.setMustExist(true);
+            repositoryBuilder.findGitDir(folder);
+
+            if (repositoryBuilder.getGitDir() != null) {
+                // managed by git
+                return 1;
+            } else {
+                // not managed by git
+                return 0;
+            }
+    }
 
 }

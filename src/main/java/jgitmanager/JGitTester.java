@@ -4,6 +4,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 public class JGitTester {
     public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
@@ -18,45 +19,9 @@ public class JGitTester {
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
         //tester.gitMvTest(jGitManager);
-        //tester.gitAddTest(jGitManager);
-        //tester.gitDoCommitTest(jGitManager);
-        tester.checkFileStatusTest(jGitManager);
-    }
-    
-    public void gitAddTest(JGitManager jGitManager) {
-    	try {
-            jGitManager.gitAdd(new File(testFile),new File(testPathDotGit));
-
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.toString());
-        }
+        tester.gitTestMinJp(jGitManager);
     }
 
-    public void gitDoCommitTest(JGitManager jGitManager) {
-    	try {
-            jGitManager.gitDoCommit(new File(testFile),new File(testPathDotGit),"cm_test1");
-
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.toString());
-        }
-    }
-    
-    public void checkFileStatusTest(JGitManager jGitManager) {
-    	try {
-            int n;
-            n = jGitManager.checkFileStatus(new File(testFile),new File(testPathDotGit));
-
-            System.out.println(n);
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.toString());
-        }
-    }
-
-    /*
-     * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-     * -----------min-jp_part-----------
-     * */
-    
     public void gitInitTest(JGitManager jGitManager) {
         File tempPath;
         try {
@@ -99,5 +64,33 @@ public class JGitTester {
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
+    }
+
+    /*
+     * ------------------------------------------------------------------------------
+     * ------------------------------min-jp_part-------------------------------------
+     * ------------------------------------------------------------------------------
+     * */
+
+    public void gitTestMinJp(JGitManager jGitManager) {
+        // gitAdd
+        //jGitManager.gitAdd(new File(testFile),new File(testPathDotGit));
+
+        // gitDoCommit
+        //jGitManager.gitDoCommit(new File(testFile),new File(testPathDotGit),"cm_test1");
+
+        // gitStagedList
+        //Set<String> stagedFiles = jGitManager.gitStagedList(new File(testPathDotGit));
+        //System.out.println("Staged file: " + stagedFiles);
+
+        // gitCheckFileStatus
+        int statusNum;
+        statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
+        System.out.println(statusNum);
+
+        // findGitRepository
+        //int isGit;
+        //isGit = jGitManager.findGitRepository(new File(testPath));
+        //System.out.println(isGit);
     }
 }
