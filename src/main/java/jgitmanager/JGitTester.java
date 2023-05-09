@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class JGitTester {
+    //test용 객체입니다.
     public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
     public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
     public static String testFile = testPath+"\\src\\src\\a.txt";
@@ -15,7 +16,7 @@ public class JGitTester {
         JGitTester tester = new JGitTester();
         JGitManager jGitManager = new JGitManager();
         //tester.gitInitTest(jGitManager);
-        tester.gitRestoreStagedTest(jGitManager);
+        tester.gitRmTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
         //tester.gitMvTest(jGitManager);
     }
@@ -58,6 +59,17 @@ public class JGitTester {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
             jGitManager.gitMv(new File(testFile),"b.txt",new File(testPathDotGit));
+
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.toString());
+        }
+    }
+
+    public void gitRmTest(JGitManager jGitManager){
+        try {
+            //git restore --staged
+            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
+            jGitManager.gitRm(new File(testFile),new File(testPathDotGit));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());

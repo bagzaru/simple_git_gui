@@ -96,6 +96,27 @@ public class JGitManager {
 
     }
 
+    //git rm:
+    // git rm <filename>을 실행합니다.
+    //파일 삭제 및 삭제 사항을 stage합니다.
+    public void gitRm(File fileToRemove, File dotGit) throws IOException, GitAPIException {
+        try (Repository repository = openRepository(dotGit)) {
+            //git rm을 실행하기 위한 repository부터의 상대경로를 구합니다.
+            String relativeFilePath;
+            try {
+                relativeFilePath = extractRepositoryRelativePath(fileToRemove, repository);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Failed to 'git mv: invalid file path");
+            }
+
+            // git add newName, git rm oldName
+            try (Git git = new Git(repository)){
+                git.rm().addFilepattern(relativeFilePath).call();
+            }
+        }
+
+    }
+
     //openRepository:
     // 현재 열려있는 git repo를 가져옵니다.
     // .git까지의 경로를 가지는 file을 받아옵니다.
