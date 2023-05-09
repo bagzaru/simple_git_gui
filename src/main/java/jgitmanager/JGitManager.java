@@ -216,7 +216,8 @@ public class JGitManager {
 
     // checkFileStatus:
     // 파일의 상태 확인
-    // fail: 0 / Untracked: 1 / Modified : 2 / Deleted : 3 / Unmodified : 4 / status not found : 5
+    // fail: 0 / Untracked: 1 / Modified: 2 / Staged & Modified: 3
+    // Deleted: 4 / Staged: 5 / Unmodified(Committed): 6
     public int gitCheckFileStatus(File fileToCheck, File dotGit) {
         try {
             // Git 저장소 열기
@@ -237,17 +238,22 @@ public class JGitManager {
                 System.out.println("Untracked file");
                 returnValue = 1;
             } else if (status.getModified().contains(relativeFilePath)) {
-                System.out.println("Modified file");
-                returnValue = 2;
+                if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+                    System.out.println("Staged & Modified file");
+                    returnValue = 3;
+                } else {
+                    System.out.println("Modified file");
+                    returnValue = 2;
+                }
             } else if (status.getMissing().contains(relativeFilePath)) {
                 System.out.println("Deleted file");
-                returnValue = 3;
+                returnValue = 4;
             } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
                 System.out.println("Staged file");
-                returnValue = 4;
+                returnValue = 5;
             } else {
                 System.out.println("Unmodified file");
-                returnValue = 5;
+                returnValue = 6;
             }
             
             // Git 저장소 닫기
