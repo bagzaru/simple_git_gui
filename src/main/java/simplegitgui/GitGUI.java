@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package main.java.simplegitgui;
+package simplegitgui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -158,10 +158,25 @@ public class GitGUI {
 
             //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
             JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
-            gitMenuPanel.add(new fileGitMenu(),BorderLayout.CENTER);
+
+            switch(/*filestatus*/){//파일 위치에 따른 패널 생성
+                
+                case 0 :
+                gitMenuPanel.add(new modified_fileGitMenu(),BorderLayout.CENTER);
+                break;
+
+                case 1 :
+                gitMenuPanel.add(new staged_fileGitMenu(),BorderLayout.CENTER);
+                break;
+
+                default:
+                gitMenuPanel.add(new untracked_fileGitMenu(),BorderLayout.CENTER);
+                break;
+
+            }
             gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
-
+            
             JPanel gitPanel = new JPanel(new BorderLayout(3,3));
             gitPanel.add(filePanel, BorderLayout.CENTER);
             gitPanel.add(gitMenuPanel, BorderLayout.EAST);
@@ -303,24 +318,138 @@ public class GitGUI {
     }
 }
 
-class fileGitMenu extends JPanel{//위치에 따라 바뀌는 버튼을 위한 패널
+//패널 클래스
+class untracked_fileGitMenu extends JPanel{//untracked파일 패널
 
-    fileGitMenu(){
-        setPreferredSize(new Dimension(290, 150));
+    untracked_fileGitMenu(){
+        setPreferredSize(new Dimension(300, 150));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        JLabel titleLabel=new JLabel("Mode");
+        JLabel titleLabel=new JLabel("UNTRACKED");
         titleLabel.setForeground(Color.BLACK);
         add(titleLabel);
+
+        untracked_add_button add_button=new untracked_add_button();//Add button 추가
+        add_button.setBounds(10, 50,100,30);
+        add(add_button);
+    }
+    
+}
+
+class modified_fileGitMenu extends JPanel{//modified파일 패널
+
+    modified_fileGitMenu(){
+        setPreferredSize(new Dimension(300, 150));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        JLabel titleLabel=new JLabel("MODIFIED");
+        titleLabel.setForeground(Color.BLACK);
+        add(titleLabel);
+        
+        modified_add_button add_button=new modified_add_button();//Add button 추가
+        add_button.setBounds(0, 200,100,30);
+        add(add_button);
+
+        modified_undo_button undo_button=new modified_undo_button();//Add button 추가
+        undo_button.setBounds(0, 200,100,30);
+        add(undo_button);
+
+    }
+    
+}
+
+class staged_fileGitMenu extends JPanel{//staged파일 패널
+
+    staged_fileGitMenu(){
+        setPreferredSize(new Dimension(300, 150));
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        JLabel titleLabel=new JLabel("STAGED");
+        titleLabel.setForeground(Color.BLACK);
+        add(titleLabel);
+
+        staged_unstage_button unstage_button=new staged_unstage_button();//Add button 추가
+        unstage_button.setBounds(0, 200,100,30);
+        add(unstage_button);
+
     }
     
 }
 
 class GitMenu extends JPanel{//커밋 같은 일반적인 깃 버튼을 위한 패널
     GitMenu(){
-        setPreferredSize(new Dimension(290, 150));
+        setPreferredSize(new Dimension(300, 200));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+        commit_delete_button delete_button=new commit_delete_button();//delete button 추가
+        delete_button.setBounds(0, 200,100,30);
+        add(delete_button);
+
+        commit_untrack_button untrack_button=new commit_untrack_button();//untrack button 추가
+        untrack_button.setBounds(0,150,100,30);
+        add(untrack_button);
+
+        commit_rename_button rename_button=new commit_rename_button();//rename button 추가
+        rename_button.setBounds(0, 50,100,30);
+        add(rename_button);
+        
     }
 }
+//BUTTON CLASS
+//Untracked button
+class untracked_add_button extends JButton{
+
+    untracked_add_button(){
+        setText("ADD");
+    }
+}
+//modified button
+class modified_add_button extends JButton{
+
+    modified_add_button(){
+        setText("ADD");
+    }
+}
+
+class modified_undo_button extends JButton{
+    
+    modified_undo_button(){
+        setText("UNDO");
+    }
+}
+//staged button
+class staged_unstage_button extends JButton{
+    
+    staged_unstage_button(){
+        setText("UNSTAGE");
+    }
+}
+//commit button
+class commit_untrack_button extends JButton{
+
+    commit_untrack_button(){
+        
+        setText("UNTRACK");
+    }
+}
+
+class commit_delete_button extends JButton{
+
+    commit_delete_button(){
+        
+        setText("DELETE");
+    }
+}
+
+class commit_rename_button extends JButton{
+
+    commit_rename_button(){
+        
+        setText("RENAME");
+    }
+}
+
+
+
+
+
 
 class FileTree extends JScrollPane {
     FileTree(FileDetail fileDetail) {
