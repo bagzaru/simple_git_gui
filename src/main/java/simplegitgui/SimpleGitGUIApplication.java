@@ -1,4 +1,4 @@
-package main.java.simplegitgui;
+package simplegitgui;
 
 public class SimpleGitGUIApplication {
     public static void main(String[] args){
