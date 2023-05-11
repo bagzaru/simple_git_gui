@@ -1,5 +1,6 @@
 package gui;
 
+import file.SelectedFile;
 import gui.GitGUI;
 import org.apache.commons.io.FileUtils;
 
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 public class FileToolBar extends JToolBar {
+    SelectedFile selectedFile;
+
     /* File controls. */
     private JButton openFile;
     private JButton newFile;
@@ -29,6 +32,8 @@ public class FileToolBar extends JToolBar {
     private JTextField name;
 
     FileToolBar() {
+        selectedFile = SelectedFile.getInstance();
+
         setFloatable(false);
 
         openFile = new JButton("Open");
@@ -37,7 +42,7 @@ public class FileToolBar extends JToolBar {
         openFile.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    GitGUI.desktop.open(GitGUI.currentFile);
+                    GitGUI.desktop.open(selectedFile.getFile());
                 } catch(Throwable t) {
                     showThrowable(t);
                 }
@@ -87,7 +92,7 @@ public class FileToolBar extends JToolBar {
     }
 
     private void newFile() {
-        if (GitGUI.currentFile==null) {
+        if (selectedFile.getFile() == null) {
             showErrorMessage("No location selected for new file.","Select Location");
             return;
         }
@@ -119,7 +124,7 @@ public class FileToolBar extends JToolBar {
         if (result==JOptionPane.OK_OPTION) {
             try {
                 boolean created;
-                File parentFile = GitGUI.currentFile;
+                File parentFile = selectedFile.getFile();
                 if (!parentFile.isDirectory()) {
                     parentFile = parentFile.getParentFile();
                 }
@@ -138,7 +143,7 @@ public class FileToolBar extends JToolBar {
                         // add the new node..
                         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
 
-                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        TreePath currentPath = findTreePath(selectedFile.getFile());
                         DefaultMutableTreeNode currentNode =
                                 (DefaultMutableTreeNode)currentPath.getLastPathComponent();
 
@@ -160,7 +165,7 @@ public class FileToolBar extends JToolBar {
     }
 
     private void deleteFile() {
-        if (GitGUI.currentFile==null) {
+        if (selectedFile.getFile() == null) {
             showErrorMessage("No file selected for deletion.","Select File");
             return;
         }
@@ -173,18 +178,18 @@ public class FileToolBar extends JToolBar {
         );
         if (result==JOptionPane.OK_OPTION) {
             try {
-                System.out.println("currentFile: " + GitGUI.currentFile);
-                TreePath parentPath = findTreePath(GitGUI.currentFile.getParentFile());
+                System.out.println("currentFile: " + selectedFile.getFile());
+                TreePath parentPath = findTreePath(selectedFile.getFile().getParentFile());
                 System.out.println("parentPath: " + parentPath);
                 DefaultMutableTreeNode parentNode =
                         (DefaultMutableTreeNode)parentPath.getLastPathComponent();
                 System.out.println("parentNode: " + parentNode);
 
-                boolean directory = GitGUI.currentFile.isDirectory();
-                if (FileUtils.deleteQuietly(GitGUI.currentFile)) {
+                boolean directory = selectedFile.getFile().isDirectory();
+                if (FileUtils.deleteQuietly(selectedFile.getFile())) {
                     if (directory) {
                         // delete the node..
-                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        TreePath currentPath = findTreePath(selectedFile.getFile());
                         System.out.println(currentPath);
                         DefaultMutableTreeNode currentNode =
                                 (DefaultMutableTreeNode) currentPath.getLastPathComponent();
@@ -194,7 +199,7 @@ public class FileToolBar extends JToolBar {
 
                     GitGUI.showChildren(parentNode);
                 } else {
-                    String msg = "The file '" + GitGUI.currentFile + "' could not be deleted.";
+                    String msg = "The file '" + selectedFile.getFile() + "' could not be deleted.";
                     showErrorMessage(msg, "Delete Failed");
                 }
             } catch(Throwable t) {
@@ -205,7 +210,7 @@ public class FileToolBar extends JToolBar {
     }
 
     private void renameFile() {
-        if (GitGUI.currentFile==null) {
+        if (selectedFile.getFile() == null) {
             showErrorMessage("No file selected to rename.","Select File");
             return;
         }
@@ -213,19 +218,19 @@ public class FileToolBar extends JToolBar {
         String renameTo = JOptionPane.showInputDialog(GitGUI.gui, "New Name");
         if (renameTo!=null) {
             try {
-                boolean directory = GitGUI.currentFile.isDirectory();
-                TreePath parentPath = findTreePath(GitGUI.currentFile.getParentFile());
+                boolean directory = selectedFile.getFile().isDirectory();
+                TreePath parentPath = findTreePath(selectedFile.getFile().getParentFile());
                 DefaultMutableTreeNode parentNode =
                         (DefaultMutableTreeNode)parentPath.getLastPathComponent();
 
-                boolean renamed = GitGUI.currentFile.renameTo(new File(
-                        GitGUI.currentFile.getParentFile(), renameTo));
+                boolean renamed = selectedFile.getFile().renameTo(new File(
+                        selectedFile.getFile().getParentFile(), renameTo));
                 if (renamed) {
                     if (directory) {
                         // rename the node..
 
                         // delete the current node..
-                        TreePath currentPath = findTreePath(GitGUI.currentFile);
+                        TreePath currentPath = findTreePath(selectedFile.getFile());
                         System.out.println(currentPath);
                         DefaultMutableTreeNode currentNode =
                                 (DefaultMutableTreeNode)currentPath.getLastPathComponent();
@@ -238,7 +243,7 @@ public class FileToolBar extends JToolBar {
                     GitGUI.showChildren(parentNode);
                 } else {
                     String msg = "The file '" +
-                            GitGUI.currentFile +
+                            selectedFile.getFile() +
                             "' could not be renamed.";
                     showErrorMessage(msg,"Rename Failed");
                 }

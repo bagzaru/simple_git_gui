@@ -1,5 +1,7 @@
 package gui;
 
+import file.SelectedFile;
+
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -9,7 +11,11 @@ import java.awt.*;
 import java.io.File;
 
 public class FileTree extends JScrollPane {
-    FileTree(FileDetail fileDetail) {
+    SelectedFile selectedFile;
+
+    FileTree() {
+        selectedFile = SelectedFile.getInstance();
+
         // the File tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         GitGUI.treeModel = new DefaultTreeModel(root);
@@ -19,7 +25,7 @@ public class FileTree extends JScrollPane {
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 GitGUI.showChildren(node);
-                fileDetail.setFileDetails((File)node.getUserObject());
+                selectedFile.setFile((File)node.getUserObject());
             }
         };
 

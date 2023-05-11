@@ -47,6 +47,8 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 
+import file.FileTableModel;
+
 /**
  * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
  * minor things.
@@ -81,9 +83,6 @@ public class GitGUI {
     public static Desktop desktop;
     /** Provides nice icons and names for files. */
     public static FileSystemView fileSystemView;
-
-    /** currently selected File. */
-    public static File currentFile;
 
     /** Main GUI container */
     public static JPanel gui;
@@ -141,10 +140,9 @@ public class GitGUI {
 
             fileSystemView = FileSystemView.getFileSystemView();
             desktop = Desktop.getDesktop();
-            FileDetail fileDetail = new FileDetail();
 
             JPanel fileManage = new JPanel(new BorderLayout(3, 3));
-            fileManage.add(new FileTable(fileDetail), BorderLayout.CENTER);
+            fileManage.add(new FileTable(), BorderLayout.CENTER);
             fileManage.add(new FileToolBar(),BorderLayout.SOUTH);
 
             JPanel filePanel = new JPanel(new BorderLayout(3,3));
@@ -178,7 +176,7 @@ public class GitGUI {
 
             JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                new FileTree(fileDetail),
+                new FileTree(),
                 gitPanel);
             gui.add(splitPane, BorderLayout.CENTER);
 
@@ -282,135 +280,6 @@ public class GitGUI {
         worker.execute();
     }
 }
-
-class FileDetail {
-    /* File details. */
-    JLabel fileName;
-    JTextField path;
-    JLabel date;
-    JLabel size;
-    JCheckBox readable;
-    JCheckBox writable;
-    JCheckBox executable;
-    JRadioButton isDirectory;
-    JRadioButton isFile;
-
-    FileDetail() {
-        fileName = new JLabel();
-        path = new JTextField(5);
-        date = new JLabel();
-        size = new JLabel();
-        readable = new JCheckBox("Read ");
-        writable = new JCheckBox("Write ");
-        executable = new JCheckBox("Execute");
-        isDirectory = new JRadioButton("Directory");
-        isFile = new JRadioButton("File");
-    }
-
-    /** Update the File details view with the details of this File. */
-    public void setFileDetails(File file) {
-        GitGUI.currentFile = file;
-        Icon icon = GitGUI.fileSystemView.getSystemIcon(file);
-        fileName.setIcon(icon);
-        fileName.setText(GitGUI.fileSystemView.getSystemDisplayName(file));
-        path.setText(file.getPath());
-        date.setText(new Date(file.lastModified()).toString());
-        size.setText(file.length() + " bytes");
-        readable.setSelected(file.canRead());
-        writable.setSelected(file.canWrite());
-        executable.setSelected(file.canExecute());
-        isDirectory.setSelected(file.isDirectory());
-
-        isFile.setSelected(file.isFile());
-
-        JFrame f = (JFrame)GitGUI.gui.getTopLevelAncestor();
-        if (f!=null) {
-            f.setTitle(
-                    GitGUI.APP_TITLE +
-                            " :: " +
-                            GitGUI.fileSystemView.getSystemDisplayName(file) );
-        }
-
-        GitGUI.gui.repaint();
-    }
-}
-
-/** A TableModel to hold File[]. */
-class FileTableModel extends AbstractTableModel {
-
-    private File[] files;
-    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-    private String[] columns = {
-        "Icon",
-        "File",
-        "Size",
-        "Last Modified",
-        "File Status"
-    };
-
-    FileTableModel() {
-        this(new File[0]);
-    }
-
-    FileTableModel(File[] files) {
-        this.files = files;
-    }
-
-    public Object getValueAt(int row, int column) {
-        File file = files[row];
-        switch (column) {
-            case 0:
-                return fileSystemView.getSystemIcon(file);
-            case 1:
-                return fileSystemView.getSystemDisplayName(file);
-            case 2:
-                return file.length();
-            case 3:
-                return file.lastModified();
-            case 4:
-                return ""; //파일 상태(staged, tracked, untracked 등등을 호출하는 함수 들어가야함
-            default:
-                System.err.println("Logic Error");
-        }
-        return "";
-    }
-
-    public int getColumnCount() {
-        return columns.length;
-    }
-
-    public Class<?> getColumnClass(int column) {
-        switch (column) {
-            case 0:
-                return ImageIcon.class;
-            case 2:
-                return Long.class;
-            case 3:
-                return Date.class;
-            case 4:
-        }
-        return String.class;
-    }
-
-    public String getColumnName(int column) {
-        return columns[column];
-    }
-
-    public int getRowCount() {
-        return files.length;
-    }
-
-    public File getFile(int row) {
-        return files[row];
-    }
-
-    public void setFiles(File[] files) {
-        this.files = files;
-        fireTableDataChanged();
-    }
-}
-
-
 
 /** A TreeCellRenderer for a File. */
 class FileTreeCellRenderer extends DefaultTreeCellRenderer {
