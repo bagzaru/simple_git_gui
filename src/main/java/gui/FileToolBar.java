@@ -1,9 +1,5 @@
 package gui;
 
-import file.SelectedFile;
-import gui.GitGUI;
-import org.apache.commons.io.FileUtils;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -15,6 +11,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+
+import org.apache.commons.io.FileUtils;
+
+import file.SelectedFile;
 
 public class FileToolBar extends JToolBar {
     SelectedFile selectedFile;

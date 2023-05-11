@@ -1,12 +1,12 @@
 package gui;
 
-import file.FileTableModel;
-import file.SelectedFile;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+
+import file.FileTableModel;
+import file.SelectedFile;
 
 public class FileTable extends JScrollPane {
     Table table;

@@ -24,20 +24,14 @@ SOFTWARE.
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
 
 import java.awt.Image;
-import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,7 +42,6 @@ import javax.swing.table.*;
 import javax.swing.tree.*;
 
 import file.FileTableModel;
-import file.SelectedFile;
 
 /**
  * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
@@ -99,6 +92,8 @@ public class GitGUI {
     public static ListSelectionListener listSelectionListener;
     public static boolean cellSizesSet = false;
     public static int rowIconPadding = 6;
+
+    private Tree tree = Tree.getInstance();
 
     public GitGUI() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -192,7 +187,7 @@ public class GitGUI {
 
     public void showRootFile() {
         // ensure the main files are displayed
-        Tree.getInstance().setSelectionInterval(0,0);
+        tree.setSelectionInterval(0,0);
     }
 
     /** Update the table on the EDT */

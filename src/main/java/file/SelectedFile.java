@@ -1,9 +1,9 @@
 package file;
 
-import gui.GitGUI;
-
 import javax.swing.*;
 import java.io.File;
+
+import gui.GitGUI;
 
 public class SelectedFile {
     private static SelectedFile instance = null;
