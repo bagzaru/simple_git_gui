@@ -5,15 +5,19 @@ import file.SelectedFile;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.io.File;
 
 public class FileTree extends JScrollPane {
+    JTree tree;
     SelectedFile selectedFile;
 
     FileTree() {
+        tree = Tree.getInstance();
         selectedFile = SelectedFile.getInstance();
 
         // the File tree
@@ -45,18 +49,74 @@ public class FileTree extends JScrollPane {
             //
         }
 
-        GitGUI.tree = new JTree(GitGUI.treeModel);
-        GitGUI.tree.setRootVisible(false);
-        GitGUI.tree.addTreeSelectionListener(treeSelectionListener);
-        GitGUI.tree.setCellRenderer(new FileTreeCellRenderer());
-        GitGUI.tree.expandRow(0);
-        this.setViewportView(GitGUI.tree);
+        tree = new JTree(GitGUI.treeModel);
+        tree.setRootVisible(false);
+        tree.addTreeSelectionListener(treeSelectionListener);
+        tree.setCellRenderer(new FileTreeCellRenderer());
+        tree.expandRow(0);
+        this.setViewportView(tree);
 
         // as per trashgod tip
-        GitGUI.tree.setVisibleRowCount(15);
+        tree.setVisibleRowCount(15);
 
         Dimension preferredSize = getPreferredSize();
         Dimension widePreferred = new Dimension(200, (int)preferredSize.getHeight());
         setPreferredSize(widePreferred);
+    }
+}
+
+class Tree extends JTree {
+    private static Tree instance = null;
+
+    Tree() {
+        super();
+    }
+
+    public static Tree getInstance() {
+        if(instance == null) {
+            instance = new Tree();
+        }
+        return instance;
+    }
+}
+
+/** A TreeCellRenderer for a File. */
+class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+
+    private FileSystemView fileSystemView;
+
+    private JLabel label;
+
+    FileTreeCellRenderer() {
+        label = new JLabel();
+        label.setOpaque(true);
+        fileSystemView = FileSystemView.getFileSystemView();
+    }
+
+    @Override
+    public Component getTreeCellRendererComponent(
+            JTree tree,
+            Object value,
+            boolean selected,
+            boolean expanded,
+            boolean leaf,
+            int row,
+            boolean hasFocus) {
+
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
+        File file = (File)node.getUserObject();
+        label.setIcon(fileSystemView.getSystemIcon(file));
+        label.setText(fileSystemView.getSystemDisplayName(file));
+        label.setToolTipText(file.getPath());
+
+        if (selected) {
+            label.setBackground(backgroundSelectionColor);
+            label.setForeground(textSelectionColor);
+        } else {
+            label.setBackground(backgroundNonSelectionColor);
+            label.setForeground(textNonSelectionColor);
+        }
+
+        return label;
     }
 }

@@ -304,8 +304,8 @@ public class FileToolBar extends JToolBar {
     }
 
     private TreePath findTreePath(File find) {
-        for (int ii=0; ii<GitGUI.tree.getRowCount(); ii++) {
-            TreePath treePath = GitGUI.tree.getPathForRow(ii);
+        for (int ii=0; ii<Tree.getInstance().getRowCount(); ii++) {
+            TreePath treePath = Tree.getInstance().getPathForRow(ii);
             Object object = treePath.getLastPathComponent();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)object;
             File nodeFile = (File)node.getUserObject();

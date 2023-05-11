@@ -48,6 +48,7 @@ import javax.swing.table.*;
 import javax.swing.tree.*;
 
 import file.FileTableModel;
+import file.SelectedFile;
 
 /**
  * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
@@ -88,11 +89,9 @@ public class GitGUI {
     public static JPanel gui;
 
     /** File-system tree. Built Lazily */
-    public static JTree tree;
     public static DefaultTreeModel treeModel;
 
     /** Directory listing */
-    public static JTable table;
     public static JProgressBar progressBar;
 
     /** Table model for File[]. */
@@ -193,7 +192,7 @@ public class GitGUI {
 
     public void showRootFile() {
         // ensure the main files are displayed
-        tree.setSelectionInterval(0,0);
+        Tree.getInstance().setSelectionInterval(0,0);
     }
 
     /** Update the table on the EDT */
@@ -202,20 +201,20 @@ public class GitGUI {
             public void run() {
                 if (fileTableModel==null) {
                     fileTableModel = new FileTableModel();
-                    table.setModel(fileTableModel);
+                    Table.getInstance().setModel(fileTableModel);
                 }
-                table.getSelectionModel().removeListSelectionListener(listSelectionListener);
+                Table.getInstance().getSelectionModel().removeListSelectionListener(listSelectionListener);
                 fileTableModel.setFiles(files);
-                table.getSelectionModel().addListSelectionListener(listSelectionListener);
+                Table.getInstance().getSelectionModel().addListSelectionListener(listSelectionListener);
                 if (!cellSizesSet) {
                     Icon icon = fileSystemView.getSystemIcon(files[0]);
 
                     // size adjustment to better account for icons
-                    table.setRowHeight( icon.getIconHeight()+rowIconPadding );
+                    Table.getInstance().setRowHeight( icon.getIconHeight()+rowIconPadding );
 
                     setColumnWidth(0,-1);
                     setColumnWidth(2,60);
-                    table.getColumnModel().getColumn(2).setMaxWidth(120);
+                    Table.getInstance().getColumnModel().getColumn(2).setMaxWidth(120);
                     setColumnWidth(3,-1);
 
                     cellSizesSet = true;
@@ -225,7 +224,7 @@ public class GitGUI {
     }
 
     public static void setColumnWidth(int column, int width) {
-        TableColumn tableColumn = table.getColumnModel().getColumn(column);
+        TableColumn tableColumn = Table.getInstance().getColumnModel().getColumn(column);
         if (width < 0) {
             // use the preferred width of the header..
             JLabel label = new JLabel( (String)tableColumn.getHeaderValue() );
@@ -241,7 +240,7 @@ public class GitGUI {
     /** Add the files that are contained within the directory of this node.
     Thanks to Hovercraft Full Of Eels. */
     public static void showChildren(final DefaultMutableTreeNode node) {
-        tree.setEnabled(false);
+        Tree.getInstance().setEnabled(false);
         progressBar.setVisible(true);
         progressBar.setIndeterminate(true);
 
@@ -274,50 +273,9 @@ public class GitGUI {
             protected void done() {
                 progressBar.setIndeterminate(false);
                 progressBar.setVisible(false);
-                tree.setEnabled(true);
+                Tree.getInstance().setEnabled(true);
             }
         };
         worker.execute();
-    }
-}
-
-/** A TreeCellRenderer for a File. */
-class FileTreeCellRenderer extends DefaultTreeCellRenderer {
-
-    private FileSystemView fileSystemView;
-
-    private JLabel label;
-
-    FileTreeCellRenderer() {
-        label = new JLabel();
-        label.setOpaque(true);
-        fileSystemView = FileSystemView.getFileSystemView();
-    }
-
-    @Override
-    public Component getTreeCellRendererComponent(
-        JTree tree,
-        Object value,
-        boolean selected,
-        boolean expanded,
-        boolean leaf,
-        int row,
-        boolean hasFocus) {
-
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-        File file = (File)node.getUserObject();
-        label.setIcon(fileSystemView.getSystemIcon(file));
-        label.setText(fileSystemView.getSystemDisplayName(file));
-        label.setToolTipText(file.getPath());
-
-        if (selected) {
-            label.setBackground(backgroundSelectionColor);
-            label.setForeground(textSelectionColor);
-        } else {
-            label.setBackground(backgroundNonSelectionColor);
-            label.setForeground(textNonSelectionColor);
-        }
-
-        return label;
     }
 }
