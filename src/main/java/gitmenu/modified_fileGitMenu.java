@@ -1,4 +1,6 @@
-package gui;
+package gitmenu;
+
+import gui.GitGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class modified_fileGitMenu extends JPanel {//modified파일 패널
-    modified_fileGitMenu(){
+    public modified_fileGitMenu(){
         setPreferredSize(new Dimension(300, 150));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         JLabel titleLabel=new JLabel("MODIFIED");
