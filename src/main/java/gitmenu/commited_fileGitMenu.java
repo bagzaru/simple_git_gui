@@ -4,11 +4,15 @@ import gui.GitGUI;
 
 import javax.swing.*;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import file.SelectedFile;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import jgitmanager.*;
 
 public class commited_fileGitMenu extends JPanel{
@@ -41,7 +45,17 @@ class commit_untrack_button extends JButton{
         setText("COMMIT_UNTRACK");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                //gitRmCached(SelectedFile.getInstance().getFile());
+                
+                try {
+                    JGitManager.gitRmCached(SelectedFile.getInstance().getFile());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+               
                 GitGUI.gui.repaint();
             }
         });
@@ -56,7 +70,15 @@ class commit_delete_button extends JButton{
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 
-                //gitRm(SelectedFile.getInstance().getFile());
+                try {
+                    JGitManager.gitRm(SelectedFile.getInstance().getFile());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 GitGUI.gui.repaint();
             }
         });
@@ -69,11 +91,19 @@ class commit_rename_button extends JButton{
 
         setText("COMMIT_RENAME");
 
-        message_box newName=new message_box();
+        message_box new_Name=new message_box();
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                //String newName=newName.show_message_dialog();//->입력받은 새로운 이름
-                //gitMv(SelectedFile.getInstance().getFile(),newName);
+                String newName = new_Name.show_message_dialog();//->입력받은 새로운 이름
+                try {
+                    JGitManager.gitMv(SelectedFile.getInstance().getFile(),newName);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 GitGUI.gui.repaint();
             }
         });
