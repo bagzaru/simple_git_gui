@@ -42,6 +42,8 @@ import javax.swing.table.*;
 import javax.swing.tree.*;
 
 import file.FileTableModel;
+import file.GitRepoDirectory;
+import file.SelectedFile;;
 
 /**
  * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
@@ -144,21 +146,8 @@ public class GitGUI {
             //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
             JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
 
-            //switch(/*filestatus*/){//파일 위치에 따른 패널 생성
-                
-             //   case 0 :
-               // gitMenuPanel.add(new modified_fileGitMenu(),BorderLayout.CENTER);
-               // break;
+            gitMenuPanel.add(new GitFileMenu(),BorderLayout.CENTER);
 
-               // case 1 :
-               // gitMenuPanel.add(new staged_fileGitMenu(),BorderLayout.CENTER);
-               // break;
-
-               // default:
-               gitMenuPanel.add(new untracked_fileGitMenu(),BorderLayout.CENTER);
-               //break;
-
-        //}
             gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
             
@@ -270,5 +259,26 @@ public class GitGUI {
             }
         };
         worker.execute();
+    }
+}
+
+class GitFileMenu extends JPanel{
+
+    GitFileMenu(){
+        switch(SelectedFile.getInstance().getGitStatus()){                                      
+                
+            case 0 :
+            new modified_fileGitMenu();
+            break;
+
+            case 1 :
+            new staged_fileGitMenu();
+            break;
+
+            default:
+            new untracked_fileGitMenu();
+            break;
+
+         }
     }
 }
