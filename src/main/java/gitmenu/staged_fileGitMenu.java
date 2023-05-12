@@ -4,11 +4,16 @@ import gui.GitGUI;
 
 import javax.swing.*;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import file.SelectedFile;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import jgitmanager.*;
 
 public class staged_fileGitMenu extends JPanel {//staged파일 패널
     public staged_fileGitMenu(){
@@ -31,7 +36,15 @@ class staged_unstage_button extends JButton{
         setText("UNSTAGE");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                //gitRestoreStaged(SelectedFile.getInstance().getFile());
+                try {
+                    JGitManager.gitRestoreStaged(SelectedFile.getInstance().getFile());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 GitGUI.gui.repaint();
             }
         });

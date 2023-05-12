@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import jgitmanager.*;
+
+import file.SelectedFile;
 
 //패널 클래스
 public class untracked_fileGitMenu extends JPanel {//untracked파일 패널
@@ -30,7 +33,7 @@ class untracked_add_button extends JButton{
         setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                //gitAdd(SelectedFile.getInstance().getFile());
+                JGitManager.gitAdd(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });
