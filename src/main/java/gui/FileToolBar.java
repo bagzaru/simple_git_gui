@@ -17,7 +17,8 @@ import org.apache.commons.io.FileUtils;
 import file.SelectedFile;
 
 public class FileToolBar extends JToolBar {
-    SelectedFile selectedFile;
+    private SelectedFile selectedFile;
+    private Desktop desktop;
 
     /* File controls. */
     private JButton openFile;
@@ -33,6 +34,7 @@ public class FileToolBar extends JToolBar {
 
     FileToolBar() {
         selectedFile = SelectedFile.getInstance();
+        desktop = Desktop.getDesktop();
 
         setFloatable(false);
 
@@ -42,7 +44,7 @@ public class FileToolBar extends JToolBar {
         openFile.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae) {
                 try {
-                    GitGUI.desktop.open(selectedFile.getFile());
+                    desktop.open(selectedFile.getFile());
                 } catch(Throwable t) {
                     showThrowable(t);
                 }
@@ -52,7 +54,7 @@ public class FileToolBar extends JToolBar {
         add(openFile);
 
         // Check the actions are supported on this platform!
-        openFile.setEnabled(GitGUI.desktop.isSupported(Desktop.Action.OPEN));
+        openFile.setEnabled(desktop.isSupported(Desktop.Action.OPEN));
 
         newFile = new JButton("New");
         newFile.setMnemonic('n');

@@ -8,6 +8,7 @@ import gui.GitGUI;
 public class SelectedFile {
     private static SelectedFile instance = null;
     private File selectedFile;
+    private int gitStatus;
 
     SelectedFile() {
     }
@@ -25,6 +26,7 @@ public class SelectedFile {
 
     public void setFile(File file) {
         selectedFile = file;
+        //gitStatus = Git.gitCheckFileStatus(selectedFile, GitRepoDirectory.getInstance().getRepoDirectory());
 
         JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
         if (f!=null) {
@@ -34,5 +36,9 @@ public class SelectedFile {
                             GitGUI.fileSystemView.getSystemDisplayName(file));
         }
         GitGUI.gui.repaint();
+    }
+
+    public int getGitStatus() {
+        return gitStatus;
     }
 }

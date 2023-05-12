@@ -38,7 +38,8 @@ public class FileTableModel extends AbstractTableModel {
             case 3:
                 return file.lastModified();
             case 4:
-                return ""; //파일 상태(staged, tracked, untracked 등등을 호출하는 함수 들어가야함
+                return "";
+                //파일 상태(staged, tracked, untracked 등등을 호출하는 함수 들어가야함
             default:
                 System.err.println("Logic Error");
         }
@@ -77,5 +78,16 @@ public class FileTableModel extends AbstractTableModel {
     public void setFiles(File[] files) {
         this.files = files;
         fireTableDataChanged();
+    }
+
+    public String gitStatus() {
+        //int status = jgitmanager.gitCheckFileStatus(file, GitRepoDirectory.getInstance().getRepoDirectory());
+        /*
+        switch (status) {
+            
+        }
+        */
+
+        return "";
     }
 }

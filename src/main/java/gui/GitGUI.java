@@ -73,8 +73,7 @@ import file.FileTableModel;
 public class GitGUI {
     /** Title of the application */
     public static final String APP_TITLE = "Simple Git GUI Application";
-    /** Used to open/edit/print files. */
-    public static Desktop desktop;
+
     /** Provides nice icons and names for files. */
     public static FileSystemView fileSystemView;
 
@@ -133,7 +132,6 @@ public class GitGUI {
             gui.setBorder(new EmptyBorder(5,5,5,5));
 
             fileSystemView = FileSystemView.getFileSystemView();
-            desktop = Desktop.getDesktop();
 
             JPanel fileManage = new JPanel(new BorderLayout(3, 3));
             fileManage.add(new FileTable(), BorderLayout.CENTER);
