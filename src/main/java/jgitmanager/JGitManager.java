@@ -186,7 +186,7 @@ public class JGitManager {
             throw new IllegalArgumentException("Failed to get relative Exception");
         }
     }
-    
+
     
     /*
      * ------------------------------------------------------------------------------
