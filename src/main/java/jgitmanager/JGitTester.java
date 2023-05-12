@@ -3,8 +3,6 @@ package jgitmanager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 
-import jgitmanager.JGitManager.FileStatus;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
