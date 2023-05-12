@@ -4,10 +4,12 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 /** A TableModel to hold File[]. */
 public class FileTableModel extends AbstractTableModel {
@@ -88,26 +90,30 @@ public class FileTableModel extends AbstractTableModel {
         if(file.isDirectory())
             fileStatus = FileStatus.FOLDER;
         else {
-            fileStatus = JGitManager.gitCheckFileStatus(file);
-        }
+            try {
+                fileStatus = JGitManager.gitCheckFileStatus(file);
 
-        switch (fileStatus) {
-            case FOLDER:
-                return "";
-            case UNTRACKED:
-                return "Untracked";
-            case MODIFIED:
-                return "Modified";
-            case STAGED_MODIFIED:
-                return "Staged & Modified";
-            case DELETED:
-                return "Deleted";
-            case STAGED:
-                return "Staged";
-            case UNMODIFIED:
-                return "Unmodified(committed)";
-            default:
-                return "UNKNOWN FILE";
+                switch (fileStatus) {
+                    case FOLDER:
+                        return "";
+                    case UNTRACKED:
+                        return "Untracked";
+                    case MODIFIED:
+                        return "Modified";
+                    case STAGED_MODIFIED:
+                        return "Staged & Modified";
+                    case DELETED:
+                        return "Deleted";
+                    case STAGED:
+                        return "Staged";
+                    case UNMODIFIED:
+                        return "Unmodified(committed)";
+                    default:
+                        return "UNKNOWN FILE";
+                }
+            } catch(IOException | GitAPIException e) {
+            };
         }
+        return "UNKNOWN FILE";
     }
 }

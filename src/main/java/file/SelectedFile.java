@@ -2,10 +2,12 @@ package file;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 
 import gui.GitGUI;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class SelectedFile {
     private static SelectedFile instance = null;
@@ -32,7 +34,10 @@ public class SelectedFile {
         if(file.isDirectory())
             gitStatus = FileStatus.FOLDER;
         else {
-            gitStatus = JGitManager.gitCheckFileStatus(selectedFile);
+            try {
+                gitStatus = JGitManager.gitCheckFileStatus(file);
+            } catch(IOException | GitAPIException e) {
+            };
         }
 
         JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
