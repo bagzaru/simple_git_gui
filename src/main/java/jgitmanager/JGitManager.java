@@ -356,4 +356,21 @@ public class JGitManager {
                 return 0;
             }
     }
+
+    //file 또는 dir을 입력받아, 해당 repo를 관리하는 .git 파일의 절대경로를 반환합니다.
+    //반환값은 "...//.git"이 됩니다.
+    //해당 파일이 실제로 존재하지 않거나, 오류 발생 시 ""을 반환합니다.
+    public static String getRepositoryAbsolutePath(File file){
+        FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+        repositoryBuilder.setMustExist(true);
+        repositoryBuilder.findGitDir(file);
+
+        if (repositoryBuilder.getGitDir() == null||!file.exists()) {
+            // not managed by git
+            return "";
+        } else {
+            // managed by git
+            return repositoryBuilder.getGitDir().getAbsolutePath();
+        }
+    }
 }

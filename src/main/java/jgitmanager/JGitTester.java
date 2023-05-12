@@ -11,6 +11,7 @@ public class JGitTester {
     //test용 객체입니다.
     public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
     public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testPath2 = "C:\\oss_test";
     public static String testFile = testPath+"\\asdf.txt";
     public static String testFile2 = testPath+"\\k.txt";
 
@@ -18,7 +19,7 @@ public class JGitTester {
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");
         JGitTester tester = new JGitTester();
-        jGitManager = new JGitManager();
+        System.out.println(JGitManager.getRepositoryAbsolutePath(new File(testFile2)));
 //        try {
 //            String str = jGitManager.extractRepositoryRelativePath(new File(testFile), jGitManager.openRepositoryFromFile(new File(testPath)));
 //            System.out.println("result: "+str);
