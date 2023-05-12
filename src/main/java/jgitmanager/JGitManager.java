@@ -1,14 +1,19 @@
 package jgitmanager;
 
+import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.api.Status;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Set;
+import java.util.HashSet;
 
 //JGit의 기능을 직접 사용하여 Git init, add, ... 등으로 단순화하는 클래스입니다.
 //git의 특정 명령어를 직접 사용하려면 이 클래스를 사용합니다.
@@ -159,6 +164,175 @@ public class JGitManager {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Failed to get relative Exception");
         }
+    }
+    
+    
+    /*
+     * ------------------------------------------------------------------------------
+     * ------------------------------min-jp_part-------------------------------------
+     * ------------------------------------------------------------------------------
+     * */
+    
+    // gitAdd:
+    // staged area로 올림
+    // success: 1 / fail: 0
+    public int gitAdd(File fileToRestore, File dotGit) {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            //파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+            
+            // 파일 추가
+            AddCommand add = git.add();
+            add.addFilepattern(relativeFilePath).call();
+            
+            // Git 저장소 닫기
+            git.close();
+            
+            System.out.println("add success");
+
+            // add 성공
+            return 1;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
+    }
+    
+    // gitDoCommit:
+    // commit을 실행함
+    // success: 1 / fail: 0
+    public int gitDoCommit(File fileToRestore, File dotGit, String commitMessage) {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+
+            // 파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+
+            // commit 실행
+            CommitCommand commit = git.commit();
+            commit.setMessage(commitMessage).call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("commit success");
+
+            // commit 성공
+            return 1;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
+    }
+
+    // checkFileStatus:
+    // 파일의 상태 확인
+    // fail: 0 / Untracked: 1 / Modified: 2 / Staged & Modified: 3
+    // Deleted: 4 / Staged: 5 / Unmodified(Committed): 6
+    public int gitCheckFileStatus(File fileToCheck, File dotGit) {
+        try {
+            // Git 저장소 열기
+        	Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            // 파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToCheck, repository);
+            
+            // 상태 확인
+            Status status = git.status().addPath(relativeFilePath).call();
+            
+            int returnValue = 0;
+
+            // 파일의 상태 확인
+            if (status.getUntracked().contains(relativeFilePath)) {
+                System.out.println("Untracked file");
+                returnValue = 1;
+            } else if (status.getModified().contains(relativeFilePath)) {
+                if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+                    System.out.println("Staged & Modified file");
+                    returnValue = 3;
+                } else {
+                    System.out.println("Modified file");
+                    returnValue = 2;
+                }
+            } else if (status.getMissing().contains(relativeFilePath)) {
+                System.out.println("Deleted file");
+                returnValue = 4;
+            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+                System.out.println("Staged file");
+                returnValue = 5;
+            } else {
+                System.out.println("Unmodified file");
+                returnValue = 6;
+            }
+            
+            // Git 저장소 닫기
+            git.close();
+
+            return returnValue;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            // 예외 발생
+            return 0;
+        }
+    }
+
+    // gitStagedList:
+    // Staged된 파일 리스트
+    // fail: null / success : Set<String> 
+    public Set<String> gitStagedList(File dotGit) {
+        try {
+            // Git 저장소 열기
+        	Repository repository = openRepository(dotGit);
+            Git git = new Git(repository);
+            
+            // 상태 확인
+            Status status = git.status().call();
+            
+            // Staged File 리스트
+            Set<String> stagedAdded = status.getAdded();
+            Set<String> stagedChanged = status.getChanged();
+            Set<String> stagedFiles = new HashSet<>();
+            stagedFiles.addAll(stagedAdded);
+            stagedFiles.addAll(stagedChanged);
+
+            // Git 저장소 닫기
+            git.close();
+
+            return stagedFiles;
+        } catch (IOException | GitAPIException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // findGitRepository:
+    // 폴더의 상태를 확인
+    // managed by git: 1 / not managed by git: 0
+    public int findGitRepository(File folder) {
+        // Git 경로 찾기
+            FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+            repositoryBuilder.setMustExist(true);
+            repositoryBuilder.findGitDir(folder);
+
+            if (repositoryBuilder.getGitDir() != null) {
+                // managed by git
+                return 1;
+            } else {
+                // not managed by git
+                return 0;
+            }
     }
 
 }
