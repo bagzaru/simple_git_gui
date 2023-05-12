@@ -197,15 +197,15 @@ public class JGitManager {
     // gitAdd:
     // staged area로 올림
     // success: 1 / fail: 0
-    public int gitAdd(File fileToRestore) {
+    public int gitAdd(File fileToAdd) {
         try {
             // Git 저장소 열기
-            Repository repository = openRepositoryFromFile(fileToRestore);
+            Repository repository = openRepositoryFromFile(fileToAdd);
             Git git = new Git(repository);
             
             //파일 경로
             String relativeFilePath;
-            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+            relativeFilePath = extractRepositoryRelativePath(fileToAdd, repository);
             
             // 파일 추가
             AddCommand add = git.add();
@@ -228,15 +228,15 @@ public class JGitManager {
     // gitDoCommit:
     // commit을 실행함
     // success: 1 / fail: 0
-    public int gitDoCommit(File fileToRestore, String commitMessage) {
+    public int gitDoCommit(File dir, String commitMessage) {
         try {
             // Git 저장소 열기
-            Repository repository = openRepositoryFromFile(fileToRestore);
+            Repository repository = openRepositoryFromFile(dir);
             Git git = new Git(repository);
 
             // 파일 경로
             String relativeFilePath;
-            relativeFilePath = extractRepositoryRelativePath(fileToRestore, repository);
+            relativeFilePath = extractRepositoryRelativePath(dir, repository);
 
             // commit 실행
             CommitCommand commit = git.commit();
