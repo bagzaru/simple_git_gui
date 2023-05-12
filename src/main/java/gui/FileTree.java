@@ -5,9 +5,7 @@ import file.SelectedFile;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.io.File;
@@ -52,7 +50,7 @@ public class FileTree extends JScrollPane {
         tree = new JTree(GitGUI.treeModel);
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(treeSelectionListener);
-        tree.setCellRenderer(new FileTreeCellRenderer());
+        tree.setCellRenderer(new FileTreeRenderer());
         tree.expandRow(0);
         this.setViewportView(tree);
 
@@ -77,46 +75,5 @@ class Tree extends JTree {
             instance = new Tree();
         }
         return instance;
-    }
-}
-
-/** A TreeCellRenderer for a File. */
-class FileTreeCellRenderer extends DefaultTreeCellRenderer {
-
-    private FileSystemView fileSystemView;
-
-    private JLabel label;
-
-    public FileTreeCellRenderer() {
-        label = new JLabel();
-        label.setOpaque(true);
-        fileSystemView = FileSystemView.getFileSystemView();
-    }
-
-    @Override
-    public Component getTreeCellRendererComponent(
-            JTree tree,
-            Object value,
-            boolean selected,
-            boolean expanded,
-            boolean leaf,
-            int row,
-            boolean hasFocus) {
-
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-        File file = (File)node.getUserObject();
-        label.setIcon(fileSystemView.getSystemIcon(file));
-        label.setText(fileSystemView.getSystemDisplayName(file));
-        label.setToolTipText(file.getPath());
-
-        if (selected) {
-            label.setBackground(backgroundSelectionColor);
-            label.setForeground(textSelectionColor);
-        } else {
-            label.setBackground(backgroundNonSelectionColor);
-            label.setForeground(textNonSelectionColor);
-        }
-
-        return label;
     }
 }
