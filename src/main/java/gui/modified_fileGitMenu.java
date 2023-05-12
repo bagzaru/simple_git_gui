@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class modified_fileGitMenu extends JPanel {//modified파일 패널
     modified_fileGitMenu(){
@@ -26,6 +28,11 @@ class modified_add_button extends JButton{
 
     modified_add_button(){
         setText("ADD");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
 
@@ -33,5 +40,10 @@ class modified_undo_button extends JButton{
 
     modified_undo_button(){
         setText("UNDO");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }

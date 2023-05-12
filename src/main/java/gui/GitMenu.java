@@ -37,7 +37,12 @@ class commit_untrack_button extends JButton{
 
     commit_untrack_button(){
 
-        setText("UNTRACK");
+        setText("COMMIT_UNTRACK");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
 
@@ -45,7 +50,12 @@ class commit_delete_button extends JButton{
 
     commit_delete_button(){
 
-        setText("DELETE");
+        setText("COMMIT_DELETE");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
 
@@ -53,7 +63,12 @@ class commit_rename_button extends JButton{
 
     commit_rename_button(){
 
-        setText("RENAME");
+        setText("COMMIT_RENAME");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
 //commit button
@@ -66,7 +81,10 @@ class commit_button extends JButton{
 
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                commit_message_box.showInputDialog("COMMIT MESSAGE를 입력하세요");
+                //String commitMessage=commit_message_box.show_commit_message_dialog();->입력받은 커밋 스트링
+                //gitDoCommit(파일,깃파일,commitMessage);->커밋 함수
+                commit_message_box.show_commit_message_dialog();
+                GitGUI.gui.repaint();
             }
         });
     }
@@ -76,6 +94,11 @@ class init_button extends JButton{
 
     init_button(){
         setText("INIT");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
 
@@ -84,5 +107,9 @@ class commit_message_box extends JOptionPane{
 
     commit_message_box(){
 
+    }
+
+    String show_commit_message_dialog(){
+        return showInputDialog("COMMIT MESSAGE를 입력하세요");
     }
 }
