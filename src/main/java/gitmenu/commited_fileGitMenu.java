@@ -9,6 +9,7 @@ import file.SelectedFile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import jgitmanager.*;
 
 public class commited_fileGitMenu extends JPanel{
     public commited_fileGitMenu(){
@@ -40,6 +41,7 @@ class commit_untrack_button extends JButton{
         setText("COMMIT_UNTRACK");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //gitRmCached(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });

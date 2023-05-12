@@ -125,7 +125,7 @@ public class JGitManager {
     //git rm --cached:
     // git rm --cached <filename>을 실행합니다.
     // 삭제 사항을 stage합니다.
-    public void gitRmCached(File fileToRemove) throws IOException, GitAPIException {
+    public static void gitRmCached(File fileToRemove) throws IOException, GitAPIException {
         try (Repository repository = openRepositoryFromFile(fileToRemove)) {
             //git rm --cached을 실행하기 위한 repository부터의 상대경로를 구합니다.
             String relativeFilePath;
