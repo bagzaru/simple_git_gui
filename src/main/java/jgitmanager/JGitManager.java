@@ -119,6 +119,26 @@ public class JGitManager {
                 git.rm().addFilepattern(relativeFilePath).call();
             }
         }
+    }
+
+    //git rm --cached:
+    // git rm --cached <filename>을 실행합니다.
+    // 삭제 사항을 stage합니다.
+    public void gitRmCached(File fileToRemove, File dotGit) throws IOException, GitAPIException {
+        try (Repository repository = openRepository(dotGit)) {
+            //git rm --cached을 실행하기 위한 repository부터의 상대경로를 구합니다.
+            String relativeFilePath;
+            try {
+                relativeFilePath = extractRepositoryRelativePath(fileToRemove, repository);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Failed to 'git mv: invalid file path");
+            }
+
+            // git rm --cached
+            try (Git git = new Git(repository)){
+                git.rm().setCached(true).addFilepattern(relativeFilePath).call();
+            }
+        }
 
     }
 
@@ -258,11 +278,11 @@ public class JGitManager {
 
     // enum
     // 리턴을 위한 enum값
-    enum FileStatus{ FAIL, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }
+    enum FileStatus{ FAIL, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }    
 
     // checkFileStatus:
     // 파일의 상태 확인
-    public int gitCheckFileStatus(File fileToCheck, File dotGit) {
+    public FileStatus gitCheckFileStatus(File fileToCheck, File dotGit) {
         try {
             // Git 저장소 열기
         	Repository repository = openRepository(dotGit);
@@ -275,7 +295,7 @@ public class JGitManager {
             // 상태 확인
             Status status = git.status().addPath(relativeFilePath).call();
             
-            int returnValue = FileStatus.FAIL;
+            FileStatus returnValue;
 
             // 파일의 상태 확인
             if (status.getUntracked().contains(relativeFilePath)) {

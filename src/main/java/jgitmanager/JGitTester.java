@@ -3,33 +3,36 @@ package jgitmanager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 
+import jgitmanager.JGitManager.FileStatus;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
 public class JGitTester {
     //test용 객체입니다.
-    public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
+    //public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
     //public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
     //public static String testFile = testPath+"\\src\\src\\a.txt";
-    public static String testPath = "C:\\oss_test\\a\\b";
-    public static String testFile = testPath+"\\k.txt";
+    //public static String testPath = "C:\\oss_test\\a\\b";
+    //public static String testFile = testPath+"\\k.txt";
 // >>>>>>> Git_min-jp_part
-//    public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
-//    public static String testPath = "D:\\open_prj1\\git_test";
-//    public static String testFile = testPath+"\\b.txt";
+      public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
+      public static String testPath = "D:\\open_prj1\\git_test";
+      public static String testFile = testPath+"\\b.txt";
     static JGitManager jGitManager;
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");
         JGitTester tester = new JGitTester();
         jGitManager = new JGitManager();
         //tester.gitInitTest(jGitManager);
-        tester.gitRepoOpenTest();
+        //tester.gitRepoOpenTest();
         //tester.gitRmTest(jGitManager);
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
         //tester.gitMvTest(jGitManager);
         //tester.gitTestMinJp(jGitManager);
+        tester.gitRmCachedTest(jGitManager);
     }
 
     public void gitRepoOpenTest(){
@@ -105,6 +108,18 @@ public class JGitTester {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
+
+    public void gitRmCachedTest(JGitManager jGitManager) {
+        try {
+            //git restore --staged
+            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
+            jGitManager.gitRmCached(new File(testFile), new File(testPathDotGit));
+
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.toString());
+        }
+    }
+
     /*
      * ------------------------------------------------------------------------------
      * ------------------------------min-jp_part-------------------------------------
@@ -123,9 +138,9 @@ public class JGitTester {
         //System.out.println("Staged file: " + stagedFiles);
 
         // gitCheckFileStatus
-        int statusNum;
+        FileStatus statusNum;
         statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
-        System.out.println(statusNum);
+        System.out.println("hi "+statusNum);
 
         // findGitRepository
         //int isGit;
