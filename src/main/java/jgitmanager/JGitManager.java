@@ -256,10 +256,12 @@ public class JGitManager {
         }
     }
 
+    // enum
+    // 리턴을 위한 enum값
+    enum FileStatus{ FAIL, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }
+
     // checkFileStatus:
     // 파일의 상태 확인
-    // fail: 0 / Untracked: 1 / Modified: 2 / Staged & Modified: 3
-    // Deleted: 4 / Staged: 5 / Unmodified(Committed): 6
     public int gitCheckFileStatus(File fileToCheck, File dotGit) {
         try {
             // Git 저장소 열기
@@ -273,29 +275,29 @@ public class JGitManager {
             // 상태 확인
             Status status = git.status().addPath(relativeFilePath).call();
             
-            int returnValue = 0;
+            int returnValue = FileStatus.FAIL;
 
             // 파일의 상태 확인
             if (status.getUntracked().contains(relativeFilePath)) {
                 System.out.println("Untracked file");
-                returnValue = 1;
+                returnValue = FileStatus.UNTRACKED;
             } else if (status.getModified().contains(relativeFilePath)) {
                 if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
                     System.out.println("Staged & Modified file");
-                    returnValue = 3;
+                    returnValue = FileStatus.STAGED_MODIFIED;
                 } else {
                     System.out.println("Modified file");
-                    returnValue = 2;
+                    returnValue = FileStatus.MODIFIED;
                 }
             } else if (status.getMissing().contains(relativeFilePath)) {
                 System.out.println("Deleted file");
-                returnValue = 4;
+                returnValue = FileStatus.DELETED;
             } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
                 System.out.println("Staged file");
-                returnValue = 5;
+                returnValue = FileStatus.STAGED;
             } else {
                 System.out.println("Unmodified file");
-                returnValue = 6;
+                returnValue = FileStatus.UNMODIFIED;
             }
             
             // Git 저장소 닫기
@@ -305,7 +307,7 @@ public class JGitManager {
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
             // 예외 발생
-            return 0;
+            return FileStatus.FAIL;
         }
     }
 
@@ -355,7 +357,5 @@ public class JGitManager {
                 return 0;
             }
     }
-
-
 
 }
