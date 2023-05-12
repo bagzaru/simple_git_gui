@@ -1,6 +1,7 @@
 package jgitmanager;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,23 +10,45 @@ import java.util.Set;
 public class JGitTester {
     //test용 객체입니다.
     public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
-    public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
-    public static String testFile = testPath+"\\src\\src\\a.txt";
+    //public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
+    //public static String testFile = testPath+"\\src\\src\\a.txt";
+    public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testFile = testPath+"\\k.txt";
 // >>>>>>> Git_min-jp_part
 //    public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
 //    public static String testPath = "D:\\open_prj1\\git_test";
 //    public static String testFile = testPath+"\\b.txt";
-
+    static JGitManager jGitManager;
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");
         JGitTester tester = new JGitTester();
-        JGitManager jGitManager = new JGitManager();
+        jGitManager = new JGitManager();
         //tester.gitInitTest(jGitManager);
-        tester.gitRmTest(jGitManager);
+        tester.gitRepoOpenTest();
+        //tester.gitRmTest(jGitManager);
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
         //tester.gitMvTest(jGitManager);
         //tester.gitTestMinJp(jGitManager);
+    }
+
+    public void gitRepoOpenTest(){
+        try{
+            try(Repository repo = jGitManager.openRepositoryFromFile(new File(testPath))){
+                if(repo==null){
+                    System.out.println("repo.dir: null");
+                }
+                else{
+                    System.out.println("repo.dir: "+repo.getDirectory().getAbsolutePath());
+                }
+            }
+
+        }catch(IOException e){
+            System.out.println("왜!!!!!");
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
     }
 
     public void gitInitTest(JGitManager jGitManager) {

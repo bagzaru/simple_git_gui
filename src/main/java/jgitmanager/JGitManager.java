@@ -139,6 +139,27 @@ public class JGitManager {
         }
     }
 
+    //특정 파일을 관리하는 repository를 open합니다.
+    public Repository openRepositoryFromFile(File file) throws IOException{
+        // now open the resulting repository with a FileRepositoryBuilder
+        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+        builder.findGitDir(file);
+        if(builder.getGitDir()==null){
+            return null;
+        }
+        try (Repository repository =
+                     builder.setGitDir(builder.getGitDir())
+                             .readEnvironment()
+                             .findGitDir()
+                             .build() // scan up the file system tree
+                ) {
+            // the Ref holds an ObjectId for any type of object (tree, commit, blob, tree)
+            Ref head = repository.exactRef("refs/heads/master");
+
+            return repository;
+        }
+    }
+
     //createTempPath:
     // 테스트용 임시 경로를 생성합니다.
     // C:\Users\%AppData%\Temp\에 생성됩니다.
@@ -334,5 +355,7 @@ public class JGitManager {
                 return 0;
             }
     }
+
+
 
 }
