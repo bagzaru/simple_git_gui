@@ -96,6 +96,7 @@ public class JGitManager {
             try (Git git = new Git(repository)){
                 git.add().addFilepattern(relativeNewFilePath).call();
                 git.rm().addFilepattern(relativeOldFilePath).call();
+
             }
         }
 
