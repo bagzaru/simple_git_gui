@@ -16,7 +16,7 @@ public class FileTree extends JScrollPane {
     JTree tree;
     SelectedFile selectedFile;
 
-    FileTree() {
+    public FileTree() {
         tree = Tree.getInstance();
         selectedFile = SelectedFile.getInstance();
 
@@ -68,7 +68,7 @@ public class FileTree extends JScrollPane {
 class Tree extends JTree {
     private static Tree instance = null;
 
-    Tree() {
+    public Tree() {
         super();
     }
 

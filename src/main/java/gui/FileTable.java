@@ -12,7 +12,7 @@ public class FileTable extends JScrollPane {
     Table table;
     SelectedFile selectedFile;
 
-    FileTable() {
+    public FileTable() {
         table = Table.getInstance();
         selectedFile = SelectedFile.getInstance();
 
@@ -38,7 +38,7 @@ public class FileTable extends JScrollPane {
 class Table extends JTable {
     private static Table instance = null;
 
-    Table() {
+    public Table() {
         super();
     }
 

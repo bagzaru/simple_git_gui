@@ -32,7 +32,7 @@ public class FileToolBar extends JToolBar {
     private JRadioButton newTypeFile;
     private JTextField name;
 
-    FileToolBar() {
+    public FileToolBar() {
         selectedFile = SelectedFile.getInstance();
         desktop = Desktop.getDesktop();
 
