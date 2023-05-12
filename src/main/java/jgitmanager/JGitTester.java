@@ -54,11 +54,11 @@ public class JGitTester {
         }
     }
 
-    public void gitInitTest(JGitManager jGitManager) {
+    public void gitInitTest() {
         File tempPath;
         try {
             tempPath = jGitManager.createTempPath();
-            jGitManager.gitInit(tempPath);
+            jGitManager.gitInit(new File(testPath));
         } catch (IOException e) {
             System.out.println("Cannot create temp path: " + e.toString());
             return;
@@ -67,42 +67,42 @@ public class JGitTester {
         }
     }
 
-    public void gitRestoreTest(JGitManager jGitManager){
+    public void gitRestoreTest(){
         try {
             //jGitManager.gitRestore(new File(testPath+"\\test.txt"),new File(testPathDotGit));
-            jGitManager.gitRestore(new File(testFile),new File(testPathDotGit));
+            jGitManager.gitRestore(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitRestoreStagedTest(JGitManager jGitManager){
+    public void gitRestoreStagedTest(){
         try {
             //git restore --staged
-            jGitManager.gitRestoreStaged(new File(testFile),new File(testPathDotGit));
+            jGitManager.gitRestoreStaged(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitMvTest(JGitManager jGitManager){
-        try {
-            //git restore --staged
-            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitMv(new File(testFile),"b.txt",new File(testPathDotGit));
-
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.toString());
-        }
-    }
-
-    public void gitRmTest(JGitManager jGitManager) {
+    public void gitMvTest(){
         try {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitRm(new File(testFile), new File(testPathDotGit));
+            jGitManager.gitMv(new File(testFile),"b.txt");
+
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.toString());
+        }
+    }
+
+    public void gitRmTest() {
+        try {
+            //git restore --staged
+            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
+            jGitManager.gitRm(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
@@ -113,7 +113,7 @@ public class JGitTester {
         try {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitRmCached(new File(testFile), new File(testPathDotGit));
+            jGitManager.gitRmCached(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
@@ -126,7 +126,7 @@ public class JGitTester {
      * ------------------------------------------------------------------------------
      * */
 
-    public void gitTestMinJp(JGitManager jGitManager) {
+    public void gitTestMinJp() {
         // gitAdd
         //jGitManager.gitAdd(new File(testFile),new File(testPathDotGit));
 
@@ -138,9 +138,9 @@ public class JGitTester {
         //System.out.println("Staged file: " + stagedFiles);
 
         // gitCheckFileStatus
-        FileStatus statusNum;
-        statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
-        System.out.println("hi "+statusNum);
+        //FileStatus statusNum;
+        //statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
+        //System.out.println(statusNum);
 
         // findGitRepository
         //int isGit;
