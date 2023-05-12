@@ -3,8 +3,6 @@ package jgitmanager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 
-import jgitmanager.JGitManager.FileStatus;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -31,8 +29,8 @@ public class JGitTester {
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
         //tester.gitMvTest(jGitManager);
-        //tester.gitTestMinJp(jGitManager);
-        tester.gitRmCachedTest(jGitManager);
+        tester.gitTestMinJp(jGitManager);
+        //tester.gitRmCachedTest(jGitManager);
     }
 
     public void gitRepoOpenTest(){
@@ -126,7 +124,7 @@ public class JGitTester {
      * ------------------------------------------------------------------------------
      * */
 
-    public void gitTestMinJp() {
+    public void gitTestMinJp(JGitManager jGitManager) {
         // gitAdd
         //jGitManager.gitAdd(new File(testFile),new File(testPathDotGit));
 
@@ -138,9 +136,14 @@ public class JGitTester {
         //System.out.println("Staged file: " + stagedFiles);
 
         // gitCheckFileStatus
-        //FileStatus statusNum;
-        //statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
-        //System.out.println(statusNum);
+    	try {
+    		FileStatus statusNum;
+            statusNum = jGitManager.gitCheckFileStatus(new File(testFile));
+            System.out.println(statusNum);
+    	} catch (Exception e) {
+    		System.out.println("An error ocurred: " + e.toString());
+    	}
+        
 
         // findGitRepository
         //int isGit;
