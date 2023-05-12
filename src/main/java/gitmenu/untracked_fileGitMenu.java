@@ -30,6 +30,7 @@ class untracked_add_button extends JButton{
         setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //gitAdd(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });
