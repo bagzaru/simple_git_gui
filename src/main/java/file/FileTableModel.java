@@ -6,6 +6,9 @@ import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.util.Date;
 
+import jgitmanager.FileStatus;
+import jgitmanager.JGitManager;
+
 /** A TableModel to hold File[]. */
 public class FileTableModel extends AbstractTableModel {
     private File[] files;
@@ -80,31 +83,31 @@ public class FileTableModel extends AbstractTableModel {
     }
 
     public String gitStatus(File file) {
-        int status;
+        FileStatus fileStatus;
+
         if(file.isDirectory())
-            status = -1;
+            fileStatus = FileStatus.FOLDER;
         else {
-            //status = jgitmanager.gitCheckFileStatus(file, GitRepoDirectory.getInstance().getRepoDirectory());
-            status = 1; //임시
+            fileStatus = JGitManager.gitCheckFileStatus(file);
         }
 
-        switch (status) {
-            case 0:
-                return "Fail";
-            case 1:
+        switch (fileStatus) {
+            case FOLDER:
+                return "";
+            case UNTRACKED:
                 return "Untracked";
-            case 2:
+            case MODIFIED:
                 return "Modified";
-            case 3:
+            case STAGED_MODIFIED:
                 return "Staged & Modified";
-            case 4:
+            case DELETED:
                 return "Deleted";
-            case 5:
+            case STAGED:
                 return "Staged";
-            case 6:
+            case UNMODIFIED:
                 return "Unmodified(committed)";
             default:
-                return "";
+                return "UNKNOWN FILE";
         }
     }
 }
