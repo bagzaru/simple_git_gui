@@ -26,9 +26,9 @@ public class JGitManager {
 
     //gitRestore:
     // modified 상태인 커밋을 가장 최근 상태로 되돌립니다.
-    public void gitRestore(File fileToRestore, File dotGit) throws IOException, GitAPIException {
+    public void gitRestore(File fileToRestore) throws IOException, GitAPIException {
         //JGit doesn't have git restore method. So we used 'git checkout <filename>', ref to our OSS class Lecture5-part3
-        try (Repository repository = openRepository(dotGit)) {
+        try (Repository repository = openRepositoryFromFile(fileToRestore)) {
             //git checkout <filename>의 filename은 상대경로이므로, 상대 경로를 추출합니다.
             String relativeFilePath;
             try {
@@ -50,9 +50,9 @@ public class JGitManager {
     //fileToRestore
     //ref: https://github.com/centic9/jgit-cookbook/blob/master/src/main/java/org/dstadler/jgit/porcelain/RevertChanges.java
     //ref: https://www.tabnine.com/code/java/methods/org.eclipse.jgit.api.Git/reset
-    public void gitRestoreStaged(File fileToRestore, File dotGit) throws IOException, GitAPIException {
+    public void gitRestoreStaged(File fileToRestore) throws IOException, GitAPIException {
         //JGit doesn't have git restore method. So we used 'git reset HEAD <filename>', ref to our OSS class Lecture5-part3
-        try (Repository repository = openRepository(dotGit)) {
+        try (Repository repository = openRepositoryFromFile(fileToRestore)) {
             //git reset HEAD <filename>의 filename은 상대경로이므로, 상대 경로를 추출합니다.
             String relativeFilePath;
             try {
@@ -71,11 +71,11 @@ public class JGitManager {
     //git mv:
     // git mv A B를 실행합니다.
     // 이름을 변경할 때 사용할 수 있습니다.
-    public void gitMv(File fileToRename, String newName, File dotGit) throws IOException, GitAPIException {
+    public void gitMv(File fileToRename, String newName) throws IOException, GitAPIException {
         //jgit api에서는 git mv를 지원하지 않습니다. 따라서 mv, git add, git rm으로 대체합니다.
         //git mv <oldname> <newname>은, mv oldname newname, git add newname, git rm oldname과 같습니다.
         //  source: https://stackoverflow.com/questions/1094269/whats-the-purpose-of-git-mv
-        try (Repository repository = openRepository(dotGit)) {
+        try (Repository repository = openRepositoryFromFile(fileToRename)) {
             //mv <oldname> <newname>을 실행합니다.
             //JAVA File의 파일명 변경을 수행합니다.
             File newFile = new File(fileToRename.getParent() + "\\" + newName);
@@ -104,8 +104,8 @@ public class JGitManager {
     //git rm:
     // git rm <filename>을 실행합니다.
     //파일 삭제 및 삭제 사항을 stage합니다.
-    public void gitRm(File fileToRemove, File dotGit) throws IOException, GitAPIException {
-        try (Repository repository = openRepository(dotGit)) {
+    public void gitRm(File fileToRemove) throws IOException, GitAPIException {
+        try (Repository repository = openRepositoryFromFile(fileToRemove)) {
             //git rm을 실행하기 위한 repository부터의 상대경로를 구합니다.
             String relativeFilePath;
             try {
@@ -125,19 +125,19 @@ public class JGitManager {
     //openRepository:
     // 현재 열려있는 git repo를 가져옵니다.
     // .git까지의 경로를 가지는 file을 받아옵니다.
-    public Repository openRepository(File dotGit) throws IOException {
-        // now open the resulting repository with a FileRepositoryBuilder
-        FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        try (Repository repository = builder.setGitDir(dotGit)
-                .readEnvironment() // scan environment GIT_* variables
-                .findGitDir() // scan up the file system tree
-                .build()) {
-            // the Ref holds an ObjectId for any type of object (tree, commit, blob, tree)
-            Ref head = repository.exactRef("refs/heads/master");
-
-            return repository;
-        }
-    }
+//    public Repository openRepository(File dotGit) throws IOException {
+//        // now open the resulting repository with a FileRepositoryBuilder
+//        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+//        try (Repository repository = builder.setGitDir(dotGit)
+//                .readEnvironment() // scan environment GIT_* variables
+//                .findGitDir() // scan up the file system tree
+//                .build()) {
+//            // the Ref holds an ObjectId for any type of object (tree, commit, blob, tree)
+//            Ref head = repository.exactRef("refs/heads/master");
+//
+//            return repository;
+//        }
+//    }
 
     //특정 파일을 관리하는 repository를 open합니다.
     public Repository openRepositoryFromFile(File file) throws IOException{
@@ -197,10 +197,10 @@ public class JGitManager {
     // gitAdd:
     // staged area로 올림
     // success: 1 / fail: 0
-    public int gitAdd(File fileToRestore, File dotGit) {
+    public int gitAdd(File fileToRestore) {
         try {
             // Git 저장소 열기
-            Repository repository = openRepository(dotGit);
+            Repository repository = openRepositoryFromFile(fileToRestore);
             Git git = new Git(repository);
             
             //파일 경로
@@ -228,10 +228,10 @@ public class JGitManager {
     // gitDoCommit:
     // commit을 실행함
     // success: 1 / fail: 0
-    public int gitDoCommit(File fileToRestore, File dotGit, String commitMessage) {
+    public int gitDoCommit(File fileToRestore, String commitMessage) {
         try {
             // Git 저장소 열기
-            Repository repository = openRepository(dotGit);
+            Repository repository = openRepositoryFromFile(fileToRestore);
             Git git = new Git(repository);
 
             // 파일 경로
@@ -260,10 +260,10 @@ public class JGitManager {
     // 파일의 상태 확인
     // fail: 0 / Untracked: 1 / Modified: 2 / Staged & Modified: 3
     // Deleted: 4 / Staged: 5 / Unmodified(Committed): 6
-    public int gitCheckFileStatus(File fileToCheck, File dotGit) {
+    public int gitCheckFileStatus(File fileToCheck) {
         try {
             // Git 저장소 열기
-        	Repository repository = openRepository(dotGit);
+        	Repository repository = openRepositoryFromFile(fileToCheck);
             Git git = new Git(repository);
             
             // 파일 경로
@@ -312,10 +312,10 @@ public class JGitManager {
     // gitStagedList:
     // Staged된 파일 리스트
     // fail: null / success : Set<String> 
-    public Set<String> gitStagedList(File dotGit) {
+    public Set<String> gitStagedList(File dir) {
         try {
             // Git 저장소 열기
-        	Repository repository = openRepository(dotGit);
+        	Repository repository = openRepositoryFromFile(dir);
             Git git = new Git(repository);
             
             // 상태 확인

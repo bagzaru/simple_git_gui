@@ -10,19 +10,16 @@ import java.util.Set;
 public class JGitTester {
     //test용 객체입니다.
     public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
-    //public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
-    //public static String testFile = testPath+"\\src\\src\\a.txt";
-// >>>>>>> Git_min-jp_part
-//    public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
-//    public static String testPath = "D:\\open_prj1\\git_test";
-//    public static String testFile = testPath+"\\b.txt";
+    public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testFile = testPath+"\\k.txt";
+
     static JGitManager jGitManager;
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");
         JGitTester tester = new JGitTester();
         jGitManager = new JGitManager();
-        //tester.gitInitTest(jGitManager);
-        tester.gitRepoOpenTest();
+        tester.gitInitTest();
+        //tester.gitRepoOpenTest();
         //tester.gitRmTest(jGitManager);
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
@@ -30,8 +27,6 @@ public class JGitTester {
         //tester.gitTestMinJp(jGitManager);
     }
 
-    public static String testPath = "C:\\oss_test\\a\\b";
-    public static String testFile = testPath+"\\k.txt";
     public void gitRepoOpenTest(){
         try{
             try(Repository repo = jGitManager.openRepositoryFromFile(new File(testPath))){
@@ -51,7 +46,7 @@ public class JGitTester {
         }
     }
 
-    public void gitInitTest(JGitManager jGitManager) {
+    public void gitInitTest() {
         File tempPath;
         try {
             tempPath = jGitManager.createTempPath();
@@ -64,42 +59,42 @@ public class JGitTester {
         }
     }
 
-    public void gitRestoreTest(JGitManager jGitManager){
+    public void gitRestoreTest(){
         try {
             //jGitManager.gitRestore(new File(testPath+"\\test.txt"),new File(testPathDotGit));
-            jGitManager.gitRestore(new File(testFile),new File(testPathDotGit));
+            jGitManager.gitRestore(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitRestoreStagedTest(JGitManager jGitManager){
+    public void gitRestoreStagedTest(){
         try {
             //git restore --staged
-            jGitManager.gitRestoreStaged(new File(testFile),new File(testPathDotGit));
+            jGitManager.gitRestoreStaged(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitMvTest(JGitManager jGitManager){
-        try {
-            //git restore --staged
-            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitMv(new File(testFile),"b.txt",new File(testPathDotGit));
-
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.toString());
-        }
-    }
-
-    public void gitRmTest(JGitManager jGitManager) {
+    public void gitMvTest(){
         try {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitRm(new File(testFile), new File(testPathDotGit));
+            jGitManager.gitMv(new File(testFile),"b.txt");
+
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.toString());
+        }
+    }
+
+    public void gitRmTest() {
+        try {
+            //git restore --staged
+            //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
+            jGitManager.gitRm(new File(testFile));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
@@ -111,7 +106,7 @@ public class JGitTester {
      * ------------------------------------------------------------------------------
      * */
 
-    public void gitTestMinJp(JGitManager jGitManager) {
+    public void gitTestMinJp() {
         // gitAdd
         //jGitManager.gitAdd(new File(testFile),new File(testPathDotGit));
 
@@ -124,7 +119,7 @@ public class JGitTester {
 
         // gitCheckFileStatus
         int statusNum;
-        statusNum = jGitManager.gitCheckFileStatus(new File(testFile),new File(testPathDotGit));
+        statusNum = jGitManager.gitCheckFileStatus(new File(testFile));
         System.out.println(statusNum);
 
         // findGitRepository
