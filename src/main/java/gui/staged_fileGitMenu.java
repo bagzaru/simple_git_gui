@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class staged_fileGitMenu extends JPanel {//staged파일 패널
     staged_fileGitMenu(){
@@ -22,5 +24,10 @@ class staged_unstage_button extends JButton{
 
     staged_unstage_button(){
         setText("UNSTAGE");
+        addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                GitGUI.gui.repaint();
+            }
+        });
     }
 }
