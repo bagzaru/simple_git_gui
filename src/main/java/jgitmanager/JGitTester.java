@@ -12,8 +12,6 @@ public class JGitTester {
     public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
     //public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
     //public static String testFile = testPath+"\\src\\src\\a.txt";
-    public static String testPath = "C:\\oss_test\\a\\b";
-    public static String testFile = testPath+"\\k.txt";
 // >>>>>>> Git_min-jp_part
 //    public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
 //    public static String testPath = "D:\\open_prj1\\git_test";
@@ -32,6 +30,8 @@ public class JGitTester {
         //tester.gitTestMinJp(jGitManager);
     }
 
+    public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testFile = testPath+"\\k.txt";
     public void gitRepoOpenTest(){
         try{
             try(Repository repo = jGitManager.openRepositoryFromFile(new File(testPath))){
