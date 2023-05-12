@@ -272,7 +272,7 @@ public class JGitManager {
 
     // enum
     // 리턴을 위한 enum값
-    enum FileStatus{ FAIL, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }    
+    enum FileStatus{ FOLDER, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }    
 
     // checkFileStatus:
     // 파일의 상태 확인
