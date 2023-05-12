@@ -26,10 +26,6 @@ public class JGitTester {
 //        }catch(Exception e){System.out.println(e.toString());}
         //tester.gitInitTest();
         //tester.gitRepoOpenTest();
-        try{
-            int a = jGitManager.gitCheckFileStatus(new File(testFile));
-            System.out.println("status: "+a);
-        }catch(Exception e){System.out.println(e.toString());}
         //tester.gitRmTest();
         //tester.gitRestoreStagedTest(jGitManager);
         //tester.gitRestoreTest(jGitManager);
