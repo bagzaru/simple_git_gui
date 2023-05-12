@@ -31,11 +31,17 @@ public class SelectedFile {
     public void setFile(File file) {
         selectedFile = file;
 
-        if(file.isDirectory())
+        if(file.isDirectory()) {
             gitStatus = FileStatus.FOLDER;
+        }
         else {
             try {
-                gitStatus = JGitManager.gitCheckFileStatus(file);
+                if(JGitManager.findGitRepository(file) == 1) {
+                    gitStatus = JGitManager.gitCheckFileStatus(file);
+                }
+                else {
+                    gitStatus = FileStatus.UNTRACKED;
+                }
             } catch(IOException | GitAPIException e) {
             };
         }

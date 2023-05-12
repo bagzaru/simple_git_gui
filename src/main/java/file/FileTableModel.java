@@ -91,7 +91,12 @@ public class FileTableModel extends AbstractTableModel {
             fileStatus = FileStatus.FOLDER;
         else {
             try {
-                fileStatus = JGitManager.gitCheckFileStatus(file);
+                if(JGitManager.findGitRepository(file) == 1) {
+                    fileStatus = JGitManager.gitCheckFileStatus(file);
+                }
+                else {
+                    fileStatus = FileStatus.UNTRACKED;
+                }
 
                 switch (fileStatus) {
                     case FOLDER:
