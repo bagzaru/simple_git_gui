@@ -3,6 +3,9 @@ package gitmenu;
 import gui.GitGUI;
 
 import javax.swing.*;
+
+import file.SelectedFile;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +35,7 @@ class modified_add_button extends JButton{
         setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //gitAdd(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });
@@ -44,6 +48,7 @@ class modified_undo_button extends JButton{
         setText("UNDO");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //gitRestore(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });

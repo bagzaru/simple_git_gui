@@ -3,6 +3,9 @@ package gitmenu;
 import gui.GitGUI;
 
 import javax.swing.*;
+
+import file.SelectedFile;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +31,7 @@ class staged_unstage_button extends JButton{
         setText("UNSTAGE");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                //gitRestoreStaged(SelectedFile.getInstance().getFile());
                 GitGUI.gui.repaint();
             }
         });
