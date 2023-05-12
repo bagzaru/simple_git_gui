@@ -303,7 +303,7 @@ public class JGitManager {
                     System.out.println("Modified file");
                     returnValue = FileStatus.MODIFIED;
                 }
-            } else if (status.getMissing().contains(relativeFilePath)) {
+            } else if (status.getMissing().contains(relativeFilePath) || status.getRemoved().contains(relativeFilePath)) {
                 System.out.println("Deleted file");
                 returnValue = FileStatus.DELETED;
             } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
