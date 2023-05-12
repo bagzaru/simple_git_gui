@@ -38,8 +38,7 @@ public class FileTableModel extends AbstractTableModel {
             case 3:
                 return file.lastModified();
             case 4:
-                return "";
-                //파일 상태(staged, tracked, untracked 등등을 호출하는 함수 들어가야함
+                return gitStatus(file);
             default:
                 System.err.println("Logic Error");
         }
@@ -80,14 +79,32 @@ public class FileTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public String gitStatus() {
-        //int status = jgitmanager.gitCheckFileStatus(file, GitRepoDirectory.getInstance().getRepoDirectory());
-        /*
-        switch (status) {
-            
+    public String gitStatus(File file) {
+        int status;
+        if(file.isDirectory())
+            status = -1;
+        else {
+            //status = jgitmanager.gitCheckFileStatus(file, GitRepoDirectory.getInstance().getRepoDirectory());
+            status = 1; //임시
         }
-        */
 
-        return "";
+        switch (status) {
+            case 0:
+                return "Fail";
+            case 1:
+                return "Untracked";
+            case 2:
+                return "Modified";
+            case 3:
+                return "Staged & Modified";
+            case 4:
+                return "Deleted";
+            case 5:
+                return "Staged";
+            case 6:
+                return "Unmodified(committed)";
+            default:
+                return "";
+        }
     }
 }

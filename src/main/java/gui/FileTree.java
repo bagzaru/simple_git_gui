@@ -87,7 +87,7 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private JLabel label;
 
-    FileTreeCellRenderer() {
+    public FileTreeCellRenderer() {
         label = new JLabel();
         label.setOpaque(true);
         fileSystemView = FileSystemView.getFileSystemView();

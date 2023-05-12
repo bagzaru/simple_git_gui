@@ -26,7 +26,13 @@ public class SelectedFile {
 
     public void setFile(File file) {
         selectedFile = file;
-        //gitStatus = Git.gitCheckFileStatus(selectedFile, GitRepoDirectory.getInstance().getRepoDirectory());
+
+        if(file.isDirectory())
+            gitStatus = -1;
+        else {
+            //gitStatus = Git.gitCheckFileStatus(selectedFile, GitRepoDirectory.getInstance().getRepoDirectory());
+            gitStatus = 1; //임시
+        }
 
         JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
         if (f!=null) {
