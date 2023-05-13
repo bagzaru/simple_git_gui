@@ -28,6 +28,9 @@ public class PanelRefreshUtil {
                 GitGUI.setTableData(files);
             }
         }
+        else{
+            System.out.println("there is no selected dir");
+        }
         GitGUI.gui.repaint();
     }
 

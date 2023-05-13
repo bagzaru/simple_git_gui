@@ -297,7 +297,7 @@ public class FileToolBar extends JToolBar {
     }
 
     public static void refreshButton() {
-        GitGUI.gui.repaint();
+        PanelRefreshUtil.refreshAll();
     }
 
     private void showErrorMessage(String errorMessage, String errorTitle) {
