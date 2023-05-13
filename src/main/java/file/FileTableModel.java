@@ -4,7 +4,12 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+
+import jgitmanager.FileStatus;
+import jgitmanager.JGitManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 /** A TableModel to hold File[]. */
 public class FileTableModel extends AbstractTableModel {
@@ -80,31 +85,40 @@ public class FileTableModel extends AbstractTableModel {
     }
 
     public String gitStatus(File file) {
-        int status;
-        if(file.isDirectory())
-            status = -1;
-        else {
-            //status = jgitmanager.gitCheckFileStatus(file, GitRepoDirectory.getInstance().getRepoDirectory());
-            status = 1; //임시
-        }
+        FileStatus fileStatus;
 
-        switch (status) {
-            case 0:
-                return "Fail";
-            case 1:
-                return "Untracked";
-            case 2:
-                return "Modified";
-            case 3:
-                return "Staged & Modified";
-            case 4:
-                return "Deleted";
-            case 5:
-                return "Staged";
-            case 6:
-                return "Unmodified(committed)";
-            default:
-                return "";
+        if(file.isDirectory())
+            fileStatus = FileStatus.FOLDER;
+        else {
+            try {
+                if(JGitManager.findGitRepository(file) == 1) {
+                    fileStatus = JGitManager.gitCheckFileStatus(file);
+                }
+                else {
+                    fileStatus = FileStatus.UNTRACKED;
+                }
+
+                switch (fileStatus) {
+                    case FOLDER:
+                        return "";
+                    case UNTRACKED:
+                        return "Untracked";
+                    case MODIFIED:
+                        return "Modified";
+                    case STAGED_MODIFIED:
+                        return "Staged & Modified";
+                    case DELETED:
+                        return "Deleted";
+                    case STAGED:
+                        return "Staged";
+                    case UNMODIFIED:
+                        return "Unmodified(committed)";
+                    default:
+                        return "UNKNOWN FILE";
+                }
+            } catch(IOException | GitAPIException e) {
+            };
         }
+        return "UNKNOWN FILE";
     }
 }

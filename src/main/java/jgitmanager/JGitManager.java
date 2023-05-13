@@ -217,8 +217,7 @@ public class JGitManager {
     
     // gitAdd:
     // staged area로 올림
-    // success: 1 / fail: 0
-    public static int gitAdd(File fileToAdd) {
+    public static void gitAdd(File fileToAdd) throws IOException, GitAPIException {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(fileToAdd);
@@ -236,20 +235,17 @@ public class JGitManager {
             git.close();
             
             System.out.println("add success");
-
-            // add 성공
-            return 1;
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
             // 예외 발생
-            return 0;
+            throw e;
         }
     }
     
     // gitDoCommit:
     // commit을 실행함
     // success: 1 / fail: 0
-    public static int gitDoCommit(File dir, String commitMessage) {
+    public static void gitDoCommit(File dir, String commitMessage) throws IOException, GitAPIException {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(dir);
@@ -267,23 +263,16 @@ public class JGitManager {
             git.close();
 
             System.out.println("commit success");
-
-            // commit 성공
-            return 1;
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
             // 예외 발생
-            return 0;
+            throw e;
         }
-    }
-
-    // enum
-    // 리턴을 위한 enum값
-    enum FileStatus{ FAIL, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }    
+    }    
 
     // checkFileStatus:
     // 파일의 상태 확인
-    public static FileStatus gitCheckFileStatus(File fileToCheck) {
+    public static FileStatus gitCheckFileStatus(File fileToCheck) throws IOException, GitAPIException {
         try {
             // Git 저장소 열기
         	Repository repository = openRepositoryFromFile(fileToCheck);
@@ -297,7 +286,7 @@ public class JGitManager {
             Status status = git.status().addPath(relativeFilePath).call();
             
             FileStatus returnValue;
-
+            
             // 파일의 상태 확인
             if (status.getUntracked().contains(relativeFilePath)) {
                 System.out.println("Untracked file");
@@ -310,7 +299,7 @@ public class JGitManager {
                     System.out.println("Modified file");
                     returnValue = FileStatus.MODIFIED;
                 }
-            } else if (status.getMissing().contains(relativeFilePath)) {
+            } else if (status.getMissing().contains(relativeFilePath) || status.getRemoved().contains(relativeFilePath)) {
                 System.out.println("Deleted file");
                 returnValue = FileStatus.DELETED;
             } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
@@ -328,14 +317,14 @@ public class JGitManager {
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
             // 예외 발생
-            return FileStatus.FAIL;
+            throw e;
         }
     }
 
     // gitStagedList:
     // Staged된 파일 리스트
-    // fail: null / success : Set<String> 
-    public static Set<String> gitStagedList(File dir) {
+    // return : Set<String> 
+    public static Set<String> gitStagedList(File dir) throws IOException, GitAPIException {
         try {
             // Git 저장소 열기
         	Repository repository = openRepositoryFromFile(dir);
@@ -357,7 +346,7 @@ public class JGitManager {
             return stagedFiles;
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
-            return null;
+            throw e;
         }
     }
 
@@ -366,17 +355,17 @@ public class JGitManager {
     // managed by git: 1 / not managed by git: 0
     public static int findGitRepository(File folder) {
         // Git 경로 찾기
-            FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
-            repositoryBuilder.setMustExist(true);
-            repositoryBuilder.findGitDir(folder);
+        FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+        repositoryBuilder.setMustExist(true);
+        repositoryBuilder.findGitDir(folder);
 
-            if (repositoryBuilder.getGitDir() != null) {
-                // managed by git
-                return 1;
-            } else {
-                // not managed by git
-                return 0;
-            }
+        if (repositoryBuilder.getGitDir() != null) {
+            // managed by git
+            return 1;
+        } else {
+            // not managed by git
+            return 0;
+        }
     }
 
     //file 또는 dir을 입력받아, 해당 repo를 관리하는 .git 파일의 절대경로를 반환합니다.

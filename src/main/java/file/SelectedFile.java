@@ -2,13 +2,17 @@ package file;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 
 import gui.GitGUI;
+import jgitmanager.FileStatus;
+import jgitmanager.JGitManager;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class SelectedFile {
     private static SelectedFile instance = null;
     private File selectedFile;
-    private int gitStatus;
+    private FileStatus gitStatus;
 
     SelectedFile() {
     }
@@ -27,24 +31,30 @@ public class SelectedFile {
     public void setFile(File file) {
         selectedFile = file;
 
-        if(file.isDirectory())
-            gitStatus = -1;
+        if(file.isDirectory()) {
+            gitStatus = FileStatus.FOLDER;
+        }
         else {
-            //gitStatus = Git.gitCheckFileStatus(selectedFile, GitRepoDirectory.getInstance().getRepoDirectory());
-            gitStatus = 1; //임시
+            try {
+                if(JGitManager.findGitRepository(file) == 1) {
+                    gitStatus = JGitManager.gitCheckFileStatus(file);
+                }
+                else {
+                    gitStatus = FileStatus.UNTRACKED;
+                }
+            } catch(IOException | GitAPIException e) {
+            };
         }
 
         JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
         if (f!=null) {
             f.setTitle(
-                    GitGUI.APP_TITLE +
-                            " :: " +
-                            GitGUI.fileSystemView.getSystemDisplayName(file));
+                    GitGUI.APP_TITLE + " :: " + GitGUI.fileSystemView.getSystemDisplayName(file));
         }
         GitGUI.gui.repaint();
     }
 
-    public int getGitStatus() {
+    public FileStatus getGitStatus() {
         return gitStatus;
     }
 }

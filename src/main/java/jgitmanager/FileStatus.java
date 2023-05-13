@@ -1,0 +1,3 @@
+package jgitmanager;
+
+public enum FileStatus{ FOLDER, UNTRACKED, MODIFIED, STAGED_MODIFIED, DELETED, STAGED, UNMODIFIED }

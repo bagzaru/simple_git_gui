@@ -10,7 +10,7 @@ import javax.swing.*;
 public class GitFilePanel extends JPanel {
     public GitFilePanel(){
         removeAll();
-
+/*
         switch(SelectedFile.getInstance().getGitStatus()){
             case 0 :
                 add(new modified_fileGitMenu());
@@ -24,7 +24,7 @@ public class GitFilePanel extends JPanel {
                 add(new untracked_fileGitMenu());
                 break;
         }
-
+*/
         revalidate();
         repaint();
     }
