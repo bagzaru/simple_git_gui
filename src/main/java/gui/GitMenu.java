@@ -14,7 +14,21 @@ import java.io.IOException;
 import jgitmanager.*;
 
 public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 위한 패널
+
+    private static GitMenu instance;
+    public static GitMenu getInstance(){
+        if(instance==null){
+            instance = new GitMenu();
+        }
+        return instance;
+    }
+
     GitMenu(){
+        UpdateMenu();
+    }
+
+    public void UpdateMenu(){
+        removeAll();
         setPreferredSize(new Dimension(300, 200));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
@@ -26,6 +40,7 @@ public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 
         init_button init_button=new init_button();//init button 추가
         init_button.setBounds(0, 0, 100, 30);
         add(init_button);
+
     }
 }
 

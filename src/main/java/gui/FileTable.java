@@ -21,10 +21,14 @@ public class FileTable extends JScrollPane {
         table.setShowVerticalLines(false);
 
         GitGUI.listSelectionListener = new ListSelectionListener() {
+            //중앙 파일 테이블에서 파일 클릭 시 발생하는 이벤트
             @Override
             public void valueChanged(ListSelectionEvent lse) {
                 int row = table.getSelectionModel().getLeadSelectionIndex();
                 selectedFile.setFile(((FileTableModel)table.getModel()).getFile(row));
+
+                //우측 git 패널을 업데이트합니다.
+                GitFilePanel.getInstance().UpdatePanel();
             }
         };
         table.getSelectionModel().addListSelectionListener(GitGUI.listSelectionListener);

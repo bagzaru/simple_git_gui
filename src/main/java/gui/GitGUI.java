@@ -141,13 +141,14 @@ public class GitGUI {
             filePanel.add(new StagedFileList(), BorderLayout.SOUTH);
 
             //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
+            //gitMenuPanel: 우측 git 명령어 패널
             JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
 
-            gitMenuPanel.add(new GitFilePanel(),BorderLayout.CENTER);
-
-            gitMenuPanel.add(new GitMenu(), BorderLayout.SOUTH);
+            gitMenuPanel.add(GitFilePanel.getInstance(),BorderLayout.CENTER);
+            gitMenuPanel.add(GitMenu.getInstance(), BorderLayout.SOUTH);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
             
+            //파일트리 제외한 우측 부분
             JPanel gitPanel = new JPanel(new BorderLayout(3,3));
             gitPanel.add(filePanel, BorderLayout.CENTER);
             gitPanel.add(gitMenuPanel, BorderLayout.EAST);

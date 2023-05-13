@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class JGitTester {
     //test용 객체입니다.
-    public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testPath = "C:\\oss_test";
     public static String testFile = testPath+"\\asdf.txt";
 // >>>>>>> Git_min-jp_part
       //public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
@@ -25,7 +25,8 @@ public class JGitTester {
         //tester.gitRestoreTest(testFile);
         //tester.gitMvTest(jGitManager);
         //tester.gitTestMinJp(jGitManager);
-        tester.gitRmCachedTest(testFile);
+        //tester.gitRmCachedTest(testFile);
+        tester.gitRepoOpenTest();
     }
 
     public void gitRepoOpenTest(){
