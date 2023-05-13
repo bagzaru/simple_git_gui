@@ -22,11 +22,14 @@ public class FileTree extends JScrollPane {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         GitGUI.treeModel = new DefaultTreeModel(root);
 
+        //좌측 fileTree에서 Node 선택 시 호출되는 이벤트 함수입니다.
+        //현재 중앙 테이블의 파일을 그려냅니다.
         TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent tse){
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 GitGUI.showChildren(node);
+                System.out.println("좌측에서 file 선택됨");
                 selectedFile.setFile((File)node.getUserObject());
             }
         };
