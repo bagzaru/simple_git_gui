@@ -26,6 +26,8 @@ public class FileToolBar extends JToolBar {
     private JButton deleteFile;
     private JButton renameFile;
     private JButton copyFile;
+    // 새로고침 버튼
+    private JButton refreshButton;
 
     /* GUI options/containers for new File/Directory creation.  Created lazily. */
     private JPanel newFilePanel;
@@ -91,6 +93,15 @@ public class FileToolBar extends JToolBar {
             }
         });
         add(copyFile);
+
+        // refreshButton
+        refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent ae){
+                refreshButton();
+            }
+        });
+        add(refreshButton);
     }
 
     private void newFile() {
@@ -283,6 +294,10 @@ public class FileToolBar extends JToolBar {
             }
         }
         return created;
+    }
+
+    public static void refreshButton() {
+        PanelRefreshUtil.refreshAll();
     }
 
     private void showErrorMessage(String errorMessage, String errorTitle) {

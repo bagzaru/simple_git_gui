@@ -65,6 +65,7 @@ class commit_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }//->커밋 함수
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });
@@ -83,6 +84,7 @@ class init_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });

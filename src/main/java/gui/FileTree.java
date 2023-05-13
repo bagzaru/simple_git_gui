@@ -19,34 +19,24 @@ public class FileTree extends JScrollPane {
         selectedFile = SelectedFile.getInstance();
 
         // the File tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        GitGUI.treeModel = new DefaultTreeModel(root);
+        CreateTreeModel();
 
+        //좌측 fileTree에서 Node 선택 시 호출되는 이벤트 함수입니다.
+        //현재 중앙 테이블의 파일을 그려냅니다.
         TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent tse){
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
+                PanelRefreshUtil.currentDirectory=(File)node.getUserObject();
                 GitGUI.showChildren(node);
                 selectedFile.setFile((File)node.getUserObject());
                 StagedFileList.getInstance().setStagedFileTableData();
+
+                PanelRefreshUtil.refreshGitMenu();      //우측 git 패널 새로고침
+                System.out.println("좌측 패널 눌림!");
             }
         };
 
-        // show the file system roots.
-        File[] roots = GitGUI.fileSystemView.getRoots();
-        for (File fileSystemRoot : roots) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
-            root.add(node);
-            //showChildren(node);
-            //
-            File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    node.add(new DefaultMutableTreeNode(file));
-                }
-            }
-            //
-        }
 
         tree = new JTree(GitGUI.treeModel);
         tree.setRootVisible(false);
@@ -61,6 +51,28 @@ public class FileTree extends JScrollPane {
         Dimension preferredSize = getPreferredSize();
         Dimension widePreferred = new Dimension(200, (int)preferredSize.getHeight());
         setPreferredSize(widePreferred);
+    }
+
+    //좌측 Filetree를 업데이트합니다.
+    public static void CreateTreeModel(){
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        GitGUI.treeModel = new DefaultTreeModel(root);
+
+
+        // show the file system roots.
+        File[] roots = GitGUI.fileSystemView.getRoots();
+        for (File fileSystemRoot : roots) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
+            root.add(node);
+            //showChildren(node);
+            //
+            File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    node.add(new DefaultMutableTreeNode(file));
+                }
+            }
+        }
     }
 }
 

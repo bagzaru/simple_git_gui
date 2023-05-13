@@ -5,6 +5,7 @@ import gui.GitGUI;
 
 import javax.swing.*;
 
+import gui.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;
@@ -56,7 +57,7 @@ class commit_untrack_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                GitFilePanel.getInstance().UpdatePanel();
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });
@@ -80,7 +81,7 @@ class commit_delete_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                GitFilePanel.getInstance().UpdatePanel();
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });
@@ -106,7 +107,7 @@ class commit_rename_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                GitFilePanel.getInstance().UpdatePanel();
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });

@@ -5,6 +5,7 @@ import gui.GitGUI;
 
 import javax.swing.*;
 
+import gui.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;
@@ -46,7 +47,7 @@ class staged_unstage_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                GitFilePanel.getInstance().UpdatePanel();
+                PanelRefreshUtil.refreshAll();
                 GitGUI.gui.repaint();
             }
         });
