@@ -1,5 +1,7 @@
 package gui;
 
+import file.SelectedFile;
+
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 
@@ -41,6 +43,8 @@ public class PanelRefreshUtil {
 
     //우측 상단의 현재 선택된 파일에 대한 깃 명령어 모음 패널을 새로고침합니다.
     public static void refreshGitFilePanel(){
+        SelectedFile selectedFile = SelectedFile.getInstance();
+        selectedFile.setFile(selectedFile.getFile());
         GitFilePanel.getInstance().UpdatePanel();
     }
     //우측 하단의 현재 git repo에 대한 깃 명령어 모음 패널을 새로고침합니다.
