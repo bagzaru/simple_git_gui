@@ -3,8 +3,10 @@ package gui;
 import file.SelectedFile;
 import org.eclipse.jgit.api.Git;
 
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.io.File;
 
 public class PanelRefreshUtil {
@@ -20,8 +22,10 @@ public class PanelRefreshUtil {
 
     public static DefaultMutableTreeNode lastTreeNode;
     public static void refreshFileTree(){
-
-
+        JTree tree = Tree.getInstance();
+        if(lastTreeNode!=null){
+            GitGUI.showChildren(lastTreeNode);
+        }
     }
 
     //중앙 상단의 현재 선택된 폴더의 파일들을 보여주는 테이블을 새로고칩니다.
@@ -47,8 +51,13 @@ public class PanelRefreshUtil {
     //우측 상단의 현재 선택된 파일에 대한 깃 명령어 모음 패널을 새로고침합니다.
     public static void refreshGitFilePanel(){
         SelectedFile selectedFile = SelectedFile.getInstance();
-        selectedFile.setFile(selectedFile.getFile());
-        GitFilePanel.getInstance().UpdatePanel();
+        if(selectedFile!=null){
+            File sfile = selectedFile.getFile();
+            if(sfile!=null){
+                selectedFile.setFile(sfile);
+                GitFilePanel.getInstance().UpdatePanel();
+            }
+        }
     }
     //우측 하단의 현재 git repo에 대한 깃 명령어 모음 패널을 새로고침합니다.
     public static void refreshGitMenu(){
