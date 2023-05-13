@@ -1,5 +1,6 @@
 package gitmenu;
 
+import gui.GitFilePanel;
 import gui.GitGUI;
 
 import javax.swing.*;
@@ -55,7 +56,7 @@ class commit_untrack_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-               
+                GitFilePanel.getInstance().UpdatePanel();
                 GitGUI.gui.repaint();
             }
         });
@@ -79,6 +80,7 @@ class commit_delete_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
+                GitFilePanel.getInstance().UpdatePanel();
                 GitGUI.gui.repaint();
             }
         });
@@ -104,6 +106,7 @@ class commit_rename_button extends JButton{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
+                GitFilePanel.getInstance().UpdatePanel();
                 GitGUI.gui.repaint();
             }
         });
