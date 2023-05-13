@@ -1,8 +1,10 @@
 package gui;
 
 import file.SelectedFile;
+import org.eclipse.jgit.api.Git;
 
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 
 public class PanelRefreshUtil {
@@ -16,9 +18,10 @@ public class PanelRefreshUtil {
         refreshStagedList();
     }
 
+    public static DefaultMutableTreeNode lastTreeNode;
     public static void refreshFileTree(){
-        //FileTree.UpdateTreeModel();
-        //오류로 인해 아직 미구현
+
+
     }
 
     //중앙 상단의 현재 선택된 폴더의 파일들을 보여주는 테이블을 새로고칩니다.

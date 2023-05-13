@@ -3,10 +3,13 @@ package gui;
 import file.SelectedFile;
 
 import javax.swing.*;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
 
@@ -33,7 +36,20 @@ public class FileTree extends JScrollPane {
                 StagedFileList.getInstance().setStagedFileTableData();
 
                 PanelRefreshUtil.refreshGitMenu();      //우측 git 패널 새로고침
-                System.out.println("좌측 패널 눌림!");
+            }
+        };
+
+        TreeExpansionListener treeExpansionListener = new TreeExpansionListener() {
+            @Override
+            public void treeExpanded(TreeExpansionEvent event) {
+
+            }
+
+            @Override
+            public void treeCollapsed(TreeExpansionEvent event) {
+                TreePath collapsedNodePath = event.getPath();
+                DefaultMutableTreeNode nodeCollapsed = (DefaultMutableTreeNode) collapsedNodePath.getLastPathComponent();
+                tree.setSelectionPath(collapsedNodePath);
             }
         };
 
@@ -41,12 +57,13 @@ public class FileTree extends JScrollPane {
         tree = new JTree(GitGUI.treeModel);
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(treeSelectionListener);
+        tree.addTreeExpansionListener(treeExpansionListener);
         tree.setCellRenderer(new FileTreeRenderer());
         tree.expandRow(0);
         this.setViewportView(tree);
 
         // as per trashgod tip
-        tree.setVisibleRowCount(15);
+        tree.setVisibleRowCount(30);
 
         Dimension preferredSize = getPreferredSize();
         Dimension widePreferred = new Dimension(200, (int)preferredSize.getHeight());

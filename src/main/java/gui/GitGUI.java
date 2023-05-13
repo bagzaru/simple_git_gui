@@ -70,22 +70,34 @@ import file.FileTableModel;
  * </ul>
  */
 public class GitGUI {
-    /** Title of the application */
+    /**
+     * Title of the application
+     */
     public static final String APP_TITLE = "Simple Git GUI Application";
 
-    /** Provides nice icons and names for files. */
+    /**
+     * Provides nice icons and names for files.
+     */
     public static FileSystemView fileSystemView;
 
-    /** Main GUI container */
+    /**
+     * Main GUI container
+     */
     public static JPanel gui;
 
-    /** File-system tree. Built Lazily */
+    /**
+     * File-system tree. Built Lazily
+     */
     public static DefaultTreeModel treeModel;
 
-    /** Directory listing */
+    /**
+     * Directory listing
+     */
     public static JProgressBar progressBar;
 
-    /** Table model for File[]. */
+    /**
+     * Table model for File[].
+     */
     public static FileTableModel fileTableModel;
     public static ListSelectionListener listSelectionListener;
     public static boolean cellSizesSet = false;
@@ -100,7 +112,8 @@ public class GitGUI {
                     // Significantly improves the look of the output in
                     // terms of the file names returned by FileSystemView!
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch(Exception weTried) {}
+                } catch (Exception weTried) {
+                }
 
                 JFrame f = new JFrame(APP_TITLE);
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,10 +123,11 @@ public class GitGUI {
                     URL urlBig = getClass().getResource("fm-icon-32x32.png");
                     URL urlSmall = getClass().getResource("fm-icon-16x16.png");
                     ArrayList<Image> images = new ArrayList<Image>();
-                    images.add( ImageIO.read(urlBig) );
-                    images.add( ImageIO.read(urlSmall) );
+                    images.add(ImageIO.read(urlBig));
+                    images.add(ImageIO.read(urlSmall));
                     f.setIconImages(images);
-                } catch(Exception weTried) {}
+                } catch (Exception weTried) {
+                }
 
                 f.pack();
                 f.setLocationByPlatform(true);
@@ -126,40 +140,40 @@ public class GitGUI {
     }
 
     public Container getGui() {
-        if (gui==null) {
-            gui = new JPanel(new BorderLayout(3,3));
-            gui.setBorder(new EmptyBorder(5,5,5,5));
+        if (gui == null) {
+            gui = new JPanel(new BorderLayout(3, 3));
+            gui.setBorder(new EmptyBorder(5, 5, 5, 5));
 
             fileSystemView = FileSystemView.getFileSystemView();
 
             JPanel fileManage = new JPanel(new BorderLayout(3, 3));
             fileManage.add(new FileTable(), BorderLayout.CENTER);
-            fileManage.add(new FileToolBar(),BorderLayout.SOUTH);
+            fileManage.add(new FileToolBar(), BorderLayout.SOUTH);
 
-            JPanel filePanel = new JPanel(new BorderLayout(3,3));
+            JPanel filePanel = new JPanel(new BorderLayout(3, 3));
             filePanel.add(fileManage, BorderLayout.CENTER);
             filePanel.add(StagedFileList.getInstance(), BorderLayout.SOUTH);
 
             //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
             //gitMenuPanel: 우측 git 명령어 패널
-            JPanel gitMenuPanel = new JPanel(new BorderLayout(3,3));
+            JPanel gitMenuPanel = new JPanel(new BorderLayout(3, 3));
 
-            gitMenuPanel.add(GitFilePanel.getInstance(),BorderLayout.CENTER);
+            gitMenuPanel.add(GitFilePanel.getInstance(), BorderLayout.CENTER);
             gitMenuPanel.add(GitMenu.getInstance(), BorderLayout.SOUTH);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
-            
+
             //파일트리 제외한 우측 부분
-            JPanel gitPanel = new JPanel(new BorderLayout(3,3));
+            JPanel gitPanel = new JPanel(new BorderLayout(3, 3));
             gitPanel.add(filePanel, BorderLayout.CENTER);
             gitPanel.add(gitMenuPanel, BorderLayout.EAST);
 
             JSplitPane splitPane = new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT,
-                new FileTree(),
-                gitPanel);
+                    JSplitPane.HORIZONTAL_SPLIT,
+                    new FileTree(),
+                    gitPanel);
             gui.add(splitPane, BorderLayout.CENTER);
 
-            JPanel simpleOutput = new JPanel(new BorderLayout(3,3));
+            JPanel simpleOutput = new JPanel(new BorderLayout(3, 3));
             progressBar = new JProgressBar();
             simpleOutput.add(progressBar, BorderLayout.EAST);
             progressBar.setVisible(false);
@@ -172,14 +186,16 @@ public class GitGUI {
 
     public void showRootFile() {
         // ensure the main files are displayed
-        tree.setSelectionInterval(0,0);
+        tree.setSelectionInterval(0, 0);
     }
 
-    /** Update the table on the EDT */
+    /**
+     * Update the table on the EDT
+     */
     public static void setTableData(final File[] files) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if (fileTableModel==null) {
+                if (fileTableModel == null) {
                     fileTableModel = new FileTableModel();
                     Table.getInstance().setModel(fileTableModel);
                 }
@@ -190,12 +206,12 @@ public class GitGUI {
                     Icon icon = fileSystemView.getSystemIcon(files[0]);
 
                     // size adjustment to better account for icons
-                    Table.getInstance().setRowHeight( icon.getIconHeight()+rowIconPadding );
+                    Table.getInstance().setRowHeight(icon.getIconHeight() + rowIconPadding);
 
-                    setColumnWidth(0,-1);
-                    setColumnWidth(2,60);
+                    setColumnWidth(0, -1);
+                    setColumnWidth(2, 60);
                     Table.getInstance().getColumnModel().getColumn(2).setMaxWidth(120);
-                    setColumnWidth(3,-1);
+                    setColumnWidth(3, -1);
 
                     cellSizesSet = true;
                 }
@@ -207,53 +223,66 @@ public class GitGUI {
         TableColumn tableColumn = Table.getInstance().getColumnModel().getColumn(column);
         if (width < 0) {
             // use the preferred width of the header..
-            JLabel label = new JLabel( (String)tableColumn.getHeaderValue() );
+            JLabel label = new JLabel((String) tableColumn.getHeaderValue());
             Dimension preferred = label.getPreferredSize();
             // altered 10->14 as per camickr comment.
-            width = (int)preferred.getWidth()+14;
+            width = (int) preferred.getWidth() + 14;
         }
         tableColumn.setPreferredWidth(width);
         tableColumn.setMaxWidth(width);
         tableColumn.setMinWidth(width);
     }
 
-    /** Add the files that are contained within the directory of this node.
-    Thanks to Hovercraft Full Of Eels. */
+    /**
+     * Add the files that are contained within the directory of this node.
+     * Thanks to Hovercraft Full Of Eels.
+     */
     public static void showChildren(final DefaultMutableTreeNode node) {
         Tree.getInstance().setEnabled(false);
         progressBar.setVisible(true);
         progressBar.setIndeterminate(true);
+        PanelRefreshUtil.lastTreeNode=node;
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
             @Override
             public Void doInBackground() {
-                File file = (File)node.getUserObject();
+                File file = (File) node.getUserObject();
                 if (file.isDirectory()) {
                     File[] files = fileSystemView.getFiles(file, true); //!!
-                    if (node.isLeaf()) {
+                    //파일이 실행 중에 수정될 수 있으므로, Leafnode가 아니어도 매번 갱신해줍니다.
+                    //if (node.isLeaf()) {
+                    node.removeAllChildren();
                         for (File child : files) {
                             if (child.isDirectory()) {
                                 publish(child);
                             }
                         }
-                    }
+                    //}
                     setTableData(files);
                 }
+
                 return null;
             }
 
             @Override
             protected void process(List<File> chunks) {
                 for (File child : chunks) {
-                    node.add(new DefaultMutableTreeNode(child));
+                    if(child!=null){
+                        node.add(new DefaultMutableTreeNode(child));
+                    }
+                    else{
+                        System.out.println("failed to adding child to tree: file is null");
+                    }
                 }
             }
 
             @Override
             protected void done() {
-                progressBar.setIndeterminate(false);
                 progressBar.setVisible(false);
                 Tree.getInstance().setEnabled(true);
+                //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
+                //Tree를 갱신하여 node를 다시 그립니다.
+                treeModel.reload(node);
             }
         };
         worker.execute();

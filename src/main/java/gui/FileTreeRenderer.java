@@ -30,11 +30,17 @@ public class FileTreeRenderer extends DefaultTreeCellRenderer {
             int row,
             boolean hasFocus) {
 
+
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
         File file = (File)node.getUserObject();
-        label.setIcon(fileSystemView.getSystemIcon(file));
-        label.setText(fileSystemView.getSystemDisplayName(file));
-        label.setToolTipText(file.getPath());
+        if(file!=null){
+            label.setIcon(fileSystemView.getSystemIcon(file));
+            label.setText(fileSystemView.getSystemDisplayName(file));
+            label.setToolTipText(file.getPath());
+        }
+        else{
+            System.out.println("---FileTreeRenderer: file is null---");
+        }
 
         if (selected) {
             label.setBackground(backgroundSelectionColor);
