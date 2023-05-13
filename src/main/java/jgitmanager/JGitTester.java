@@ -9,28 +9,23 @@ import java.util.Set;
 
 public class JGitTester {
     //test용 객체입니다.
-    //public static String testPathDotGit = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265\\.git";
-    //public static String testPath = "C:\\Users\\BAEKSE~1\\AppData\\Local\\Temp\\TestGitRepo7066676561043817265";
-    //public static String testFile = testPath+"\\src\\src\\a.txt";
-    //public static String testPath = "C:\\oss_test\\a\\b";
-    //public static String testFile = testPath+"\\k.txt";
+    public static String testPath = "C:\\oss_test\\a\\b";
+    public static String testFile = testPath+"\\asdf.txt";
 // >>>>>>> Git_min-jp_part
-      public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
-      public static String testPath = "D:\\open_prj1\\git_test";
-      public static String testFile = testPath+"\\b.txt";
+      //public static String testPathDotGit = "D:\\open_prj1\\git_test\\.git";
+      //public static String testPath = "D:\\open_prj1\\git_test";
+      //public static String testFile = testPath+"\\b.txt";
     static JGitManager jGitManager;
     public static void main(String args[]) {
         System.out.println("Hello World from JGitTester");
         JGitTester tester = new JGitTester();
-        jGitManager = new JGitManager();
-        //tester.gitInitTest(jGitManager);
-        //tester.gitRepoOpenTest();
-        //tester.gitRmTest(jGitManager);
-        //tester.gitRestoreStagedTest(jGitManager);
-        //tester.gitRestoreTest(jGitManager);
+        //tester.gitInitTest(testPath);
+        //tester.gitRmTest(testFile);
+        //tester.gitRestoreStagedTest(testFile);
+        //tester.gitRestoreTest(testFile);
         //tester.gitMvTest(jGitManager);
-        tester.gitTestMinJp(jGitManager);
-        //tester.gitRmCachedTest(jGitManager);
+        //tester.gitTestMinJp(jGitManager);
+        tester.gitRmCachedTest(testFile);
     }
 
     public void gitRepoOpenTest(){
@@ -52,11 +47,11 @@ public class JGitTester {
         }
     }
 
-    public void gitInitTest() {
+    public void gitInitTest(String dir) {
         File tempPath;
         try {
             tempPath = jGitManager.createTempPath();
-            jGitManager.gitInit(new File(testPath));
+            jGitManager.gitInit(new File(dir));
         } catch (IOException e) {
             System.out.println("Cannot create temp path: " + e.toString());
             return;
@@ -65,20 +60,20 @@ public class JGitTester {
         }
     }
 
-    public void gitRestoreTest(){
+    public void gitRestoreTest(String filePath){
         try {
             //jGitManager.gitRestore(new File(testPath+"\\test.txt"),new File(testPathDotGit));
-            jGitManager.gitRestore(new File(testFile));
+            jGitManager.gitRestore(new File(filePath));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitRestoreStagedTest(){
+    public void gitRestoreStagedTest(String filePath){
         try {
             //git restore --staged
-            jGitManager.gitRestoreStaged(new File(testFile));
+            jGitManager.gitRestoreStaged(new File(filePath));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
@@ -96,22 +91,22 @@ public class JGitTester {
         }
     }
 
-    public void gitRmTest() {
+    public void gitRmTest(String file) {
         try {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitRm(new File(testFile));
+            jGitManager.gitRm(new File(file));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
         }
     }
 
-    public void gitRmCachedTest(JGitManager jGitManager) {
+    public void gitRmCachedTest(String filePath) {
         try {
             //git restore --staged
             //jGitManager.gitMv(new File(testPath+"\\test.txt"),"k.txt",new File(testPathDotGit));
-            jGitManager.gitRmCached(new File(testFile));
+            jGitManager.gitRmCached(new File(filePath));
 
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.toString());
