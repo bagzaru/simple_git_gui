@@ -369,7 +369,7 @@ public class JGitManager {
 
             return stagedFiles;
         } catch (IOException | GitAPIException | NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw e;
         }
     }
