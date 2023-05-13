@@ -14,8 +14,14 @@ import java.awt.*;
 import java.io.File;
 
 public class FileTree extends JScrollPane {
-    JTree tree;
+    static JTree tree;
     SelectedFile selectedFile;
+
+
+    //Tree.getInstance와 FileTree.tree가 달라서 부득이하게 수정하였습니다.
+    public static JTree getInstance() {
+        return tree;
+    }
 
     public FileTree() {
         tree = Tree.getInstance();
@@ -39,6 +45,8 @@ public class FileTree extends JScrollPane {
             }
         };
 
+        //좌측 fileTree에서 확장/축소 시 호출되는 이벤트 함수입니다.
+        //축소 시 하위 파일의 focuse가 사라지면서 fileTree가 처음부터 다시 생성되는 오류를 방지합니다.
         TreeExpansionListener treeExpansionListener = new TreeExpansionListener() {
             @Override
             public void treeExpanded(TreeExpansionEvent event) {
