@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import file.SelectedFile;
+import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -29,8 +30,6 @@ public class StagedFileList extends JScrollPane {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
-
-        setStagedFileTableData();
 
         this.setViewportView(table);
         Dimension d = getPreferredSize();
@@ -57,8 +56,9 @@ public class StagedFileList extends JScrollPane {
                 stagedFileTableModel.setFiles(files);
                 if (!cellSizesSet) {
                     table.setRowHeight(30);
-                    setColumnWidth(0,60);
-                    setColumnWidth(1,60);
+                    setColumnWidth(0,100);
+                    setColumnWidth(1,100);
+                    //setColumnWidth(2,60);
 
                     cellSizesSet = true;
                 }
@@ -93,10 +93,6 @@ public class StagedFileList extends JScrollPane {
             i++;
         }
 
-        System.out.println("Test Size: " + stagedFiles.length);
-        if(stagedFiles.length > 0) {
-            System.out.println("Test file1: " + fileSystemView.getSystemDisplayName(stagedFiles[0]));
-        }
         return stagedFiles;
     }
 
@@ -120,7 +116,8 @@ class StagedFileTableModel extends AbstractTableModel {
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
     private String[] columns = {
             "File",
-            "Test"
+            "File Status",
+            "Path"
     };
 
     public StagedFileTableModel() {
@@ -135,10 +132,11 @@ class StagedFileTableModel extends AbstractTableModel {
         File file = stagedFiles[row];
         switch (column) {
             case 0:
-                return "11111";
-                //return fileSystemView.getSystemDisplayName(file);
+                return fileSystemView.getSystemDisplayName(file);
             case 1:
-                return "Test";
+                return gitStatus(file);
+            case 2:
+                return file.getPath();
             default:
                 System.err.println("Logic Error");
         }
@@ -168,5 +166,42 @@ class StagedFileTableModel extends AbstractTableModel {
     public void setFiles(File[] files) {
         this.stagedFiles = files;
         fireTableDataChanged();
+    }
+
+    public String gitStatus(File file) {
+        FileStatus fileStatus;
+
+        try {
+            if(JGitManager.findGitRepository(file) == 1) {
+                fileStatus = JGitManager.gitCheckFileStatus(file);
+            }
+            else {
+                fileStatus = FileStatus.UNTRACKED;
+            }
+            return "Staged";
+            /*
+            switch (fileStatus) {
+                case FOLDER:
+                    return "";
+                case UNTRACKED:
+                    return "Untracked";
+                case MODIFIED:
+                    return "Modified";
+                case STAGED_MODIFIED:
+                    return "Staged & Modified";
+                case DELETED:
+                    return "Deleted";
+                case STAGED:
+                    return "Staged";
+                case UNMODIFIED:
+                    return "Unmodified(committed)";
+                default:
+                    return "UNKNOWN FILE";
+            }
+            */
+        } catch(IOException | GitAPIException e) {
+        };
+
+        return "UNKNOWN FILE";
     }
 }

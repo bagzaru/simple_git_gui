@@ -138,7 +138,7 @@ public class GitGUI {
 
             JPanel filePanel = new JPanel(new BorderLayout(3,3));
             filePanel.add(fileManage, BorderLayout.CENTER);
-            filePanel.add(new StagedFileList(), BorderLayout.SOUTH);
+            filePanel.add(StagedFileList.getInstance(), BorderLayout.SOUTH);
 
             //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
             //gitMenuPanel: 우측 git 명령어 패널

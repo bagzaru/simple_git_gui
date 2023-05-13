@@ -88,7 +88,7 @@ public class FileTableModel extends AbstractTableModel {
         FileStatus fileStatus;
 
         if(file.isDirectory())
-            fileStatus = FileStatus.FOLDER;
+            return "";
         else {
             try {
                 if(JGitManager.findGitRepository(file) == 1) {
