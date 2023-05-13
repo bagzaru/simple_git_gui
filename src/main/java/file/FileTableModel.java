@@ -3,8 +3,10 @@ package file;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 
 import jgitmanager.FileStatus;
@@ -43,7 +45,20 @@ public class FileTableModel extends AbstractTableModel {
             case 3:
                 return file.lastModified();
             case 4:
-                return gitStatus(file);
+                String gitStatusImagePath = getGitStatusImagePath(file);
+                if (gitStatusImagePath != null) {
+                    URL url = getClass().getResource(gitStatusImagePath);
+                    if (url != null) {
+                        ImageIcon icon = new ImageIcon(url);
+                        int cellHeight = fileSystemView.getSystemIcon(file).getIconHeight() + 6;
+                        int cellWidth = cellHeight * 3;
+                        Image image = icon.getImage();
+                        Image scaledImage = image.getScaledInstance(cellWidth, cellHeight, Image.SCALE_SMOOTH);
+                        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+                        return scaledIcon;
+                    }
+                }
+                return null;
             default:
                 System.err.println("Logic Error");
         }
@@ -63,6 +78,7 @@ public class FileTableModel extends AbstractTableModel {
             case 3:
                 return Date.class;
             case 4:
+                return ImageIcon.class;
         }
         return String.class;
     }
@@ -84,11 +100,13 @@ public class FileTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public String gitStatus(File file) {
+    public String getGitStatusImagePath(File file) {
         FileStatus fileStatus;
+        String imagePath;
 
-        if(file.isDirectory())
-            return "";
+        if(file.isDirectory()) {
+            imagePath = null;
+        }
         else {
             try {
                 if(JGitManager.findGitRepository(file) == 1) {
@@ -100,25 +118,33 @@ public class FileTableModel extends AbstractTableModel {
 
                 switch (fileStatus) {
                     case FOLDER:
-                        return "";
+                        imagePath = null;
+                        break;
                     case UNTRACKED:
-                        return "Untracked";
+                        imagePath = "/git_status_icons/Untracked.png";
+                        break;
                     case MODIFIED:
-                        return "Modified";
+                        imagePath = "/git_status_icons/Modified.png";
+                        break;
                     case STAGED_MODIFIED:
-                        return "Staged & Modified";
+                        imagePath = "/git_status_icons/Staged_Modified.png";
+                        break;
                     case DELETED:
-                        return "Deleted";
+                        imagePath = "/git_status_icons/Deleted.png";
+                        break;
                     case STAGED:
-                        return "Staged";
+                        imagePath = "/git_status_icons/Staged.png";
+                        break;
                     case UNMODIFIED:
-                        return "Unmodified(committed)";
+                        imagePath = "/git_status_icons/Committed.png";
+                        break;
                     default:
-                        return "UNKNOWN FILE";
+                        imagePath = null;
                 }
             } catch(IOException | GitAPIException e) {
+                imagePath = null;
             };
         }
-        return "UNKNOWN FILE";
+        return imagePath;
     }
 }
