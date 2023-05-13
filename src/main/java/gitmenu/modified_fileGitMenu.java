@@ -40,7 +40,15 @@ class modified_add_button extends JButton{
         setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                JGitManager.gitAdd(SelectedFile.getInstance().getFile());
+                try {
+                    JGitManager.gitAdd(SelectedFile.getInstance().getFile());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 GitGUI.gui.repaint();
             }
         });

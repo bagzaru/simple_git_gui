@@ -9,6 +9,8 @@ import file.SelectedFile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import jgitmanager.*;
 
 public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 위한 패널
@@ -39,7 +41,15 @@ class commit_button extends JButton{
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 String commitMessage=commit_message_box.show_message_dialog();//->입력받은 커밋 스트링
-                JGitManager.gitDoCommit(SelectedFile.getInstance().getFile(),commitMessage);//->커밋 함수
+                try {
+                    JGitManager.gitDoCommit(SelectedFile.getInstance().getFile(),commitMessage);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }//->커밋 함수
                 GitGUI.gui.repaint();
             }
         });

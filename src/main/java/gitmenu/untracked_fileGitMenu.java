@@ -3,9 +3,14 @@ package gitmenu;
 import gui.GitGUI;
 
 import javax.swing.*;
+
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import jgitmanager.*;
 
 import file.SelectedFile;
@@ -33,7 +38,15 @@ class untracked_add_button extends JButton{
         setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                JGitManager.gitAdd(SelectedFile.getInstance().getFile());
+                try {
+                    JGitManager.gitAdd(SelectedFile.getInstance().getFile());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (GitAPIException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 GitGUI.gui.repaint();
             }
         });
