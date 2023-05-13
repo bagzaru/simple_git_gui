@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import gui.GitGUI;
+import gui.StagedFileList;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;

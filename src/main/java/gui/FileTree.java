@@ -28,6 +28,7 @@ public class FileTree extends JScrollPane {
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 GitGUI.showChildren(node);
                 selectedFile.setFile((File)node.getUserObject());
+                StagedFileList.getInstance().setStagedFileTableData();
             }
         };
 
