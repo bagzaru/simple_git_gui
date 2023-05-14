@@ -1,7 +1,5 @@
 # README
 
-# README
-
 # simple_git_gui
 
 Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우저입니다.
@@ -26,15 +24,16 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우
 
 위의 링크에서 릴리즈 버전의 파일을 다운받습니다.
 
-```java
+```
 java -jar <jar_filename>.jar
+
 ```
 
 (실행 파일명)을 실행합니다.
 
 ## 파일 탐색 안내
 
-![210007.png](./img/210007.png)
+![./img/210007.png](./img/210007.png)
 
 [좌측 패널]
 
@@ -71,16 +70,19 @@ java -jar <jar_filename>.jar
 [각 상태에 대한 사진 또는 각 상태가 다 존재하는 디렉토리 사진]
 
 - Untracked: 파일이 Git에 의해 관리되고 있지 않음을 나타냅니다.
-- Unmodified: 파일이 마지막 Commit의 상태와 동일함을 나타냅니다.
-- Modified(Green): 파일이 마지막 Commit 상태에서 수정되었고, Staged된 것을 나타냅니다.
-- Modified(Yellow): 파일이 마지막 Commit 상태에서 수정되었고, 현재 변경사항이 Staged되지 않았음을 나타냅니다.
+- Committed: 파일이 마지막 Commit의 상태와 동일함을 나타냅니다.
+- Modified: 파일이 Git에서 관리하고 있는 내용과 다름을 의미합니다.
+- Staged: 파일의 변경 사항이 Stage되었고, Staged 파일과 로컬 파일의 내용이 동일함을 의미합니다.
 
 ### 파일의 상태 - Staged List
 
 [Staged List사진]
 
-- (Green): 파일이 Staged되었음을 나타냅니다.
-- (Yellow): 파일이 Staged되었으나 그 내용이 현재 디렉토리의 파일과 다름을 나타냅니다.
+Staged 상태인 파일들을 나타냅니다.
+
+- Staged(Green): Staged 파일과 실제 존재하는 파일의 내용이 같습니다.
+- Staged(Yellow): 파일이 Staged 상태이지만, 실제 로컬 저장소의 파일과 내용이 다릅니다. (수정, 삭제 등)
+- Removed: git rm 등을 통해 파일이 삭제되었다는 내용이 Staged 된 상태입니다. (deleted)
 
 ### Git을 통한 버전 관리
 
@@ -96,4 +98,4 @@ java -jar <jar_filename>.jar
 
 ### 라이센스
 
-(License.md 링크)
+([License.md](http://license.md/) 링크)
