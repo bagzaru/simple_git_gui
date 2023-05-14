@@ -148,26 +148,14 @@ public class FileToolBar extends JToolBar {
                     created = file.mkdir();
                 }
                 if (created) {
-                    TreePath parentPath = findTreePath(parentFile);
-                    DefaultMutableTreeNode parentNode =
-                            (DefaultMutableTreeNode)parentPath.getLastPathComponent();
-
                     if (file.isDirectory()) {
                         // add the new node..
-                        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
-
-                        TreePath currentPath = findTreePath(selectedFile.getFile());
-                        DefaultMutableTreeNode currentNode =
-                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
-
-                        GitGUI.treeModel.insertNodeInto(newNode, parentNode, parentNode.getChildCount());
+                        PanelRefreshUtil.refreshAll();
                     }
-
-                    GitGUI.showChildren(parentNode);
                 } else {
                     String msg = "The file '" +
                             file +
-                            "' could not be created.";
+                            "' could not be created. (it might exist)";
                     showErrorMessage(msg, "Create Failed");
                 }
             } catch(Throwable t) {
