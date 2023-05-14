@@ -117,7 +117,7 @@ public class FileTableModel extends AbstractTableModel {
                 }
 
                 switch (fileStatus) {
-                    case FOLDER:
+                    case DIRECTORY:
                         imagePath = null;
                         break;
                     case UNTRACKED:
@@ -126,16 +126,10 @@ public class FileTableModel extends AbstractTableModel {
                     case MODIFIED:
                         imagePath = "/git_status_icons/Modified.png";
                         break;
-                    case STAGED_MODIFIED:
-                        imagePath = "/git_status_icons/Staged_Modified.png";
-                        break;
-                    case DELETED:
-                        imagePath = "/git_status_icons/Deleted.png";
-                        break;
                     case STAGED:
                         imagePath = "/git_status_icons/Staged.png";
                         break;
-                    case UNMODIFIED:
+                    case COMMITTED:
                         imagePath = "/git_status_icons/Committed.png";
                         break;
                     default:

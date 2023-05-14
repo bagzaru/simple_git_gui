@@ -13,6 +13,7 @@ import java.util.Set;
 import file.SelectedFile;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
+import jgitmanager.StagedFileStatus;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class StagedFileList extends JScrollPane {
@@ -172,32 +173,25 @@ class StagedFileTableModel extends AbstractTableModel {
     }
 
     public String gitStatus(File file) {
-        FileStatus fileStatus;
+        StagedFileStatus fileStatus;
 
         try {
             if(JGitManager.findGitRepository(file) == 1) {
-                fileStatus = JGitManager.gitCheckFileStatus(file);
+                //staged file status입니다.
+                fileStatus = JGitManager.gitCheckStagedFileStatus(file);
             }
             else {
-                fileStatus = FileStatus.UNTRACKED;
+                fileStatus = StagedFileStatus.STAGED;
             }
 //            return "Staged";
 
             switch (fileStatus) {
-                case FOLDER:
-                    return "";
-                case UNTRACKED:
-                    return "Untracked";
-                case MODIFIED:
-                    return "Modified";
                 case STAGED_MODIFIED:
                     return "Staged & Modified";
-                case DELETED:
-                    return "Deleted";
                 case STAGED:
                     return "Staged";
-                case UNMODIFIED:
-                    return "Unmodified(committed)";
+                case REMOVED:
+                    return "Removed";
                 default:
                     return "UNKNOWN FILE";
             }
