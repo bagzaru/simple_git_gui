@@ -1,5 +1,3 @@
-# README
-
 # simple_git_gui
 
 ![./img/223227.png](./img/223227.png)
