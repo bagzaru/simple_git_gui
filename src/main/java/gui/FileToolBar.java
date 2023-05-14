@@ -76,23 +76,23 @@ public class FileToolBar extends JToolBar {
         });
         add(deleteFile);
 
-        renameFile = new JButton("Rename");
-        renameFile.setMnemonic('r');
-        renameFile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                renameFile();
-            }
-        });
-        add(renameFile);
+//        renameFile = new JButton("Rename");
+//        renameFile.setMnemonic('r');
+//        renameFile.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent ae) {
+//                renameFile();
+//            }
+//        });
+//        add(renameFile);
 
-        copyFile = new JButton("Copy");
-        copyFile.setMnemonic('c');
-        copyFile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                showErrorMessage("'Copy' not implemented.", "Not implemented.");
-            }
-        });
-        add(copyFile);
+//        copyFile = new JButton("Copy");
+//        copyFile.setMnemonic('c');
+//        copyFile.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent ae) {
+//
+//            }
+//        });
+//        add(copyFile);
 
         // refreshButton
         refreshButton = new JButton("Refresh");
@@ -306,4 +306,5 @@ public class FileToolBar extends JToolBar {
         // not found!
         return null;
     }
+
 }
