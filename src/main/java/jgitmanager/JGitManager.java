@@ -306,31 +306,69 @@ public class JGitManager {
             // 상태 확인
             Status status = git.status().addPath(relativeFilePath).call();
 
-            FileStatus returnValue;
-
             // 파일의 상태 확인
+            FileStatus returnValue;
             if (status.getUntracked().contains(relativeFilePath)) {
-                System.out.println("Untracked file");
                 returnValue = FileStatus.UNTRACKED;
-            } else if (status.getModified().contains(relativeFilePath)) {
-                if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
-                    System.out.println("Staged & Modified file");
-                    returnValue = FileStatus.STAGED_MODIFIED;
-                } else {
-                    System.out.println("Modified file");
-                    returnValue = FileStatus.MODIFIED;
-                }
-            } else if (status.getMissing().contains(relativeFilePath) || status.getRemoved().contains(relativeFilePath)) {
-                System.out.println("Deleted file");
-                returnValue = FileStatus.DELETED;
-            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
-                System.out.println("Staged file");
+            }
+            else if (status.getModified().contains(relativeFilePath)) {
+                returnValue = FileStatus.MODIFIED;
+            }
+            else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
                 returnValue = FileStatus.STAGED;
             } else {
-                System.out.println("Unmodified file");
-                returnValue = FileStatus.UNMODIFIED;
+                returnValue = FileStatus.COMMITTED;
             }
 
+            // Git 저장소 닫기
+            git.close();
+
+            return returnValue;
+        } catch (IOException | GitAPIException | NullPointerException e) {
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
+    }
+
+    public static StagedFileStatus gitCheckStagedFileStatus(File fileToCheck) throws IOException, GitAPIException, NullPointerException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(fileToCheck);
+            if (repository == null) {
+                throw new NullPointerException("failed to open Repository from the file or directory");
+            }
+            Git git = new Git(repository);
+
+            // 파일 경로
+            String relativeFilePath;
+            relativeFilePath = extractRepositoryRelativePath(fileToCheck, repository);
+
+            // 상태 확인
+            Status status = git.status().addPath(relativeFilePath).call();
+
+            StagedFileStatus returnValue;
+
+            if(status.getAdded().contains(relativeFilePath)
+                    ||status.getChanged().contains(relativeFilePath)
+                    ||status.getRemoved().contains(relativeFilePath)
+                    ){
+                if(status.getModified().contains(relativeFilePath)
+                        ||status.getMissing().contains(relativeFilePath)){
+                        returnValue = StagedFileStatus.STAGED_MODIFIED;
+                }else if(status.getRemoved().contains(relativeFilePath)){
+                    //만약 removed 상태관련 오류난다면 여기가 유력함 잘 봐주세요
+                    returnValue=StagedFileStatus.REMOVED;
+                }else{
+                    returnValue=StagedFileStatus.STAGED;
+                }
+            }else if(status.getMissing().contains(relativeFilePath)){
+                returnValue=StagedFileStatus.REMOVED;
+            }
+            else{
+                returnValue=StagedFileStatus.NULL;
+            }
+            System.out.println(relativeFilePath+": "+returnValue.toString());
             // Git 저장소 닫기
             git.close();
 
@@ -360,9 +398,11 @@ public class JGitManager {
             // Staged File 리스트
             Set<String> stagedAdded = status.getAdded();
             Set<String> stagedChanged = status.getChanged();
+            Set<String> stagedRemoved = status.getRemoved();
             Set<String> stagedFiles = new HashSet<>();
             stagedFiles.addAll(stagedAdded);
             stagedFiles.addAll(stagedChanged);
+            stagedFiles.addAll(stagedRemoved);
 
             // Git 저장소 닫기
             git.close();
@@ -428,7 +468,7 @@ public class JGitManager {
         repositoryBuilder.setMustExist(true);
         repositoryBuilder.findGitDir(file);
 
-        if (repositoryBuilder.getGitDir() == null || !file.exists()) {
+        if (repositoryBuilder.getGitDir() == null ) {
             // not managed by git
             return "";
         } else {

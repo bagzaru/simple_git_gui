@@ -132,13 +132,13 @@ public class JGitTester {
         //System.out.println("Staged file: " + stagedFiles);
 
         // gitCheckFileStatus
-    	try {
-    		FileStatus statusNum;
-            statusNum = jGitManager.gitCheckFileStatus(new File(testFile));
-            System.out.println(statusNum);
-    	} catch (Exception e) {
-    		System.out.println("An error ocurred: " + e.toString());
-    	}
+//    	try {
+//    		FileStatus statusNum;
+//            statusNum = jGitManager.gitCheckFileStatus(new File(testFile));
+//            System.out.println(statusNum);
+//    	} catch (Exception e) {
+//    		System.out.println("An error ocurred: " + e.toString());
+//    	}
         
 
         // findGitRepository

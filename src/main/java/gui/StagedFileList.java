@@ -14,6 +14,7 @@ import java.util.Set;
 import file.SelectedFile;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
+import jgitmanager.StagedFileStatus;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class StagedFileList extends JScrollPane {
@@ -144,7 +145,7 @@ class StagedFileTableModel extends AbstractTableModel {
                     URL url = getClass().getResource(gitStatusImagePath);
                     if (url != null) {
                         ImageIcon icon = new ImageIcon(url);
-                        int cellHeight = fileSystemView.getSystemIcon(file).getIconHeight() + 6;
+                        int cellHeight = 23;
                         int cellWidth = cellHeight * 3;
                         Image image = icon.getImage();
                         Image scaledImage = image.getScaledInstance(cellWidth, cellHeight, Image.SCALE_SMOOTH);
@@ -192,49 +193,25 @@ class StagedFileTableModel extends AbstractTableModel {
     }
 
     public String getGitStatusImagePath(File file) {
-        FileStatus fileStatus;
+        StagedFileStatus stagedFileStatus;
         String imagePath;
 
-        if(file.isDirectory()) {
-            imagePath = "/git_status_icons/Folder.png";
-        }
-        else {
-            try {
-                if(JGitManager.findGitRepository(file) == 1) {
-                    fileStatus = JGitManager.gitCheckFileStatus(file);
-                }
-                else {
-                    fileStatus = FileStatus.UNTRACKED;
-                }
+        try {
+            stagedFileStatus = JGitManager.gitCheckStagedFileStatus(file);
 
-                switch (fileStatus) {
-                    case FOLDER:
-                        imagePath = "/git_status_icons/Folder.png";
-                        break;
-                    case UNTRACKED:
-                        imagePath = "/git_status_icons/Untracked.png";
-                        break;
-                    case MODIFIED:
-                        imagePath = "/git_status_icons/Modified.png";
-                        break;
-                    case STAGED_MODIFIED:
-                        imagePath = "/git_status_icons/Staged_Modified.png";
-                        break;
-                    case DELETED:
-                        imagePath = "/git_status_icons/Deleted.png";
-                        break;
-                    case STAGED:
-                        imagePath = "/git_status_icons/Staged.png";
-                        break;
-                    case UNMODIFIED:
-                        imagePath = "/git_status_icons/Committed.png";
-                        break;
-                    default:
-                        imagePath = null;
-                }
-            } catch(IOException | GitAPIException e) {
-                imagePath = null;
-            };
+            switch (stagedFileStatus) {
+                case STAGED_MODIFIED:
+                    return "/git_status_icons/Staged_Modified.png";
+                case STAGED:
+                    return "/git_status_icons/Staged.png";
+                case REMOVED:
+                    return "/git_status_icons/Deleted.png";
+                default:
+                    imagePath = null;
+
+            }
+        } catch (IOException | GitAPIException e) {
+            imagePath = null;
         }
         return imagePath;
     }

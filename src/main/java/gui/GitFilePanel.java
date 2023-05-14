@@ -38,17 +38,12 @@ public class GitFilePanel extends JPanel {
                 case MODIFIED:
                     add(new modified_fileGitMenu());
                     break;
-                case STAGED_MODIFIED:
-                    add(new modified_fileGitMenu());
-                    break;
                 case STAGED:
                     add(new staged_fileGitMenu());
                     break;
-                case UNMODIFIED:
+                case COMMITTED:
                     add(new commited_fileGitMenu());
                     break;
-                case FOLDER:
-                case DELETED:
                 default:
                     break;
             }

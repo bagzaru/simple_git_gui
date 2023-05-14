@@ -33,7 +33,7 @@ public class SelectedFile {
         selectedFile = file;
 
         if(file.isDirectory()) {
-            gitStatus = FileStatus.FOLDER;
+            gitStatus = FileStatus.DIRECTORY;
         }
         else {
             try {

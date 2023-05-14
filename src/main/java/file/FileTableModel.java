@@ -106,7 +106,7 @@ public class FileTableModel extends AbstractTableModel {
         String imagePath;
 
         if(file.isDirectory()) {
-            imagePath = "/git_status_icons/Folder.png";
+            imagePath = null;
         }
         else {
             try {
@@ -118,8 +118,8 @@ public class FileTableModel extends AbstractTableModel {
                 }
 
                 switch (fileStatus) {
-                    case FOLDER:
-                        imagePath = "/git_status_icons/Folder.png";
+                    case DIRECTORY:
+                        imagePath = null;
                         break;
                     case UNTRACKED:
                         imagePath = "/git_status_icons/Untracked.png";
@@ -127,16 +127,10 @@ public class FileTableModel extends AbstractTableModel {
                     case MODIFIED:
                         imagePath = "/git_status_icons/Modified.png";
                         break;
-                    case STAGED_MODIFIED:
-                        imagePath = "/git_status_icons/Staged_Modified.png";
-                        break;
-                    case DELETED:
-                        imagePath = "/git_status_icons/Deleted.png";
-                        break;
                     case STAGED:
                         imagePath = "/git_status_icons/Staged.png";
                         break;
-                    case UNMODIFIED:
+                    case COMMITTED:
                         imagePath = "/git_status_icons/Committed.png";
                         break;
                     default:
