@@ -186,7 +186,7 @@ public class GitGUI {
 
     public void showRootFile() {
         // ensure the main files are displayed
-        tree.setSelectionInterval(0, 0);
+        PanelRefreshUtil.refreshAll();
     }
 
     /**
@@ -259,6 +259,7 @@ public class GitGUI {
                         }
                     //}
                     setTableData(files);
+                    StagedFileList.getInstance().setStagedFileTableData();
                 }
 
                 return null;

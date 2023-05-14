@@ -15,9 +15,9 @@ public class PanelRefreshUtil {
     public static void refreshAll(){
         refreshFileTree();
         refreshFileTable();
+        refreshStagedList();
         refreshGitMenu();
         refreshGitFilePanel();
-        refreshStagedList();
     }
 
     public static DefaultMutableTreeNode lastTreeNode;
@@ -45,7 +45,8 @@ public class PanelRefreshUtil {
 
     //중앙 하단의 현재 git repo의 staged list를 새로고칩니다.
     public static void refreshStagedList(){
-        //현재 구현되어있지 않음
+        StagedFileList.getInstance().setStagedFileTableData();
+        GitGUI.gui.repaint();
     }
 
     //우측 상단의 현재 선택된 파일에 대한 깃 명령어 모음 패널을 새로고침합니다.
