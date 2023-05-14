@@ -19,6 +19,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'simplegitgui.SimpleGitGUIApplication'
+    }
+}
+
 test {
     useJUnitPlatform()
 }
