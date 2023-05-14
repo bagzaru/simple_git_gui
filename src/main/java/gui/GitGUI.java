@@ -41,6 +41,7 @@ import javax.swing.table.*;
 import javax.swing.tree.*;
 
 import file.FileTableModel;
+import file.SelectedFile;
 
 /**
  * A basic File Manager. Requires 1.6+ for the Desktop &amp; SwingWorker classes, amongst other
@@ -187,6 +188,7 @@ public class GitGUI {
     public void showRootFile() {
         // ensure the main files are displayed
         PanelRefreshUtil.refreshAll();
+        SelectedFile.getInstance().setFile((File)PanelRefreshUtil.lastTreeNode.getUserObject());
     }
 
     /**
