@@ -79,8 +79,9 @@ public class FileTableModel extends AbstractTableModel {
                 return Date.class;
             case 4:
                 return ImageIcon.class;
+            default:
+                return String.class;
         }
-        return String.class;
     }
 
     public String getColumnName(int column) {
@@ -105,7 +106,7 @@ public class FileTableModel extends AbstractTableModel {
         String imagePath;
 
         if(file.isDirectory()) {
-            imagePath = null;
+            imagePath = "/git_status_icons/Folder.png";
         }
         else {
             try {
@@ -118,7 +119,7 @@ public class FileTableModel extends AbstractTableModel {
 
                 switch (fileStatus) {
                     case FOLDER:
-                        imagePath = null;
+                        imagePath = "/git_status_icons/Folder.png";
                         break;
                     case UNTRACKED:
                         imagePath = "/git_status_icons/Untracked.png";

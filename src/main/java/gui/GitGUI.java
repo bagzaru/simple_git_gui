@@ -213,9 +213,9 @@ public class GitGUI {
                     Table.getInstance().setRowHeight(icon.getIconHeight() + rowIconPadding);
 
                     setColumnWidth(0, -1);
-                    setColumnWidth(2, 60);
-                    Table.getInstance().getColumnModel().getColumn(2).setMaxWidth(120);
+                    setColumnWidth(2, -1);
                     setColumnWidth(3, -1);
+                    setColumnWidth(4, Table.getInstance().getRowHeight() * 3 + 5);
 
                     cellSizesSet = true;
                 }

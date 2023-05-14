@@ -7,6 +7,7 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,10 +56,11 @@ public class StagedFileList extends JScrollPane {
 
                 stagedFileTableModel.setFiles(files);
                 if (!cellSizesSet) {
-                    table.setRowHeight(30);
-                    setColumnWidth(0,100);
-                    setColumnWidth(1,100);
-                    //setColumnWidth(2,60);
+                    table.setRowHeight(23);
+
+                    setColumnWidth(0, 100);
+                    table.getColumnModel().getColumn(0).setMaxWidth(200);
+                    setColumnWidth(1, table.getRowHeight() * 3 + 5);
 
                     cellSizesSet = true;
                 }
@@ -137,7 +139,20 @@ class StagedFileTableModel extends AbstractTableModel {
             case 0:
                 return fileSystemView.getSystemDisplayName(file);
             case 1:
-                return gitStatus(file);
+                String gitStatusImagePath = getGitStatusImagePath(file);
+                if (gitStatusImagePath != null) {
+                    URL url = getClass().getResource(gitStatusImagePath);
+                    if (url != null) {
+                        ImageIcon icon = new ImageIcon(url);
+                        int cellHeight = fileSystemView.getSystemIcon(file).getIconHeight() + 6;
+                        int cellWidth = cellHeight * 3;
+                        Image image = icon.getImage();
+                        Image scaledImage = image.getScaledInstance(cellWidth, cellHeight, Image.SCALE_SMOOTH);
+                        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+                        return scaledIcon;
+                    }
+                }
+                return null;
             case 2:
                 return file.getPath();
             default:
@@ -151,7 +166,12 @@ class StagedFileTableModel extends AbstractTableModel {
     }
 
     public Class<?> getColumnClass(int column) {
-        return String.class;
+        switch(column) {
+            case 1:
+                return ImageIcon.class;
+            default:
+                return String.class;
+        }
     }
 
     public String getColumnName(int column) {
@@ -171,40 +191,51 @@ class StagedFileTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public String gitStatus(File file) {
+    public String getGitStatusImagePath(File file) {
         FileStatus fileStatus;
+        String imagePath;
 
-        try {
-            if(JGitManager.findGitRepository(file) == 1) {
-                fileStatus = JGitManager.gitCheckFileStatus(file);
-            }
-            else {
-                fileStatus = FileStatus.UNTRACKED;
-            }
-//            return "Staged";
+        if(file.isDirectory()) {
+            imagePath = "/git_status_icons/Folder.png";
+        }
+        else {
+            try {
+                if(JGitManager.findGitRepository(file) == 1) {
+                    fileStatus = JGitManager.gitCheckFileStatus(file);
+                }
+                else {
+                    fileStatus = FileStatus.UNTRACKED;
+                }
 
-            switch (fileStatus) {
-                case FOLDER:
-                    return "";
-                case UNTRACKED:
-                    return "Untracked";
-                case MODIFIED:
-                    return "Modified";
-                case STAGED_MODIFIED:
-                    return "Staged & Modified";
-                case DELETED:
-                    return "Deleted";
-                case STAGED:
-                    return "Staged";
-                case UNMODIFIED:
-                    return "Unmodified(committed)";
-                default:
-                    return "UNKNOWN FILE";
-            }
-
-        } catch(IOException | GitAPIException e) {
-        };
-
-        return "UNKNOWN FILE";
+                switch (fileStatus) {
+                    case FOLDER:
+                        imagePath = "/git_status_icons/Folder.png";
+                        break;
+                    case UNTRACKED:
+                        imagePath = "/git_status_icons/Untracked.png";
+                        break;
+                    case MODIFIED:
+                        imagePath = "/git_status_icons/Modified.png";
+                        break;
+                    case STAGED_MODIFIED:
+                        imagePath = "/git_status_icons/Staged_Modified.png";
+                        break;
+                    case DELETED:
+                        imagePath = "/git_status_icons/Deleted.png";
+                        break;
+                    case STAGED:
+                        imagePath = "/git_status_icons/Staged.png";
+                        break;
+                    case UNMODIFIED:
+                        imagePath = "/git_status_icons/Committed.png";
+                        break;
+                    default:
+                        imagePath = null;
+                }
+            } catch(IOException | GitAPIException e) {
+                imagePath = null;
+            };
+        }
+        return imagePath;
     }
 }
