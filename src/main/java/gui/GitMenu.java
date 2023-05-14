@@ -9,6 +9,7 @@ import file.SelectedFile;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import jgitmanager.*;
@@ -32,14 +33,20 @@ public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 
         setPreferredSize(new Dimension(300, 200));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
+        //git repo가 아닐 때만 init합니다.
+        File selected = SelectedFile.getInstance().getFile();
+        if(JGitManager.findGitRepository(selected)!=0){
+            commit_button commit_button=new commit_button();//commit button 추가
+            commit_button.setBounds(0, 100, 100, 30);
+            add(commit_button);
+        }
+        else{
+            //git repo가 아닌 경우
+            init_button init_button=new init_button();//init button 추가
+            init_button.setBounds(0, 0, 100, 30);
+            add(init_button);
+        }
 
-        commit_button commit_button=new commit_button();//commit button 추가
-        commit_button.setBounds(0, 100, 100, 30);
-        add(commit_button);
-
-        init_button init_button=new init_button();//init button 추가
-        init_button.setBounds(0, 0, 100, 30);
-        add(init_button);
 
     }
 }
