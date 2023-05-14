@@ -30,7 +30,13 @@ public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 
 
     public void UpdateMenu(){
         removeAll();
-        setPreferredSize(new Dimension(300, 200));
+        //setPreferredSize(new Dimension(300, 200));
+
+        //test
+        //setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
+       // add(Box.createHorizontalGlue());
+
+        //테두리 표시
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         //git repo가 아닐 때만 init합니다.

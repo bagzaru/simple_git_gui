@@ -8,6 +8,7 @@ import gitmenu.untracked_fileGitMenu;
 import jgitmanager.*;
 
 import javax.swing.*;
+import java.awt.*;
 
 //GitFilePanel: 우측 깃 패널 중 위쪽에 나오는 버튼 관련 패널
 
@@ -27,10 +28,10 @@ public class GitFilePanel extends JPanel {
 
     public void UpdatePanel() {
         removeAll();
+        setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+        setLayout(new GridLayout(1,1));
         if (JGitManager.findGitRepository(SelectedFile.getInstance().getFile()) == 1) {
             switch (SelectedFile.getInstance().getGitStatus()) {
-                case FOLDER:
-                    break;
                 case UNTRACKED:
                     add(new untracked_fileGitMenu());
                     break;
@@ -46,8 +47,8 @@ public class GitFilePanel extends JPanel {
                 case UNMODIFIED:
                     add(new commited_fileGitMenu());
                     break;
+                case FOLDER:
                 case DELETED:
-                    break;
                 default:
                     break;
             }
