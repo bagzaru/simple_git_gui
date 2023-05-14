@@ -1,19 +1,28 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import file.FileTableModel;
 import file.SelectedFile;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
+import jgitmanager.JGitTester;
 import jgitmanager.StagedFileStatus;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -24,6 +33,9 @@ public class StagedFileList extends JScrollPane {
     private StagedFileTableModel stagedFileTableModel;
     boolean cellSizesSet = false;
 
+    public static File selectedStagedFile;
+    public static JPanel confirmPanel;
+
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
     public StagedFileList() {
@@ -32,6 +44,42 @@ public class StagedFileList extends JScrollPane {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
+
+        //더블클릭으로 Restore를 실행
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    try {
+                        //1. selectedFile을 갱신해줍니다.
+                        int row = table.getSelectionModel().getLeadSelectionIndex();
+                        selectedStagedFile=((StagedFileTableModel) table.getModel()).getFile(row);
+                        //2. 확인창을 띄웁니다.
+                        if(selectedStagedFile!=null){
+                            if (confirmPanel == null) {
+                            confirmPanel = new JPanel(new BorderLayout(3, 3));
+                            confirmPanel.add(new JLabel("Do you really want to unstage this file?"), BorderLayout.WEST);
+                        }
+                            int result = JOptionPane.showConfirmDialog(GitGUI.gui,confirmPanel,
+                                    "Unstage file", JOptionPane.OK_CANCEL_OPTION);
+                            if (result == JOptionPane.OK_OPTION) {
+                                try {
+                                    //해당 파일을 unstage
+                                    JGitManager.gitRestoreStaged(selectedStagedFile);
+                                    PanelRefreshUtil.refreshAll();
+                                } catch (Throwable t) {
+                                    System.out.println("error ocurred");
+                                }
+                            }
+                        }
+
+                    } catch (Exception exception) {
+                        System.out.println("Something error occurred while mouseDoubleClick Event:" + exception.getMessage());
+                    }
+
+                }
+            }
+        });
 
         this.setViewportView(table);
         Dimension d = getPreferredSize();
@@ -121,7 +169,7 @@ class StagedFileTableModel extends AbstractTableModel {
     private File[] stagedFiles;
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
     private String[] columns = {
-            "File",
+            "Staged File",
             "File Status",
             "Path"
     };
