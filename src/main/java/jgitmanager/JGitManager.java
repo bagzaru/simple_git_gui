@@ -391,6 +391,34 @@ public class JGitManager {
             return 0;
         }
     }
+    public static String findGitRepositoryName(File folder) {
+        // Git 경로 찾기
+        FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+        repositoryBuilder.setMustExist(true);
+        repositoryBuilder.findGitDir(folder);
+
+        if (repositoryBuilder.getGitDir() != null) {
+            // managed by git
+            return repositoryBuilder.getGitDir().getParentFile().getName();
+        } else {
+            // not managed by git
+            return "";
+        }
+    }
+    public static String findGitRepositoryRelativePath(File folder) {
+        // Git 경로 찾기
+        try{
+            Repository repo = openRepositoryFromFile(folder);
+            if(repo==null){
+                return "";
+            }
+            return extractRepositoryRelativePath(folder,repo);
+
+        }catch(Exception e){
+            return "";
+        }
+
+    }
 
     //file 또는 dir을 입력받아, 해당 repo를 관리하는 .git 파일의 절대경로를 반환합니다.
     //반환값은 "...//.git"이 됩니다.

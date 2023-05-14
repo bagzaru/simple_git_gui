@@ -20,8 +20,8 @@ import file.SelectedFile;
 //패널 클래스
 public class untracked_fileGitMenu extends JPanel {//untracked파일 패널
     public untracked_fileGitMenu(){
-        setPreferredSize(new Dimension(300, 150));
-        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        //setPreferredSize(new Dimension(300, 150));
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         JLabel titleLabel=new JLabel("UNTRACKED");
         titleLabel.setForeground(Color.BLACK);
         add(titleLabel);

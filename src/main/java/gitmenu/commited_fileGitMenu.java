@@ -19,8 +19,8 @@ import jgitmanager.*;
 
 public class commited_fileGitMenu extends JPanel{
     public commited_fileGitMenu(){
-        setPreferredSize(new Dimension(300, 150));
-        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        //setPreferredSize(new Dimension(300, 150));
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         JLabel titleLabel=new JLabel("COMMITED");
         titleLabel.setForeground(Color.BLACK);
         add(titleLabel);

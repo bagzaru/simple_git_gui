@@ -23,11 +23,8 @@ SOFTWARE.
  */
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 
-import java.awt.Image;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -154,15 +151,20 @@ public class GitGUI {
             filePanel.add(fileManage, BorderLayout.CENTER);
             filePanel.add(StagedFileList.getInstance(), BorderLayout.SOUTH);
 
-            //JPanel gitMenuPanel = new JPanel(new FlowLayout());// 임시
-            //gitMenuPanel: 우측 git 명령어 패널
-            JPanel gitMenuPanel = new JPanel(new BorderLayout(3, 3));
+            //깃 폴더 관리 패널(우하단)
+            //JPanel gitRepoPanel = new JPanel(new BorderLayout(3,3));
+            JPanel gitRepoPanel = new JPanel();
+            gitRepoPanel.setLayout(new GridLayout(2,1));
+            gitRepoPanel.add(GitRepositoryStatusPanel.getInstance());
+            gitRepoPanel.add(GitMenu.getInstance());
 
-            gitMenuPanel.add(GitFilePanel.getInstance(), BorderLayout.CENTER);
-            gitMenuPanel.add(GitMenu.getInstance(), BorderLayout.SOUTH);
+            //gitMenuPanel: (우측 전체) git 명령어 관련 패널
+            JPanel gitMenuPanel = new JPanel(new GridLayout(2, 1));
+            gitMenuPanel.add(GitFilePanel.getInstance());
+             gitMenuPanel.add(gitRepoPanel);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
 
-            //파일트리 제외한 우측 부분
+            //파일트리 제외한 중앙 및 우측 부분
             JPanel gitPanel = new JPanel(new BorderLayout(3, 3));
             gitPanel.add(filePanel, BorderLayout.CENTER);
             gitPanel.add(gitMenuPanel, BorderLayout.EAST);
