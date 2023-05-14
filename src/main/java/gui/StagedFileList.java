@@ -71,9 +71,9 @@ public class StagedFileList extends JScrollPane {
     private File[] getStagedFile() {
         Set<String> stagedFileSet;
         File[] stagedFiles;
+        File selectedFile = SelectedFile.getInstance().getFile();
 
         try {
-            File selectedFile = SelectedFile.getInstance().getFile();
             if(selectedFile != null) {
                 stagedFileSet = JGitManager.gitStagedList(selectedFile);
             } else {
@@ -89,7 +89,10 @@ public class StagedFileList extends JScrollPane {
 
         int i = 0;
         for(String filePath : stagedFileSet) {
-            stagedFiles[i] = new File(filePath);
+            //filePath가 repo 기준 상대경로이므로, 다시확인
+            String dotGit = JGitManager.getRepositoryAbsolutePath(selectedFile);
+            File repo = (new File(dotGit)).getParentFile();
+            stagedFiles[i] = new File(repo,filePath);
             i++;
         }
 
@@ -178,8 +181,8 @@ class StagedFileTableModel extends AbstractTableModel {
             else {
                 fileStatus = FileStatus.UNTRACKED;
             }
-            return "Staged";
-            /*
+//            return "Staged";
+
             switch (fileStatus) {
                 case FOLDER:
                     return "";
@@ -198,7 +201,7 @@ class StagedFileTableModel extends AbstractTableModel {
                 default:
                     return "UNKNOWN FILE";
             }
-            */
+
         } catch(IOException | GitAPIException e) {
         };
 
