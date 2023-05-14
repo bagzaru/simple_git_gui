@@ -72,6 +72,9 @@ java -jar simple_git_gui-1.0-all.jar
 
 ![./img/210043.png](./img/210043.png)
 
+중앙 상단의 테이블에서 파일의 상태를 볼 수 있습니다.
+우측 상단의 패널로 각 상태에 맞는 명령을 실행할 수 있습니다.
+
 - Committed: 파일이 마지막 Commit의 상태와 동일함을 나타냅니다.
 - Modified: 파일이 Git에서 관리하고 있는 내용과 다름을 의미합니다.
 - Staged: 파일의 변경 사항이 Stage되었고, Staged 파일과 로컬 파일의 내용이 동일함을 의미합니다.
@@ -81,7 +84,8 @@ java -jar simple_git_gui-1.0-all.jar
 
 ![./img/223227.png](./img/223227.png)
 
-Staged 상태인 파일들을 나타냅니다.
+중앙 하단 테이블에서는 Staged 상태인 파일들을 나타냅니다.
+더블클릭으로 Staged 상태인 파일은 Unstage할 수 있습니다.
 
 - Staged(Green): Staged 파일과 실제 존재하는 파일의 내용이 같습니다.
 - Staged(Yellow): 파일이 Staged 상태이지만, 실제 로컬 저장소의 파일과 내용이 다릅니다. (수정, 삭제 등)
