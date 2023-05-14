@@ -21,7 +21,8 @@ public class JGitManager {
     //path에 git-Init을 실행합니다.
     public static void gitInit(File path) throws GitAPIException {
         // 디렉토리 생성 및 git init
-        try (Git git = Git.init().setDirectory(path).call()) {}
+        try (Git git = Git.init().setDirectory(path).call()) {
+        }
     }
 
     //gitRestore:
@@ -68,9 +69,17 @@ public class JGitManager {
         }
 
         //git reset HEAD <staged file>
+
         try (Git git = new Git(repository)) {
-            git.reset().setRef("HEAD").addPath(relativeFilePath).call();
+            try {
+                git.reset().setRef("HEAD").addPath(relativeFilePath).call();
+            } catch (Exception e) {
+                //HEAD가 없으면 오류가 난다.
+                git.reset().addPath(relativeFilePath).call();
+                System.out.println("HEAD 없다!!");
+            }
         }
+
 
     }
 
@@ -281,7 +290,7 @@ public class JGitManager {
             git.close();
 
             System.out.println("commit success");
-        } catch (IOException | GitAPIException |NullPointerException e) {
+        } catch (IOException | GitAPIException | NullPointerException e) {
             e.printStackTrace();
             // 예외 발생
             throw e;
@@ -310,11 +319,9 @@ public class JGitManager {
             FileStatus returnValue;
             if (status.getUntracked().contains(relativeFilePath)) {
                 returnValue = FileStatus.UNTRACKED;
-            }
-            else if (status.getModified().contains(relativeFilePath)) {
+            } else if (status.getModified().contains(relativeFilePath)) {
                 returnValue = FileStatus.MODIFIED;
-            }
-            else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
                 returnValue = FileStatus.STAGED;
             } else {
                 returnValue = FileStatus.COMMITTED;
@@ -349,26 +356,25 @@ public class JGitManager {
 
             StagedFileStatus returnValue;
 
-            if(status.getAdded().contains(relativeFilePath)
-                    ||status.getChanged().contains(relativeFilePath)
-                    ||status.getRemoved().contains(relativeFilePath)
-                    ){
-                if(status.getModified().contains(relativeFilePath)
-                        ||status.getMissing().contains(relativeFilePath)){
-                        returnValue = StagedFileStatus.STAGED_MODIFIED;
-                }else if(status.getRemoved().contains(relativeFilePath)){
+            if (status.getAdded().contains(relativeFilePath)
+                    || status.getChanged().contains(relativeFilePath)
+                    || status.getRemoved().contains(relativeFilePath)
+            ) {
+                if (status.getModified().contains(relativeFilePath)
+                        || status.getMissing().contains(relativeFilePath)) {
+                    returnValue = StagedFileStatus.STAGED_MODIFIED;
+                } else if (status.getRemoved().contains(relativeFilePath)) {
                     //만약 removed 상태관련 오류난다면 여기가 유력함 잘 봐주세요
-                    returnValue=StagedFileStatus.REMOVED;
-                }else{
-                    returnValue=StagedFileStatus.STAGED;
+                    returnValue = StagedFileStatus.REMOVED;
+                } else {
+                    returnValue = StagedFileStatus.STAGED;
                 }
-            }else if(status.getMissing().contains(relativeFilePath)){
-                returnValue=StagedFileStatus.REMOVED;
+            } else if (status.getMissing().contains(relativeFilePath)) {
+                returnValue = StagedFileStatus.REMOVED;
+            } else {
+                returnValue = StagedFileStatus.NULL;
             }
-            else{
-                returnValue=StagedFileStatus.NULL;
-            }
-            System.out.println(relativeFilePath+": "+returnValue.toString());
+            System.out.println(relativeFilePath + ": " + returnValue.toString());
             // Git 저장소 닫기
             git.close();
 
@@ -431,6 +437,7 @@ public class JGitManager {
             return 0;
         }
     }
+
     public static String findGitRepositoryName(File folder) {
         // Git 경로 찾기
         FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
@@ -445,16 +452,17 @@ public class JGitManager {
             return "";
         }
     }
+
     public static String findGitRepositoryRelativePath(File folder) {
         // Git 경로 찾기
-        try{
+        try {
             Repository repo = openRepositoryFromFile(folder);
-            if(repo==null){
+            if (repo == null) {
                 return "";
             }
-            return extractRepositoryRelativePath(folder,repo);
+            return extractRepositoryRelativePath(folder, repo);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return "";
         }
 
@@ -468,7 +476,7 @@ public class JGitManager {
         repositoryBuilder.setMustExist(true);
         repositoryBuilder.findGitDir(file);
 
-        if (repositoryBuilder.getGitDir() == null ) {
+        if (repositoryBuilder.getGitDir() == null) {
             // not managed by git
             return "";
         } else {
