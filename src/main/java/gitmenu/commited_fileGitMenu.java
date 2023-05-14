@@ -74,6 +74,8 @@ class commit_delete_button extends JButton{
                 
                 try {
                     JGitManager.gitRm(SelectedFile.getInstance().getFile());
+                    SelectedFile.getInstance().setFile(SelectedFile.getInstance().getFile().getParentFile());
+
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();

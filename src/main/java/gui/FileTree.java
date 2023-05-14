@@ -89,6 +89,8 @@ public class FileTree extends JScrollPane {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
             PanelRefreshUtil.lastTreeNode=node;
+            PanelRefreshUtil.currentDirectory=(File)node.getUserObject();
+
             //showChildren(node);
             //
             File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);

@@ -43,11 +43,11 @@ public class FileToolBar extends JToolBar {
         openFile = new JButton("Open");
         openFile.setMnemonic('o');
 
-        openFile.addActionListener(new ActionListener(){
+        openFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     desktop.open(selectedFile.getFile());
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     showThrowable(t);
                 }
                 GitGUI.gui.repaint();
@@ -60,7 +60,7 @@ public class FileToolBar extends JToolBar {
 
         newFile = new JButton("New");
         newFile.setMnemonic('n');
-        newFile.addActionListener(new ActionListener(){
+        newFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 newFile();
             }
@@ -69,7 +69,7 @@ public class FileToolBar extends JToolBar {
 
         deleteFile = new JButton("Delete");
         deleteFile.setMnemonic('d');
-        deleteFile.addActionListener(new ActionListener(){
+        deleteFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 deleteFile();
             }
@@ -78,7 +78,7 @@ public class FileToolBar extends JToolBar {
 
         renameFile = new JButton("Rename");
         renameFile.setMnemonic('r');
-        renameFile.addActionListener(new ActionListener(){
+        renameFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 renameFile();
             }
@@ -87,7 +87,7 @@ public class FileToolBar extends JToolBar {
 
         copyFile = new JButton("Copy");
         copyFile.setMnemonic('c');
-        copyFile.addActionListener(new ActionListener(){
+        copyFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 showErrorMessage("'Copy' not implemented.", "Not implemented.");
             }
@@ -96,8 +96,8 @@ public class FileToolBar extends JToolBar {
 
         // refreshButton
         refreshButton = new JButton("Refresh");
-        refreshButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent ae){
+        refreshButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 refreshButton();
             }
         });
@@ -106,14 +106,14 @@ public class FileToolBar extends JToolBar {
 
     private void newFile() {
         if (selectedFile.getFile() == null) {
-            showErrorMessage("No location selected for new file.","Select Location");
+            showErrorMessage("No location selected for new file.", "Select Location");
             return;
         }
 
-        if (newFilePanel==null) {
-            newFilePanel = new JPanel(new BorderLayout(3,3));
+        if (newFilePanel == null) {
+            newFilePanel = new JPanel(new BorderLayout(3, 3));
 
-            JPanel southRadio = new JPanel(new GridLayout(1,0,2,2));
+            JPanel southRadio = new JPanel(new GridLayout(1, 0, 2, 2));
             newTypeFile = new JRadioButton("File", true);
             JRadioButton newTypeDirectory = new JRadioButton("Directory");
             ButtonGroup bg = new ButtonGroup();
@@ -134,31 +134,28 @@ public class FileToolBar extends JToolBar {
                 newFilePanel,
                 "Create File",
                 JOptionPane.OK_CANCEL_OPTION);
-        if (result==JOptionPane.OK_OPTION) {
+        if (result == JOptionPane.OK_OPTION) {
             try {
                 boolean created;
                 File parentFile = selectedFile.getFile();
                 if (!parentFile.isDirectory()) {
                     parentFile = parentFile.getParentFile();
                 }
-                File file = new File( parentFile, name.getText() );
+                File file = new File(parentFile, name.getText());
                 if (newTypeFile.isSelected()) {
                     created = file.createNewFile();
                 } else {
                     created = file.mkdir();
                 }
                 if (created) {
-                    if (file.isDirectory()) {
-                        // add the new node..
-                        PanelRefreshUtil.refreshAll();
-                    }
+                    PanelRefreshUtil.refreshAll();
                 } else {
                     String msg = "The file '" +
                             file +
                             "' could not be created. (it might exist)";
                     showErrorMessage(msg, "Create Failed");
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 showThrowable(t);
             }
         }
@@ -166,8 +163,9 @@ public class FileToolBar extends JToolBar {
     }
 
     private void deleteFile() {
-        if (selectedFile.getFile() == null) {
-            showErrorMessage("No file selected for deletion.","Select File");
+        if (selectedFile.getFile() == null
+                || selectedFile.getFile().getAbsolutePath().equals(PanelRefreshUtil.currentDirectory.getAbsolutePath())) {
+            showErrorMessage("No file selected for deletion.", "Select File");
             return;
         }
 
@@ -177,33 +175,19 @@ public class FileToolBar extends JToolBar {
                 "Delete File",
                 JOptionPane.ERROR_MESSAGE
         );
-        if (result==JOptionPane.OK_OPTION) {
+        if (result == JOptionPane.OK_OPTION) {
             try {
                 System.out.println("currentFile: " + selectedFile.getFile());
-                TreePath parentPath = findTreePath(selectedFile.getFile().getParentFile());
-                System.out.println("parentPath: " + parentPath);
-                DefaultMutableTreeNode parentNode =
-                        (DefaultMutableTreeNode)parentPath.getLastPathComponent();
-                System.out.println("parentNode: " + parentNode);
 
                 boolean directory = selectedFile.getFile().isDirectory();
                 if (FileUtils.deleteQuietly(selectedFile.getFile())) {
-                    if (directory) {
-                        // delete the node..
-                        TreePath currentPath = findTreePath(selectedFile.getFile());
-                        System.out.println(currentPath);
-                        DefaultMutableTreeNode currentNode =
-                                (DefaultMutableTreeNode) currentPath.getLastPathComponent();
-
-                        GitGUI.treeModel.removeNodeFromParent(currentNode);
-                    }
-
-                    GitGUI.showChildren(parentNode);
+                    SelectedFile.getInstance().setFile(SelectedFile.getInstance().getFile().getParentFile());
+                    PanelRefreshUtil.refreshAll();
                 } else {
                     String msg = "The file '" + selectedFile.getFile() + "' could not be deleted.";
                     showErrorMessage(msg, "Delete Failed");
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 showThrowable(t);
             }
         }
@@ -212,17 +196,17 @@ public class FileToolBar extends JToolBar {
 
     private void renameFile() {
         if (selectedFile.getFile() == null) {
-            showErrorMessage("No file selected to rename.","Select File");
+            showErrorMessage("No file selected to rename.", "Select File");
             return;
         }
 
         String renameTo = JOptionPane.showInputDialog(GitGUI.gui, "New Name");
-        if (renameTo!=null) {
+        if (renameTo != null) {
             try {
                 boolean directory = selectedFile.getFile().isDirectory();
                 TreePath parentPath = findTreePath(selectedFile.getFile().getParentFile());
                 DefaultMutableTreeNode parentNode =
-                        (DefaultMutableTreeNode)parentPath.getLastPathComponent();
+                        (DefaultMutableTreeNode) parentPath.getLastPathComponent();
 
                 boolean renamed = selectedFile.getFile().renameTo(new File(
                         selectedFile.getFile().getParentFile(), renameTo));
@@ -234,7 +218,7 @@ public class FileToolBar extends JToolBar {
                         TreePath currentPath = findTreePath(selectedFile.getFile());
                         System.out.println(currentPath);
                         DefaultMutableTreeNode currentNode =
-                                (DefaultMutableTreeNode)currentPath.getLastPathComponent();
+                                (DefaultMutableTreeNode) currentPath.getLastPathComponent();
 
                         GitGUI.treeModel.removeNodeFromParent(currentNode);
 
@@ -246,9 +230,9 @@ public class FileToolBar extends JToolBar {
                     String msg = "The file '" +
                             selectedFile.getFile() +
                             "' could not be renamed.";
-                    showErrorMessage(msg,"Rename Failed");
+                    showErrorMessage(msg, "Rename Failed");
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 showThrowable(t);
             }
         }
@@ -309,11 +293,11 @@ public class FileToolBar extends JToolBar {
     }
 
     private TreePath findTreePath(File find) {
-        for (int ii=0; ii<Tree.getInstance().getRowCount(); ii++) {
+        for (int ii = 0; ii < Tree.getInstance().getRowCount(); ii++) {
             TreePath treePath = Tree.getInstance().getPathForRow(ii);
             Object object = treePath.getLastPathComponent();
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode)object;
-            File nodeFile = (File)node.getUserObject();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) object;
+            File nodeFile = (File) node.getUserObject();
 
             if (nodeFile.equals(find)) {
                 return treePath;
