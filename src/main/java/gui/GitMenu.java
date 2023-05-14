@@ -69,6 +69,11 @@ class commit_button extends JButton{
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 String commitMessage=commit_message_box.show_message_dialog();//->입력받은 커밋 스트링
+
+                if(commitMessage==null){
+                    System.out.println("commit canceled");
+                    return;
+                }
                 try {
                     JGitManager.gitDoCommit(SelectedFile.getInstance().getFile(),commitMessage);
                 } catch (IOException e1) {
