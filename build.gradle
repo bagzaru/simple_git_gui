@@ -1,6 +1,19 @@
+buildscript {
+
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman:shadow:8.1.1'
+    }
+}
 plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
 
 group = 'kr.ac.cau.OSS23'
 version = '0.0-alpha'
@@ -21,4 +34,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jar{
+    finalizedBy shadowJar
+    manifest{
+        attributes 'Main-Class': 'simplegitgui.SimpleGitGUIApplication'
+    }
 }
