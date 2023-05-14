@@ -155,7 +155,11 @@ class StagedFileTableModel extends AbstractTableModel {
                 }
                 return null;
             case 2:
-                return file.getPath();
+                String path = "/";
+                path += JGitManager.findGitRepositoryName(file);
+                path += "/";
+                path += JGitManager.findGitRepositoryRelativePath(file);
+                return path;
             default:
                 System.err.println("Logic Error");
         }
@@ -205,7 +209,7 @@ class StagedFileTableModel extends AbstractTableModel {
                 case STAGED:
                     return "/git_status_icons/Staged.png";
                 case REMOVED:
-                    return "/git_status_icons/Deleted.png";
+                    return "/git_status_icons/Removed.png";
                 default:
                     imagePath = null;
 
