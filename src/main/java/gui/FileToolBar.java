@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import jgitmanager.JGitManager;
 import org.apache.commons.io.FileUtils;
 
 import file.SelectedFile;
@@ -28,6 +29,8 @@ public class FileToolBar extends JToolBar {
     private JButton copyFile;
     // 새로고침 버튼
     private JButton refreshButton;
+    // StageAll 버튼
+    private JButton stageAllButton;
 
     /* GUI options/containers for new File/Directory creation.  Created lazily. */
     private JPanel newFilePanel;
@@ -93,6 +96,16 @@ public class FileToolBar extends JToolBar {
 //            }
 //        });
 //        add(copyFile);
+
+        //stageAllButton
+        stageAllButton = new JButton("StageAll");
+        stageAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                stageAll();
+            }
+        });
+        add(stageAllButton);
 
         // refreshButton
         refreshButton = new JButton("Refresh");
@@ -269,6 +282,18 @@ public class FileToolBar extends JToolBar {
     }
 
     public static void refreshButton() {
+        PanelRefreshUtil.refreshAll();
+    }
+
+    public static void stageAll() {
+        try {
+            JGitManager.gitAddAll(SelectedFile.getInstance().getFile());
+        } catch (Exception e) {
+            JPanel errorPanel = new JPanel(new BorderLayout(3, 3));
+            errorPanel.add(new JLabel("Error: " + e.getMessage()), BorderLayout.WEST);
+            JOptionPane.showConfirmDialog(GitGUI.gui, errorPanel,"Error",JOptionPane.OK_OPTION);
+            System.out.println("Toolbar: stageAll failed: " + e.toString() + ": " + e.getMessage());
+        }
         PanelRefreshUtil.refreshAll();
     }
 

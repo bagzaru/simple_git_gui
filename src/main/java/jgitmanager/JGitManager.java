@@ -266,6 +266,29 @@ public class JGitManager {
         }
     }
 
+    public static void gitAddAll(File fileToAdd) throws IOException, GitAPIException, NullPointerException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(fileToAdd);
+            if(repository==null){
+                throw new NullPointerException("Git repository가 아닙니다.");
+            }
+            Git git = new Git(repository);
+
+            // 파일 추가
+            git.add().setUpdate(true).addFilepattern(".").call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("addAll success");
+        } catch (IOException | GitAPIException | NullPointerException e) {
+            //e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
+    }
+
     // gitDoCommit:
     // commit을 실행함
     // success: 1 / fail: 0
@@ -320,8 +343,8 @@ public class JGitManager {
             if (status.getUntracked().contains(relativeFilePath)) {
                 returnValue = FileStatus.UNTRACKED;
             } else if (status.getModified().contains(relativeFilePath)) {
-                    returnValue = FileStatus.MODIFIED;
-            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)||status.getRemoved().contains(relativeFilePath)) {
+                returnValue = FileStatus.MODIFIED;
+            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath) || status.getRemoved().contains(relativeFilePath)) {
                 returnValue = FileStatus.STAGED;
             } else {
                 returnValue = FileStatus.COMMITTED;
@@ -356,17 +379,14 @@ public class JGitManager {
 
             StagedFileStatus returnValue;
 
-            if(status.getAdded().contains(relativeFilePath)){
-                returnValue=StagedFileStatus.ADDED;
-            }
-            else if(status.getChanged().contains(relativeFilePath)){
-                returnValue=StagedFileStatus.STAGED;
-            }
-            else if(status.getRemoved().contains(relativeFilePath)){
-                returnValue=StagedFileStatus.DELETED;
-            }
-            else{
-                returnValue=StagedFileStatus.NULL;
+            if (status.getAdded().contains(relativeFilePath)) {
+                returnValue = StagedFileStatus.ADDED;
+            } else if (status.getChanged().contains(relativeFilePath)) {
+                returnValue = StagedFileStatus.STAGED;
+            } else if (status.getRemoved().contains(relativeFilePath)) {
+                returnValue = StagedFileStatus.DELETED;
+            } else {
+                returnValue = StagedFileStatus.NULL;
             }
             //System.out.println(relativeFilePath + ": " + returnValue.toString());
             // Git 저장소 닫기
@@ -382,7 +402,7 @@ public class JGitManager {
 
     // gitStagedList:
     // Staged된 파일 리스트
-    // return : Set<String> 
+    // return : Set<String>
     public static Set<String> gitStagedList(File dir) throws IOException, GitAPIException, NullPointerException {
         try {
             // Git 저장소 열기
