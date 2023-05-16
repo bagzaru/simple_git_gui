@@ -42,7 +42,7 @@ java -jar simple_git_gui-1.1-all.jar
 
 - 좌측 패널에서 파일과 디렉토리를 클릭을 통해 탐색할 수 있습니다.
 
-[중앙 상단 패널]
+[중앙 상단 패널(]
 
 - Current Directory에서는 현재 폴더 내의 파일과 폴더를 탐색할 수 있습니다.
 - 각 파일의 Git status를 아이콘을 통해 확인할 수 있습니다.
@@ -50,9 +50,10 @@ java -jar simple_git_gui-1.1-all.jar
 [중앙 툴바]
 
 - 파일의 실행, 생성, 삭제를 할 수 있습니다.
+- StageAll 버튼을 누르면 현재 Git Repository의 변경사항을 모두 Stage할 수 있습니다. (git add .)
 - Refresh 버튼을 누르면 파일 브라우저 외부에서 일어난 일들도 새로고침 할 수 있습니다.
 
-[중앙 하단 패널]
+[중앙 하단 패널(Staged List)]
 
 - Staged List에서는 현재 Git에 staged된 파일 목록을 확인할 수 있습니다.
 
