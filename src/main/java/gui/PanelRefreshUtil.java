@@ -18,6 +18,7 @@ public class PanelRefreshUtil {
         refreshStagedList();
         refreshGitMenu();
         refreshGitFilePanel();
+        refreshGitRepoStatusPanel();
     }
 
     public static DefaultMutableTreeNode lastTreeNode;
@@ -60,6 +61,17 @@ public class PanelRefreshUtil {
             }
         }
     }
+    public static void refreshGitRepoStatusPanel(){
+        SelectedFile selectedFile = SelectedFile.getInstance();
+        if(selectedFile!=null){
+            File sfile = selectedFile.getFile();
+            if(sfile!=null){
+                selectedFile.setFile(sfile);
+                GitRepositoryStatusPanel.getInstance().UpdateMenu();
+            }
+        }
+    }
+
     //우측 하단의 현재 git repo에 대한 깃 명령어 모음 패널을 새로고침합니다.
     public static void refreshGitMenu(){
         GitMenu.getInstance().UpdateMenu();

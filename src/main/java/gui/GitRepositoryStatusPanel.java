@@ -30,6 +30,7 @@ public class GitRepositoryStatusPanel extends JPanel {
         //setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
         //add(Box.createHorizontalGlue());
         String gitRepoText = "";
+        String gitSelectedFile = "";
         String gitRelativeText = "";
         try {
             gitRepoText += "Git repository: ";
@@ -42,17 +43,28 @@ public class GitRepositoryStatusPanel extends JPanel {
                 gitRelativeText += "상대 경로: ";
                 gitRelativeText += "/";
                 gitRelativeText += JGitManager.findGitRepositoryRelativePath(SelectedFile.getInstance().getFile());
+
+                if(!SelectedFile.getInstance().getFile().isDirectory()){
+                    gitSelectedFile += "선택된 파일명: ";
+                }
+                else{
+                    gitSelectedFile += "선택된 폴더명: ";                    
+                }
+                gitSelectedFile += SelectedFile.getInstance().getFile().getName();
             }
         }catch (Exception e){
             System.out.println("Git repo 위치 탐색 중 오류 발생");
         }
         JLabel gitRepoJLabel = new JLabel(gitRepoText);
         gitRepoJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel gitSelectedFileJLabel = new JLabel(gitSelectedFile);
+        gitSelectedFileJLabel.setHorizontalAlignment(SwingConstants.CENTER);
         JLabel gitRelativeJLabel = new JLabel(gitRelativeText);
         gitRelativeJLabel.setHorizontalAlignment(SwingConstants.CENTER);
         setLayout(new BorderLayout());
         add(gitRepoJLabel, BorderLayout.NORTH);
         add(gitRelativeJLabel,BorderLayout.CENTER);
+        add(gitSelectedFileJLabel, BorderLayout.SOUTH);
     }
 
 

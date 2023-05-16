@@ -34,7 +34,8 @@ public class FileTable extends JScrollPane {
                 selectedFile.setFile(((FileTableModel) table.getModel()).getFile(row));
 
                 //우측 git 패널을 업데이트합니다.
-                GitFilePanel.getInstance().UpdatePanel();
+                PanelRefreshUtil.refreshGitFilePanel();
+                PanelRefreshUtil.refreshGitRepoStatusPanel();
             }
         };
 
