@@ -109,6 +109,8 @@ Modified
 
 ![./img/v1.1/6_Staged.png](./img/v1.1/6_Staged.png)
 
+Staged
+
 - Unstage: 선택한 파일을 Staged List에서 제거합니다. (파일의 내용은 변경되지 않습니다.)
 
 ![./img/v1.1/7_Committed.png](./img/v1.1/7_Committed.png)
