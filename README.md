@@ -1,6 +1,6 @@
 # simple_git_gui
 
-![./img/223227.png](./img/223227.png)
+![./img/v1.1/1_main.png](./img/v1.1/1_main.png)
 
 Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우저입니다.
 
@@ -22,21 +22,21 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
-위의 링크에서 simple_git_gui-1.0-all.jar파일을 다운받습니다.
+위의 링크에서 simple_git_gui-1.1-all.jar파일을 다운받습니다.
 
 명령 프롬프트에서 파일의 위치로 이동합니다.
 
 ```bash
-java -jar simple_git_gui-1.0-all.jar
+java -jar simple_git_gui-1.1-all.jar
 
 ```
 
-위 명령어를 통해 simple_git_gui-1.0-all.jar을 실행합니다.
+위 명령어를 통해 simple_git_gui-1.1-all.jar을 실행합니다.
 (자바 17버전에서 실행해야 합니다.)
 
 ## 파일 탐색 안내
 
-![./img/210007.png](./img/210007.png)
+![./img/v1.1/9_main.png](./img/v1.1/9_main.png)
 
 [좌측 패널]
 
@@ -70,7 +70,7 @@ java -jar simple_git_gui-1.0-all.jar
 
 ### 파일의 상태 - Directory
 
-![./img/210043.png](./img/210043.png)
+![./img/v1.1/2_directory.png](./img/v1.1/2_directory.png)
 
 중앙 상단의 테이블에서 파일의 상태를 볼 수 있습니다.
 우측 상단의 패널로 각 상태에 맞는 명령을 실행할 수 있습니다.
@@ -82,33 +82,42 @@ java -jar simple_git_gui-1.0-all.jar
 
 ### 파일의 상태 - Staged List
 
-![./img/223227.png](./img/223227.png)
+![./img/v1.1/3_StagedList.png](./img/v1.1/3_StagedList.png)
 
 중앙 하단 테이블에서는 Staged 상태인 파일들을 나타냅니다.
 더블클릭으로 Staged 상태인 파일은 Unstage할 수 있습니다.
 
-- Staged(Green): Staged 파일과 실제 존재하는 파일의 내용이 같습니다.
-- Staged(Yellow): 파일이 Staged 상태이지만, 실제 로컬 저장소의 파일과 내용이 다릅니다. (수정, 삭제 등)
-- Removed: git rm 등을 통해 파일이 삭제되었다는 내용이 Staged 된 상태입니다. (deleted)
+- Added: 파일이 Git에 새로 추가되어 Stage되었습니다.
+- Staged: 파일이 이전 Commit에서 수정되어 Stage되었습니다.
+- Deleted: git rm 등을 통해 파일이 삭제되었다는 내용이 Staged 된 상태입니다.
 
 ### Git을 통한 버전 관리
 
-![./img/210052.png](./img/210052.png)
-![./img/210107.png](./img/210107.png)
+![./img/v1.1/4_Untracked.png](./img/v1.1/4_Untracked.png)
+
+Untracked
+
+- Add: 선택한 파일을 Staged List에 추가합니다.
+
+![./img/v1.1/5_Modified.png](./img/v1.1/5_Modified.png)
+
+Modified
 
 - Add: 선택한 파일을 Staged List에 추가합니다.
 - Undo: 선택한 파일을 마지막 Commit의 상태로 되돌립니다.
 
-![./img/210100.png](./img/210100.png)
+![./img/v1.1/6_Staged.png](./img/v1.1/6_Staged.png)
 
 - Unstage: 선택한 파일을 Staged List에서 제거합니다. (파일의 내용은 변경되지 않습니다.)
 
-![./img/210048.png](./img/210048.png)
+![./img/v1.1/7_Committed.png](./img/v1.1/7_Committed.png)
 
-- Untrack: 파일을 Untracked모드로 변경합니다.
+Committed
+
 - Delete: 파일을 삭제하고 Git에 반영합니다.
+- Untrack: 파일을 Untracked모드로 변경합니다.
 - Rename: 파일의 이름을 변경하고 Git에 반영합니다.
 
-![./img/210122.png](./img/210122.png)
+![./img/v1.1/8_commit_msg.png](./img/v1.1/8_commit_msg.png)
 
 - Commit: 현재 Staged List의 내용을 Git에 Commit합니다.
