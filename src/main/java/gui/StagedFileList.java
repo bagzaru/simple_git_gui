@@ -1,14 +1,9 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,11 +13,8 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import file.FileTableModel;
 import file.SelectedFile;
-import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
-import jgitmanager.JGitTester;
 import jgitmanager.StagedFileStatus;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -252,11 +244,11 @@ class StagedFileTableModel extends AbstractTableModel {
             stagedFileStatus = JGitManager.gitCheckStagedFileStatus(file);
 
             switch (stagedFileStatus) {
-                case STAGED_MODIFIED:
-                    return "/git_status_icons/Staged_Modified.png";
+                case ADDED:
+                    return "/git_status_icons/Added.png";
                 case STAGED:
                     return "/git_status_icons/Staged.png";
-                case REMOVED:
+                case DELETED:
                     return "/git_status_icons/Removed.png";
                 default:
                     imagePath = null;

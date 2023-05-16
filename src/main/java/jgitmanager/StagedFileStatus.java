@@ -1,5 +1,5 @@
 package jgitmanager;
 
 public enum StagedFileStatus {
-    NULL,STAGED,STAGED_MODIFIED,REMOVED
+    NULL,ADDED,STAGED, DELETED
 }

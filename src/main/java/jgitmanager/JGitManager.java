@@ -320,8 +320,8 @@ public class JGitManager {
             if (status.getUntracked().contains(relativeFilePath)) {
                 returnValue = FileStatus.UNTRACKED;
             } else if (status.getModified().contains(relativeFilePath)) {
-                returnValue = FileStatus.MODIFIED;
-            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)) {
+                    returnValue = FileStatus.MODIFIED;
+            } else if (status.getAdded().contains(relativeFilePath) || status.getChanged().contains(relativeFilePath)||status.getRemoved().contains(relativeFilePath)) {
                 returnValue = FileStatus.STAGED;
             } else {
                 returnValue = FileStatus.COMMITTED;
@@ -356,25 +356,19 @@ public class JGitManager {
 
             StagedFileStatus returnValue;
 
-            if (status.getAdded().contains(relativeFilePath)
-                    || status.getChanged().contains(relativeFilePath)
-                    || status.getRemoved().contains(relativeFilePath)
-            ) {
-                if (status.getModified().contains(relativeFilePath)
-                        || status.getMissing().contains(relativeFilePath)) {
-                    returnValue = StagedFileStatus.STAGED_MODIFIED;
-                } else if (status.getRemoved().contains(relativeFilePath)) {
-                    //만약 removed 상태관련 오류난다면 여기가 유력함 잘 봐주세요
-                    returnValue = StagedFileStatus.REMOVED;
-                } else {
-                    returnValue = StagedFileStatus.STAGED;
-                }
-            } else if (status.getMissing().contains(relativeFilePath)) {
-                returnValue = StagedFileStatus.REMOVED;
-            } else {
-                returnValue = StagedFileStatus.NULL;
+            if(status.getAdded().contains(relativeFilePath)){
+                returnValue=StagedFileStatus.ADDED;
             }
-            System.out.println(relativeFilePath + ": " + returnValue.toString());
+            else if(status.getChanged().contains(relativeFilePath)){
+                returnValue=StagedFileStatus.STAGED;
+            }
+            else if(status.getRemoved().contains(relativeFilePath)){
+                returnValue=StagedFileStatus.DELETED;
+            }
+            else{
+                returnValue=StagedFileStatus.NULL;
+            }
+            //System.out.println(relativeFilePath + ": " + returnValue.toString());
             // Git 저장소 닫기
             git.close();
 
