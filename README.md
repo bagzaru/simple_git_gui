@@ -42,7 +42,7 @@ java -jar simple_git_gui-1.1-all.jar
 
 - 좌측 패널에서 파일과 디렉토리를 클릭을 통해 탐색할 수 있습니다.
 
-[중앙 상단 패널(]
+[중앙 상단 패널(Directory)]
 
 - Current Directory에서는 현재 폴더 내의 파일과 폴더를 탐색할 수 있습니다.
 - 각 파일의 Git status를 아이콘을 통해 확인할 수 있습니다.
