@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import file.FileTableModel;
+import gui.tablemodel.FileTableModel;
 import file.SelectedFile;
 
 public class FileTable extends JScrollPane {

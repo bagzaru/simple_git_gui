@@ -1,4 +1,4 @@
-package file;
+package gui.tablemodel;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 /** A TableModel to hold File[]. */
 public class FileTableModel extends AbstractTableModel {

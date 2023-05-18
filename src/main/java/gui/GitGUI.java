@@ -37,7 +37,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.*;
 import javax.swing.tree.*;
 
-import file.FileTableModel;
+import gui.tablemodel.FileTableModel;
 import file.SelectedFile;
 
 /**
