@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -15,8 +17,16 @@ import gui.tablemodel.FileTableModel;
 import file.SelectedFile;
 
 public class FileTable extends JScrollPane {
+    private static FileTable instance = null;
+
     Table table;
     SelectedFile selectedFile;
+    boolean cellSizesSet = false;
+    private int rowIconPadding = 6;
+
+    private FileTableModel fileTableModel;
+    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private ListSelectionListener listSelectionListener;
 
     public FileTable() {
         table = Table.getInstance();
@@ -26,7 +36,7 @@ public class FileTable extends JScrollPane {
         table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
 
-        GitGUI.listSelectionListener = new ListSelectionListener() {
+        listSelectionListener = new ListSelectionListener() {
             //중앙 파일 테이블에서 파일 클릭 시 발생하는 이벤트
             @Override
             public void valueChanged(ListSelectionEvent lse) {
@@ -56,8 +66,8 @@ public class FileTable extends JScrollPane {
                             TreeNode treeNode = PanelRefreshUtil.lastTreeNode.getChildAt(i);
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeNode;
                             if (((File) node.getUserObject()).getName().equals(selected.getName())) {
-                                FileTree.getInstance().setExpandsSelectedPaths(true);
-                                FileTree.getInstance().setSelectionPath(new TreePath(node.getPath()));
+                                FileTree.getTreeInstance().setExpandsSelectedPaths(true);
+                                FileTree.getTreeInstance().setSelectionPath(new TreePath(node.getPath()));
                                 break;
                             }
                         }
@@ -71,11 +81,59 @@ public class FileTable extends JScrollPane {
         });
 
 
-        table.getSelectionModel().addListSelectionListener(GitGUI.listSelectionListener);
+        table.getSelectionModel().addListSelectionListener(listSelectionListener);
 
         this.setViewportView(table);
         Dimension d = getPreferredSize();
         setPreferredSize(new Dimension((int) d.getWidth(), (int) d.getHeight() / 2));
+    }
+
+    public static FileTable getInstance() {
+        if(instance == null) {
+            instance = new FileTable();
+        }
+        return instance;
+    }
+
+    public void setTableData(final File[] files) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (fileTableModel == null) {
+                    fileTableModel = new FileTableModel();
+                    Table.getInstance().setModel(fileTableModel);
+                }
+                Table.getInstance().getSelectionModel().removeListSelectionListener(listSelectionListener);
+                fileTableModel.setFiles(files);
+                Table.getInstance().getSelectionModel().addListSelectionListener(listSelectionListener);
+                if (!cellSizesSet) {
+                    Icon icon = fileSystemView.getSystemIcon(files[0]);
+
+                    // size adjustment to better account for icons
+                    Table.getInstance().setRowHeight(icon.getIconHeight() + rowIconPadding);
+
+                    setColumnWidth(0, -1);
+                    setColumnWidth(2, -1);
+                    setColumnWidth(3, -1);
+                    setColumnWidth(4, Table.getInstance().getRowHeight() * 3 + 5);
+
+                    cellSizesSet = true;
+                }
+            }
+        });
+    }
+
+    public void setColumnWidth(int column, int width) {
+        TableColumn tableColumn = Table.getInstance().getColumnModel().getColumn(column);
+        if (width < 0) {
+            // use the preferred width of the header..
+            JLabel label = new JLabel((String) tableColumn.getHeaderValue());
+            Dimension preferred = label.getPreferredSize();
+            // altered 10->14 as per camickr comment.
+            width = (int) preferred.getWidth() + 14;
+        }
+        tableColumn.setPreferredWidth(width);
+        tableColumn.setMaxWidth(width);
+        tableColumn.setMinWidth(width);
     }
 }
 

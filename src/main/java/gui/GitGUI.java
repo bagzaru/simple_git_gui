@@ -93,14 +93,6 @@ public class GitGUI {
      */
     public static JProgressBar progressBar;
 
-    /**
-     * Table model for File[].
-     */
-    public static FileTableModel fileTableModel;
-    public static ListSelectionListener listSelectionListener;
-    public static boolean cellSizesSet = false;
-    public static int rowIconPadding = 6;
-
     private Tree tree = Tree.getInstance();
 
     public GitGUI() {
@@ -145,7 +137,7 @@ public class GitGUI {
             fileSystemView = FileSystemView.getFileSystemView();
 
             JPanel fileManage = new JPanel(new BorderLayout(3, 3));
-            fileManage.add(new FileTable(), BorderLayout.CENTER);
+            fileManage.add(FileTable.getInstance(), BorderLayout.CENTER);
             fileManage.add(new FileToolBar(), BorderLayout.SOUTH);
 
             JPanel filePanel = new JPanel(new BorderLayout(3, 3));
@@ -162,7 +154,7 @@ public class GitGUI {
             //gitMenuPanel: (우측 전체) git 명령어 관련 패널
             JPanel gitMenuPanel = new JPanel(new GridLayout(2, 1));
             gitMenuPanel.add(GitFilePanel.getInstance());
-             gitMenuPanel.add(gitRepoPanel);
+            gitMenuPanel.add(gitRepoPanel);
             gitMenuPanel.setPreferredSize(new Dimension(300, 400)); //임시로 크기 설정
 
             //파일트리 제외한 중앙 및 우측 부분
@@ -191,105 +183,5 @@ public class GitGUI {
         // ensure the main files are displayed
         PanelRefreshUtil.refreshAll();
         SelectedFile.getInstance().setFile((File)PanelRefreshUtil.lastTreeNode.getUserObject());
-    }
-
-    /**
-     * Update the table on the EDT
-     */
-    public static void setTableData(final File[] files) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (fileTableModel == null) {
-                    fileTableModel = new FileTableModel();
-                    Table.getInstance().setModel(fileTableModel);
-                }
-                Table.getInstance().getSelectionModel().removeListSelectionListener(listSelectionListener);
-                fileTableModel.setFiles(files);
-                Table.getInstance().getSelectionModel().addListSelectionListener(listSelectionListener);
-                if (!cellSizesSet) {
-                    Icon icon = fileSystemView.getSystemIcon(files[0]);
-
-                    // size adjustment to better account for icons
-                    Table.getInstance().setRowHeight(icon.getIconHeight() + rowIconPadding);
-
-                    setColumnWidth(0, -1);
-                    setColumnWidth(2, -1);
-                    setColumnWidth(3, -1);
-                    setColumnWidth(4, Table.getInstance().getRowHeight() * 3 + 5);
-
-                    cellSizesSet = true;
-                }
-            }
-        });
-    }
-
-    public static void setColumnWidth(int column, int width) {
-        TableColumn tableColumn = Table.getInstance().getColumnModel().getColumn(column);
-        if (width < 0) {
-            // use the preferred width of the header..
-            JLabel label = new JLabel((String) tableColumn.getHeaderValue());
-            Dimension preferred = label.getPreferredSize();
-            // altered 10->14 as per camickr comment.
-            width = (int) preferred.getWidth() + 14;
-        }
-        tableColumn.setPreferredWidth(width);
-        tableColumn.setMaxWidth(width);
-        tableColumn.setMinWidth(width);
-    }
-
-    /**
-     * Add the files that are contained within the directory of this node.
-     * Thanks to Hovercraft Full Of Eels.
-     */
-    public static void showChildren(final DefaultMutableTreeNode node) {
-        Tree.getInstance().setEnabled(false);
-        progressBar.setVisible(true);
-        progressBar.setIndeterminate(true);
-        PanelRefreshUtil.lastTreeNode=node;
-
-        SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
-            @Override
-            public Void doInBackground() {
-                File file = (File) node.getUserObject();
-                if (file.isDirectory()) {
-                    File[] files = fileSystemView.getFiles(file, true); //!!
-                    //파일이 실행 중에 수정될 수 있으므로, Leafnode가 아니어도 매번 갱신해줍니다.
-                    //if (node.isLeaf()) {
-                    node.removeAllChildren();
-                        for (File child : files) {
-                            if (child.isDirectory()) {
-                                publish(child);
-                            }
-                        }
-                    //}
-                    setTableData(files);
-                    StagedFileList.getInstance().setStagedFileTableData();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void process(List<File> chunks) {
-                for (File child : chunks) {
-                    if(child!=null){
-                        node.add(new DefaultMutableTreeNode(child));
-                    }
-                    else{
-                        System.out.println("failed to adding child to tree: file is null");
-                    }
-                }
-            }
-
-            @Override
-            protected void done() {
-                progressBar.setVisible(false);
-                Tree.getInstance().setEnabled(true);
-                //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
-                //Tree를 갱신하여 node를 다시 그립니다.
-                treeModel.reload(node);
-            }
-        };
-        worker.execute();
     }
 }

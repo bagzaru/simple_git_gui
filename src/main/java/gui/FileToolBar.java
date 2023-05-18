@@ -238,7 +238,7 @@ public class FileToolBar extends JToolBar {
                         // add a new node..
                     }
 
-                    GitGUI.showChildren(parentNode);
+                    FileTree.getInstance().showChildren(parentNode);
                 } else {
                     String msg = "The file '" +
                             selectedFile.getFile() +

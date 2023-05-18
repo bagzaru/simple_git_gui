@@ -7,19 +7,23 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
+import java.util.List;
 
 public class FileTree extends JScrollPane {
+    private static FileTree instance = null;
+
     static JTree tree;
     SelectedFile selectedFile;
-
+    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
     //Tree.getInstance와 FileTree.tree가 달라서 부득이하게 수정하였습니다.
-    public static JTree getInstance() {
+    public static JTree getTreeInstance() {
         return tree;
     }
 
@@ -37,7 +41,7 @@ public class FileTree extends JScrollPane {
                 DefaultMutableTreeNode node =
                         (DefaultMutableTreeNode)tse.getPath().getLastPathComponent();
                 PanelRefreshUtil.currentDirectory=(File)node.getUserObject();
-                GitGUI.showChildren(node);
+                showChildren(node);
                 selectedFile.setFile((File)node.getUserObject());
 
                 PanelRefreshUtil.refreshGitMenu();      //우측 git 패널 새로고침
@@ -75,6 +79,65 @@ public class FileTree extends JScrollPane {
         Dimension preferredSize = getPreferredSize();
         Dimension widePreferred = new Dimension(200, (int)preferredSize.getHeight());
         setPreferredSize(widePreferred);
+    }
+
+    public static FileTree getInstance() {
+        if(instance == null) {
+            instance = new FileTree();
+        }
+        return instance;
+    }
+
+    public void showChildren(final DefaultMutableTreeNode node) {
+        Tree.getInstance().setEnabled(false);
+        GitGUI.progressBar.setVisible(true);
+        GitGUI.progressBar.setIndeterminate(true);
+        PanelRefreshUtil.lastTreeNode=node;
+
+        SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
+            @Override
+            public Void doInBackground() {
+                File file = (File) node.getUserObject();
+                if (file.isDirectory()) {
+                    File[] files = fileSystemView.getFiles(file, true); //!!
+                    //파일이 실행 중에 수정될 수 있으므로, Leafnode가 아니어도 매번 갱신해줍니다.
+                    //if (node.isLeaf()) {
+                    node.removeAllChildren();
+                    for (File child : files) {
+                        if (child.isDirectory()) {
+                            publish(child);
+                        }
+                    }
+                    //}
+                    FileTable.getInstance().setTableData(files);
+                    StagedFileList.getInstance().setStagedFileTableData();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void process(List<File> chunks) {
+                for (File child : chunks) {
+                    if(child!=null){
+                        node.add(new DefaultMutableTreeNode(child));
+                    }
+                    else{
+                        System.out.println("failed to adding child to tree: file is null");
+                    }
+                }
+            }
+
+            @Override
+            protected void done() {
+                GitGUI.progressBar.setVisible(false);
+                Tree.getInstance().setEnabled(true);
+                //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
+                //Tree를 갱신하여 node를 다시 그립니다.
+                GitGUI.treeModel.reload(node);
+            }
+        };
+        worker.execute();
     }
 
     //좌측 Filetree를 업데이트합니다.

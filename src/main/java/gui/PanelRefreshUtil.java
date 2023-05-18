@@ -25,7 +25,7 @@ public class PanelRefreshUtil {
     public static void refreshFileTree(){
         JTree tree = Tree.getInstance();
         if(lastTreeNode!=null){
-            GitGUI.showChildren(lastTreeNode);
+            FileTree.getInstance().showChildren(lastTreeNode);
         }
     }
 
@@ -35,7 +35,7 @@ public class PanelRefreshUtil {
         if(currentDirectory!=null){
             if (currentDirectory.isDirectory()) {
                 File[] files = GitGUI.fileSystemView.getFiles(currentDirectory, true);
-                GitGUI.setTableData(files);
+                FileTable.getInstance().setTableData(files);
             }
         }
         else{
