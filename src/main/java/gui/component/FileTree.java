@@ -18,16 +18,19 @@ import java.io.File;
 import java.util.List;
 
 public class FileTree extends JScrollPane {
+    /** singleton instance variable */
     private static FileTree instance = null;
 
-    private JTree tree;
-    SelectedFile selectedFile;
+    /** singleton Lazy initialize */
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private SelectedFile selectedFile = SelectedFile.getInstance();
+
+    /** instance variable */
+    private JTree tree;
     private DefaultTreeModel treeModel;
 
     public FileTree() {
         tree = new JTree();
-        selectedFile = SelectedFile.getInstance();
 
         // the File tree
         CreateTreeModel();
@@ -146,7 +149,7 @@ public class FileTree extends JScrollPane {
 
 
         // show the file system roots.
-        File[] roots = FileSystemView.getFileSystemView().getRoots();
+        File[] roots = fileSystemView.getRoots();
         for (File fileSystemRoot : roots) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
@@ -155,7 +158,7 @@ public class FileTree extends JScrollPane {
 
             //showChildren(node);
             //
-            File[] files = FileSystemView.getFileSystemView().getFiles(fileSystemRoot, true);
+            File[] files = fileSystemView.getFiles(fileSystemRoot, true);
             for (File file : files) {
                 if (file.isDirectory()) {
                     node.add(new DefaultMutableTreeNode(file));
@@ -164,18 +167,3 @@ public class FileTree extends JScrollPane {
         }
     }
 }
-/*
-class Tree extends JTree {
-    private static Tree instance = null;
-
-    public Tree() {
-        super();
-    }
-
-    public static Tree getInstance() {
-        if(instance == null) {
-            instance = new Tree();
-        }
-        return instance;
-    }
-}*/

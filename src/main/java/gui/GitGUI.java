@@ -1,12 +1,12 @@
 package gui;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 
 import file.SelectedFile;
 import gui.component.*;
@@ -52,6 +52,7 @@ public class GitGUI {
         });
     }
 
+    //GUI의 component들을 생성 및 조립하는 메소드
     private Container getGui() {
         if (gui == null) {
             gui = new JPanel(new BorderLayout(3, 3));
@@ -92,6 +93,7 @@ public class GitGUI {
         return gui;
     }
 
+    //프로그램 시작시 루트 폴더를 SelectedFile로 지정 후 새로고침
     private void showRootFile() {
         // ensure the main files are displayed
         SelectedFile.getInstance().setFile((File)PanelRefreshUtil.lastTreeNode.getUserObject());

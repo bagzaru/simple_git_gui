@@ -1,12 +1,12 @@
 package gui.model;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.AbstractTableModel;
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.ImageIcon;
+import javax.swing.table.AbstractTableModel;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 

@@ -1,17 +1,19 @@
 package file;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 
-import gui.GitGUI;
-import jgitmanager.FileStatus;
-import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import gui.PanelRefreshUtil;
+import jgitmanager.FileStatus;
+import jgitmanager.JGitManager;
+
 public class SelectedFile {
+    /** singleton instance variable */
     private static SelectedFile instance = null;
+
+    /** instance variable */
     private File selectedFile;
     private FileStatus gitStatus;
 
@@ -47,12 +49,7 @@ public class SelectedFile {
             };
         }
 
-        JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
-        if (f!=null) {
-            f.setTitle(
-                    GitGUI.APP_TITLE + " :: " + FileSystemView.getFileSystemView().getSystemDisplayName(file));
-        }
-        GitGUI.gui.repaint();
+        PanelRefreshUtil.refreshTitle();
     }
 
     public FileStatus getGitStatus() {

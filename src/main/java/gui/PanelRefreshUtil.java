@@ -1,15 +1,17 @@
 package gui;
 
-import file.SelectedFile;
-import gui.component.*;
-
+import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.File;
+
+import file.SelectedFile;
+import gui.component.*;
 
 public class PanelRefreshUtil {
-    //좌측의 root부터 시작되는 파일 트리를 새로고칩니다.
+    /** class variable */
+    public static DefaultMutableTreeNode lastTreeNode;
+    public static File currentDirectory;
 
     public static void refreshAll(){
         refreshFileTree();
@@ -18,9 +20,10 @@ public class PanelRefreshUtil {
         refreshGitMenu();
         refreshGitFilePanel();
         refreshGitRepoStatusPanel();
+        refreshTitle();
     }
 
-    public static DefaultMutableTreeNode lastTreeNode;
+    //좌측의 root부터 시작되는 파일 트리를 새로고칩니다.
     public static void refreshFileTree(){
         JTree tree = FileTree.getInstance().getTree();
         if(lastTreeNode!=null){
@@ -29,7 +32,6 @@ public class PanelRefreshUtil {
     }
 
     //중앙 상단의 현재 선택된 폴더의 파일들을 보여주는 테이블을 새로고칩니다.
-    public static File currentDirectory;
     public static void refreshFileTable(){
         if(currentDirectory!=null){
             if (currentDirectory.isDirectory()) {
@@ -77,6 +79,16 @@ public class PanelRefreshUtil {
             if(sfile!=null){
                 GitMenu.getInstance().UpdateMenu();
             }
+        }
+    }
+
+    //파일, 폴더 클릭시 좌측 상단의 제목 옆 현재 파일, 폴더 이름 변경
+    public static void refreshTitle() {
+        JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
+        if (f!=null) {
+            f.setTitle(
+                    GitGUI.APP_TITLE + " :: "
+                            + FileSystemView.getFileSystemView().getSystemDisplayName(SelectedFile.getInstance().getFile()));
         }
     }
 }

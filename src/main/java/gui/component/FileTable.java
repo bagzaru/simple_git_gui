@@ -1,5 +1,9 @@
 package gui.component;
 
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -8,30 +12,28 @@ import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 
 import gui.PanelRefreshUtil;
 import gui.model.FileTableModel;
 import file.SelectedFile;
 
 public class FileTable extends JScrollPane {
+    /** singleton instance variable */
     private static FileTable instance = null;
 
-    Table table;
-    SelectedFile selectedFile;
-    boolean cellSizesSet = false;
+    /** singleton Lazy initialize */
+    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private SelectedFile selectedFile = SelectedFile.getInstance();
+
+    /** instance variable */
+    private JTable table;
+    private FileTableModel fileTableModel;
+    private ListSelectionListener listSelectionListener;
+    private boolean cellSizesSet = false;
     private int rowIconPadding = 6;
 
-    private FileTableModel fileTableModel;
-    private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
-    private ListSelectionListener listSelectionListener;
-
     public FileTable() {
-        table = Table.getInstance();
-        selectedFile = SelectedFile.getInstance();
+        table = new JTable();
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
@@ -101,21 +103,21 @@ public class FileTable extends JScrollPane {
             public void run() {
                 if (fileTableModel == null) {
                     fileTableModel = new FileTableModel();
-                    Table.getInstance().setModel(fileTableModel);
+                    table.setModel(fileTableModel);
                 }
-                Table.getInstance().getSelectionModel().removeListSelectionListener(listSelectionListener);
+                table.getSelectionModel().removeListSelectionListener(listSelectionListener);
                 fileTableModel.setFiles(files);
-                Table.getInstance().getSelectionModel().addListSelectionListener(listSelectionListener);
+                table.getSelectionModel().addListSelectionListener(listSelectionListener);
                 if (!cellSizesSet) {
                     Icon icon = fileSystemView.getSystemIcon(files[0]);
 
                     // size adjustment to better account for icons
-                    Table.getInstance().setRowHeight(icon.getIconHeight() + rowIconPadding);
+                    table.setRowHeight(icon.getIconHeight() + rowIconPadding);
 
                     setColumnWidth(0, -1);
                     setColumnWidth(2, -1);
                     setColumnWidth(3, -1);
-                    setColumnWidth(4, Table.getInstance().getRowHeight() * 3 + 5);
+                    setColumnWidth(4, table.getRowHeight() * 3 + 5);
 
                     cellSizesSet = true;
                 }
@@ -124,7 +126,7 @@ public class FileTable extends JScrollPane {
     }
 
     public void setColumnWidth(int column, int width) {
-        TableColumn tableColumn = Table.getInstance().getColumnModel().getColumn(column);
+        TableColumn tableColumn = table.getColumnModel().getColumn(column);
         if (width < 0) {
             // use the preferred width of the header..
             JLabel label = new JLabel((String) tableColumn.getHeaderValue());
@@ -135,20 +137,5 @@ public class FileTable extends JScrollPane {
         tableColumn.setPreferredWidth(width);
         tableColumn.setMaxWidth(width);
         tableColumn.setMinWidth(width);
-    }
-}
-
-class Table extends JTable {
-    private static Table instance = null;
-
-    public Table() {
-        super();
-    }
-
-    public static Table getInstance() {
-        if (instance == null) {
-            instance = new Table();
-        }
-        return instance;
     }
 }
