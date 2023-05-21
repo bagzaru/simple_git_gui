@@ -168,7 +168,7 @@ public class GitGUI {
 
     public void showRootFile() {
         // ensure the main files are displayed
-        PanelRefreshUtil.refreshAll();
         SelectedFile.getInstance().setFile((File)PanelRefreshUtil.lastTreeNode.getUserObject());
+        PanelRefreshUtil.refreshAll();
     }
 }
