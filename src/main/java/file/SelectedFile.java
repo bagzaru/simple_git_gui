@@ -1,11 +1,11 @@
 package file;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 
 import gui.GitGUI;
-import gui.StagedFileList;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -50,7 +50,7 @@ public class SelectedFile {
         JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
         if (f!=null) {
             f.setTitle(
-                    GitGUI.APP_TITLE + " :: " + GitGUI.fileSystemView.getSystemDisplayName(file));
+                    GitGUI.APP_TITLE + " :: " + FileSystemView.getFileSystemView().getSystemDisplayName(file));
         }
         GitGUI.gui.repaint();
     }

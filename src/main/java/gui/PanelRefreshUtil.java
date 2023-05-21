@@ -34,7 +34,7 @@ public class PanelRefreshUtil {
     public static void refreshFileTable(){
         if(currentDirectory!=null){
             if (currentDirectory.isDirectory()) {
-                File[] files = GitGUI.fileSystemView.getFiles(currentDirectory, true);
+                File[] files = FileSystemView.getFileSystemView().getFiles(currentDirectory, true);
                 FileTable.getInstance().setTableData(files);
             }
         }

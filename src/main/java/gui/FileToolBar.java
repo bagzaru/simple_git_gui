@@ -12,10 +12,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import jgitmanager.JGitManager;
 import org.apache.commons.io.FileUtils;
 
 import file.SelectedFile;
+import jgitmanager.JGitManager;
 
 public class FileToolBar extends JToolBar {
     private SelectedFile selectedFile;
@@ -78,15 +78,6 @@ public class FileToolBar extends JToolBar {
             }
         });
         add(deleteFile);
-
-//        renameFile = new JButton("Rename");
-//        renameFile.setMnemonic('r');
-//        renameFile.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent ae) {
-//                renameFile();
-//            }
-//        });
-//        add(renameFile);
 
 //        copyFile = new JButton("Copy");
 //        copyFile.setMnemonic('c');
@@ -207,51 +198,7 @@ public class FileToolBar extends JToolBar {
         GitGUI.gui.repaint();
     }
 
-    private void renameFile() {
-        if (selectedFile.getFile() == null) {
-            showErrorMessage("No file selected to rename.", "Select File");
-            return;
-        }
-
-        String renameTo = JOptionPane.showInputDialog(GitGUI.gui, "New Name");
-        if (renameTo != null) {
-            try {
-                boolean directory = selectedFile.getFile().isDirectory();
-                TreePath parentPath = findTreePath(selectedFile.getFile().getParentFile());
-                DefaultMutableTreeNode parentNode =
-                        (DefaultMutableTreeNode) parentPath.getLastPathComponent();
-
-                boolean renamed = selectedFile.getFile().renameTo(new File(
-                        selectedFile.getFile().getParentFile(), renameTo));
-                if (renamed) {
-                    if (directory) {
-                        // rename the node..
-
-                        // delete the current node..
-                        TreePath currentPath = findTreePath(selectedFile.getFile());
-                        System.out.println(currentPath);
-                        DefaultMutableTreeNode currentNode =
-                                (DefaultMutableTreeNode) currentPath.getLastPathComponent();
-
-                        GitGUI.treeModel.removeNodeFromParent(currentNode);
-
-                        // add a new node..
-                    }
-
-                    FileTree.getInstance().showChildren(parentNode);
-                } else {
-                    String msg = "The file '" +
-                            selectedFile.getFile() +
-                            "' could not be renamed.";
-                    showErrorMessage(msg, "Rename Failed");
-                }
-            } catch (Throwable t) {
-                showThrowable(t);
-            }
-        }
-        GitGUI.gui.repaint();
-    }
-
+    /*
     public static boolean copyFile(File from, File to) throws IOException {
         boolean created = to.createNewFile();
 
@@ -280,12 +227,13 @@ public class FileToolBar extends JToolBar {
         }
         return created;
     }
+    */
 
-    public static void refreshButton() {
+    private void refreshButton() {
         PanelRefreshUtil.refreshAll();
     }
 
-    public static void stageAll() {
+    private void stageAll() {
         try {
             JGitManager.gitAddAll(SelectedFile.getInstance().getFile());
         } catch (Exception e) {
@@ -331,5 +279,4 @@ public class FileToolBar extends JToolBar {
         // not found!
         return null;
     }
-
 }

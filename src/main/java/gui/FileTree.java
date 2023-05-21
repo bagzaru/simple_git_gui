@@ -21,6 +21,7 @@ public class FileTree extends JScrollPane {
     static JTree tree;
     SelectedFile selectedFile;
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+    private DefaultTreeModel treeModel;
 
     //Tree.getInstance와 FileTree.tree가 달라서 부득이하게 수정하였습니다.
     public static JTree getTreeInstance() {
@@ -65,7 +66,7 @@ public class FileTree extends JScrollPane {
         };
 
 
-        tree = new JTree(GitGUI.treeModel);
+        tree = new JTree(treeModel);
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(treeSelectionListener);
         tree.addTreeExpansionListener(treeExpansionListener);
@@ -131,20 +132,20 @@ public class FileTree extends JScrollPane {
                 Tree.getInstance().setEnabled(true);
                 //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
                 //Tree를 갱신하여 node를 다시 그립니다.
-                GitGUI.treeModel.reload(node);
+                treeModel.reload(node);
             }
         };
         worker.execute();
     }
 
     //좌측 Filetree를 업데이트합니다.
-    public static void CreateTreeModel(){
+    private void CreateTreeModel(){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        GitGUI.treeModel = new DefaultTreeModel(root);
+        treeModel = new DefaultTreeModel(root);
 
 
         // show the file system roots.
-        File[] roots = GitGUI.fileSystemView.getRoots();
+        File[] roots = FileSystemView.getFileSystemView().getRoots();
         for (File fileSystemRoot : roots) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileSystemRoot);
             root.add(node);
@@ -153,7 +154,7 @@ public class FileTree extends JScrollPane {
 
             //showChildren(node);
             //
-            File[] files = GitGUI.fileSystemView.getFiles(fileSystemRoot, true);
+            File[] files = FileSystemView.getFileSystemView().getFiles(fileSystemRoot, true);
             for (File file : files) {
                 if (file.isDirectory()) {
                     node.add(new DefaultMutableTreeNode(file));
