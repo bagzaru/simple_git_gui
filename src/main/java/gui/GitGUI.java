@@ -88,11 +88,6 @@ public class GitGUI {
      */
     public static DefaultTreeModel treeModel;
 
-    /**
-     * Directory listing
-     */
-    public static JProgressBar progressBar;
-
     private Tree tree = Tree.getInstance();
 
     public GitGUI() {
@@ -167,14 +162,6 @@ public class GitGUI {
                     new FileTree(),
                     gitPanel);
             gui.add(splitPane, BorderLayout.CENTER);
-
-            JPanel simpleOutput = new JPanel(new BorderLayout(3, 3));
-            progressBar = new JProgressBar();
-            simpleOutput.add(progressBar, BorderLayout.EAST);
-            progressBar.setVisible(false);
-
-            gui.add(simpleOutput, BorderLayout.SOUTH);
-
         }
         return gui;
     }

@@ -90,8 +90,6 @@ public class FileTree extends JScrollPane {
 
     public void showChildren(final DefaultMutableTreeNode node) {
         Tree.getInstance().setEnabled(false);
-        GitGUI.progressBar.setVisible(true);
-        GitGUI.progressBar.setIndeterminate(true);
         PanelRefreshUtil.lastTreeNode=node;
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
@@ -130,7 +128,6 @@ public class FileTree extends JScrollPane {
 
             @Override
             protected void done() {
-                GitGUI.progressBar.setVisible(false);
                 Tree.getInstance().setEnabled(true);
                 //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
                 //Tree를 갱신하여 node를 다시 그립니다.
