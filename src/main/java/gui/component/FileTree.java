@@ -1,6 +1,8 @@
-package gui;
+package gui.component;
 
 import file.SelectedFile;
+import gui.PanelRefreshUtil;
+import gui.model.FileTreeRenderer;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -18,18 +20,13 @@ import java.util.List;
 public class FileTree extends JScrollPane {
     private static FileTree instance = null;
 
-    static JTree tree;
+    private JTree tree;
     SelectedFile selectedFile;
     private FileSystemView fileSystemView = FileSystemView.getFileSystemView();
     private DefaultTreeModel treeModel;
 
-    //Tree.getInstance와 FileTree.tree가 달라서 부득이하게 수정하였습니다.
-    public static JTree getTreeInstance() {
-        return tree;
-    }
-
     public FileTree() {
-        tree = Tree.getInstance();
+        tree = new JTree();
         selectedFile = SelectedFile.getInstance();
 
         // the File tree
@@ -89,8 +86,12 @@ public class FileTree extends JScrollPane {
         return instance;
     }
 
+    public JTree getTree() {
+        return tree;
+    }
+
     public void showChildren(final DefaultMutableTreeNode node) {
-        Tree.getInstance().setEnabled(false);
+        tree.setEnabled(false);
         PanelRefreshUtil.lastTreeNode=node;
 
         SwingWorker<Void, File> worker = new SwingWorker<Void, File>() {
@@ -129,7 +130,7 @@ public class FileTree extends JScrollPane {
 
             @Override
             protected void done() {
-                Tree.getInstance().setEnabled(true);
+                tree.setEnabled(true);
                 //System.out.println("___reload: node is "+((File)node.getUserObject()).getName()+"___");
                 //Tree를 갱신하여 node를 다시 그립니다.
                 treeModel.reload(node);
@@ -163,7 +164,7 @@ public class FileTree extends JScrollPane {
         }
     }
 }
-
+/*
 class Tree extends JTree {
     private static Tree instance = null;
 
@@ -177,4 +178,4 @@ class Tree extends JTree {
         }
         return instance;
     }
-}
+}*/

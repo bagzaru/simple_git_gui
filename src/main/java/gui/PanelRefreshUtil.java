@@ -1,12 +1,11 @@
 package gui;
 
 import file.SelectedFile;
-import org.eclipse.jgit.api.Git;
+import gui.component.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.io.File;
 
 public class PanelRefreshUtil {
@@ -23,7 +22,7 @@ public class PanelRefreshUtil {
 
     public static DefaultMutableTreeNode lastTreeNode;
     public static void refreshFileTree(){
-        JTree tree = Tree.getInstance();
+        JTree tree = FileTree.getInstance().getTree();
         if(lastTreeNode!=null){
             FileTree.getInstance().showChildren(lastTreeNode);
         }

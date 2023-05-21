@@ -1,12 +1,10 @@
-package gui;
+package gui.component;
 
 import file.SelectedFile;
 import jgitmanager.JGitManager;
-import org.eclipse.jgit.lib.Repository;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 public class GitRepositoryStatusPanel extends JPanel {
     private static GitRepositoryStatusPanel instance;

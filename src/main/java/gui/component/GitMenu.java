@@ -1,7 +1,9 @@
-package gui;
+package gui.component;
 
 import javax.swing.*;
 
+import gui.GitGUI;
+import gui.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;

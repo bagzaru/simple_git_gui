@@ -1,4 +1,4 @@
-package gui;
+package gui.component;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import file.SelectedFile;
-import gui.tablemodel.StagedFileTableModel;
+import gui.GitGUI;
+import gui.PanelRefreshUtil;
+import gui.model.StagedFileTableModel;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 

@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import file.SelectedFile;
+import gui.component.*;
 
 public class GitGUI {
     /** Title of the application */
@@ -51,7 +52,7 @@ public class GitGUI {
         });
     }
 
-    public Container getGui() {
+    private Container getGui() {
         if (gui == null) {
             gui = new JPanel(new BorderLayout(3, 3));
             gui.setBorder(new EmptyBorder(5, 5, 5, 5));

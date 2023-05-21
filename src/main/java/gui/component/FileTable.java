@@ -1,4 +1,4 @@
-package gui;
+package gui.component;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -13,7 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import gui.tablemodel.FileTableModel;
+import gui.PanelRefreshUtil;
+import gui.model.FileTableModel;
 import file.SelectedFile;
 
 public class FileTable extends JScrollPane {
@@ -66,8 +67,8 @@ public class FileTable extends JScrollPane {
                             TreeNode treeNode = PanelRefreshUtil.lastTreeNode.getChildAt(i);
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeNode;
                             if (((File) node.getUserObject()).getName().equals(selected.getName())) {
-                                FileTree.getTreeInstance().setExpandsSelectedPaths(true);
-                                FileTree.getTreeInstance().setSelectionPath(new TreePath(node.getPath()));
+                                FileTree.getInstance().getTree().setExpandsSelectedPaths(true);
+                                FileTree.getInstance().getTree().setSelectionPath(new TreePath(node.getPath()));
                                 break;
                             }
                         }

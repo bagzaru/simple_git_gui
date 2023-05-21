@@ -1,4 +1,4 @@
-package gui;
+package gui.component;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -7,11 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 
+import gui.GitGUI;
+import gui.PanelRefreshUtil;
 import org.apache.commons.io.FileUtils;
 
 import file.SelectedFile;
@@ -266,8 +264,8 @@ public class FileToolBar extends JToolBar {
     }
 
     private TreePath findTreePath(File find) {
-        for (int ii = 0; ii < Tree.getInstance().getRowCount(); ii++) {
-            TreePath treePath = Tree.getInstance().getPathForRow(ii);
+        for (int ii = 0; ii < FileTree.getInstance().getTree().getRowCount(); ii++) {
+            TreePath treePath = FileTree.getInstance().getTree().getPathForRow(ii);
             Object object = treePath.getLastPathComponent();
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) object;
             File nodeFile = (File) node.getUserObject();

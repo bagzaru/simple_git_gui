@@ -1,4 +1,4 @@
-package gui;
+package gui.model;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;

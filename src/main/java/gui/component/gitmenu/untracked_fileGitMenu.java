@@ -1,14 +1,11 @@
-package gitmenu;
+package gui.component.gitmenu;
 
-import gui.GitFilePanel;
 import gui.GitGUI;
 
 import javax.swing.*;
 
 import gui.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
-
-import file.SelectedFile;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,29 +14,33 @@ import java.io.IOException;
 
 import jgitmanager.*;
 
-public class staged_fileGitMenu extends JPanel {//staged파일 패널
-    public staged_fileGitMenu(){
+import file.SelectedFile;
+
+//패널 클래스
+public class untracked_fileGitMenu extends JPanel {//untracked파일 패널
+    public untracked_fileGitMenu(){
         //setPreferredSize(new Dimension(300, 150));
         //setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        JLabel titleLabel=new JLabel("STAGED");
+        JLabel titleLabel=new JLabel("UNTRACKED");
         titleLabel.setForeground(Color.BLACK);
         add(titleLabel);
 
-        staged_unstage_button unstage_button=new staged_unstage_button();//unstage button 추가
-        unstage_button.setBounds(0, 200,100,30);
-        add(unstage_button);
+        untracked_add_button add_button=new untracked_add_button();//Add button 추가
+        add_button.setBounds(10, 50,100,30);
+        add(add_button);
     }
+
 }
 
-//staged button
-class staged_unstage_button extends JButton{
+//Untracked button
+class untracked_add_button extends JButton{
 
-    staged_unstage_button(){
-        setText("UNSTAGE");
+    untracked_add_button(){
+        setText("ADD");
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 try {
-                    JGitManager.gitRestoreStaged(SelectedFile.getInstance().getFile());
+                    JGitManager.gitAdd(SelectedFile.getInstance().getFile());
                 } catch (IOException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();

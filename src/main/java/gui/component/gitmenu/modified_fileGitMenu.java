@@ -1,6 +1,5 @@
-package gitmenu;
+package gui.component.gitmenu;
 
-import gui.GitFilePanel;
 import gui.GitGUI;
 
 import javax.swing.*;

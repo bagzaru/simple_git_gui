@@ -1,10 +1,10 @@
-package gui;
+package gui.component;
 
 import file.SelectedFile;
-import gitmenu.commited_fileGitMenu;
-import gitmenu.modified_fileGitMenu;
-import gitmenu.staged_fileGitMenu;
-import gitmenu.untracked_fileGitMenu;
+import gui.component.gitmenu.commited_fileGitMenu;
+import gui.component.gitmenu.modified_fileGitMenu;
+import gui.component.gitmenu.staged_fileGitMenu;
+import gui.component.gitmenu.untracked_fileGitMenu;
 import jgitmanager.*;
 
 import javax.swing.*;
