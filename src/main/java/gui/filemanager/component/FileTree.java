@@ -1,8 +1,8 @@
-package gui.component;
+package gui.filemanager.component;
 
 import file.SelectedFile;
-import gui.PanelRefreshUtil;
-import gui.model.FileTreeRenderer;
+import gui.filemanager.PanelRefreshUtil;
+import gui.filemanager.model.FileTreeRenderer;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;

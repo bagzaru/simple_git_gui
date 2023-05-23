@@ -1,4 +1,4 @@
-package gui.component;
+package gui.filemanager.component;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -13,8 +13,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import gui.PanelRefreshUtil;
-import gui.model.FileTableModel;
+import gui.filemanager.PanelRefreshUtil;
+import gui.filemanager.model.FileTableModel;
 import file.SelectedFile;
 
 public class FileTable extends JScrollPane {

@@ -1,4 +1,4 @@
-package gui.component;
+package gui.filemanager.component;
 
 import file.SelectedFile;
 import jgitmanager.JGitManager;

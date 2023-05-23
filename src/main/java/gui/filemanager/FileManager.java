@@ -1,4 +1,4 @@
-package gui;
+package gui.filemanager;
 
 import java.awt.*;
 import java.io.File;
@@ -9,47 +9,18 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import file.SelectedFile;
-import gui.component.*;
+import gui.filemanager.component.*;
 
-public class GitGUI {
+public class FileManager extends JPanel {
     /** Title of the application */
     public static final String APP_TITLE = "Simple Git GUI Application";
 
     /** Main GUI container */
     public static JPanel gui;
 
-    public GitGUI() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    // Significantly improves the look of the output in
-                    // terms of the file names returned by FileSystemView!
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception weTried) {
-                }
-
-                JFrame f = new JFrame(APP_TITLE);
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                f.setContentPane(getGui());
-
-                try {
-                    URL urlBig = getClass().getResource("fm-icon-32x32.png");
-                    URL urlSmall = getClass().getResource("fm-icon-16x16.png");
-                    ArrayList<Image> images = new ArrayList<Image>();
-                    images.add(ImageIO.read(urlBig));
-                    images.add(ImageIO.read(urlSmall));
-                    f.setIconImages(images);
-                } catch (Exception weTried) {
-                }
-
-                f.pack();
-                f.setLocationByPlatform(true);
-                f.setMinimumSize(f.getSize());
-                f.setVisible(true);
-
-                showRootFile();
-            }
-        });
+    public FileManager() {
+        add(getGui());
+        showRootFile();
     }
 
     //GUI의 component들을 생성 및 조립하는 메소드
@@ -96,7 +67,7 @@ public class GitGUI {
     //프로그램 시작시 루트 폴더를 SelectedFile로 지정 후 새로고침
     private void showRootFile() {
         // ensure the main files are displayed
-        SelectedFile.getInstance().setFile((File)PanelRefreshUtil.lastTreeNode.getUserObject());
+        SelectedFile.getInstance().setFile((File) PanelRefreshUtil.lastTreeNode.getUserObject());
         PanelRefreshUtil.refreshAll();
     }
 }

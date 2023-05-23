@@ -1,4 +1,4 @@
-package gui.component;
+package gui.filemanager.component;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import gui.GitGUI;
-import gui.PanelRefreshUtil;
+import gui.filemanager.FileManager;
+import gui.filemanager.PanelRefreshUtil;
 import org.apache.commons.io.FileUtils;
 
 import file.SelectedFile;
@@ -51,7 +51,7 @@ public class FileToolBar extends JToolBar {
                 } catch (Throwable t) {
                     showThrowable(t);
                 }
-                GitGUI.gui.repaint();
+                FileManager.gui.repaint();
             }
         });
         add(openFile);
@@ -132,7 +132,7 @@ public class FileToolBar extends JToolBar {
         }
 
         int result = JOptionPane.showConfirmDialog(
-                GitGUI.gui,
+                FileManager.gui,
                 newFilePanel,
                 "Create File",
                 JOptionPane.OK_CANCEL_OPTION);
@@ -161,7 +161,7 @@ public class FileToolBar extends JToolBar {
                 showThrowable(t);
             }
         }
-        GitGUI.gui.repaint();
+        FileManager.gui.repaint();
     }
 
     private void deleteFile() {
@@ -172,7 +172,7 @@ public class FileToolBar extends JToolBar {
         }
 
         int result = JOptionPane.showConfirmDialog(
-                GitGUI.gui,
+                FileManager.gui,
                 "Are you sure you want to delete this file?",
                 "Delete File",
                 JOptionPane.ERROR_MESSAGE
@@ -193,7 +193,7 @@ public class FileToolBar extends JToolBar {
                 showThrowable(t);
             }
         }
-        GitGUI.gui.repaint();
+        FileManager.gui.repaint();
     }
 
     /*
@@ -237,7 +237,7 @@ public class FileToolBar extends JToolBar {
         } catch (Exception e) {
             JPanel errorPanel = new JPanel(new BorderLayout(3, 3));
             errorPanel.add(new JLabel("Error: " + e.getMessage()), BorderLayout.WEST);
-            JOptionPane.showConfirmDialog(GitGUI.gui, errorPanel,"Error",JOptionPane.OK_OPTION);
+            JOptionPane.showConfirmDialog(FileManager.gui, errorPanel,"Error",JOptionPane.OK_OPTION);
             System.out.println("Toolbar: stageAll failed: " + e.toString() + ": " + e.getMessage());
         }
         PanelRefreshUtil.refreshAll();
@@ -245,7 +245,7 @@ public class FileToolBar extends JToolBar {
 
     private void showErrorMessage(String errorMessage, String errorTitle) {
         JOptionPane.showMessageDialog(
-                GitGUI.gui,
+                FileManager.gui,
                 errorMessage,
                 errorTitle,
                 JOptionPane.ERROR_MESSAGE
@@ -255,12 +255,12 @@ public class FileToolBar extends JToolBar {
     private void showThrowable(Throwable t) {
         t.printStackTrace();
         JOptionPane.showMessageDialog(
-                GitGUI.gui,
+                FileManager.gui,
                 t.toString(),
                 t.getMessage(),
                 JOptionPane.ERROR_MESSAGE
         );
-        GitGUI.gui.repaint();
+        FileManager.gui.repaint();
     }
 
     private TreePath findTreePath(File find) {

@@ -1,4 +1,4 @@
-package gui;
+package gui.filemanager;
 
 import java.io.File;
 import javax.swing.*;
@@ -6,7 +6,8 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import file.SelectedFile;
-import gui.component.*;
+import gui.filemanager.component.*;
+import gui.filemanager.FileManager;
 
 public class PanelRefreshUtil {
     /** class variable */
@@ -42,13 +43,13 @@ public class PanelRefreshUtil {
         else{
             System.out.println("there is no selected dir");
         }
-        GitGUI.gui.repaint();
+        FileManager.gui.repaint();
     }
 
     //중앙 하단의 현재 git repo의 staged list를 새로고칩니다.
     public static void refreshStagedList(){
         StagedFileList.getInstance().setStagedFileTableData();
-        GitGUI.gui.repaint();
+        FileManager.gui.repaint();
     }
 
     //우측 상단의 현재 선택된 파일에 대한 깃 명령어 모음 패널을 새로고침합니다.
@@ -84,10 +85,10 @@ public class PanelRefreshUtil {
 
     //파일, 폴더 클릭시 좌측 상단의 제목 옆 현재 파일, 폴더 이름 변경
     public static void refreshTitle() {
-        JFrame f = (JFrame) GitGUI.gui.getTopLevelAncestor();
+        JFrame f = (JFrame) FileManager.gui.getTopLevelAncestor();
         if (f!=null) {
             f.setTitle(
-                    GitGUI.APP_TITLE + " :: "
+                    FileManager.APP_TITLE + " :: "
                             + FileSystemView.getFileSystemView().getSystemDisplayName(SelectedFile.getInstance().getFile()));
         }
     }

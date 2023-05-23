@@ -1,9 +1,9 @@
-package gui.component;
+package gui.filemanager.component;
 
 import javax.swing.*;
 
-import gui.GitGUI;
-import gui.PanelRefreshUtil;
+import gui.filemanager.FileManager;
+import gui.filemanager.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;
@@ -86,7 +86,7 @@ class commit_button extends JButton{
                     e1.printStackTrace();
                 }//->커밋 함수
                 PanelRefreshUtil.refreshAll();
-                GitGUI.gui.repaint();
+                FileManager.gui.repaint();
             }
         });
     }
@@ -105,7 +105,7 @@ class init_button extends JButton{
                     e1.printStackTrace();
                 }
                 PanelRefreshUtil.refreshAll();
-                GitGUI.gui.repaint();
+                FileManager.gui.repaint();
             }
         });
     }

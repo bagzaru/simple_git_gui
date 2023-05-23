@@ -1,4 +1,4 @@
-package gui.component;
+package gui.filemanager.component;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import file.SelectedFile;
-import gui.GitGUI;
-import gui.PanelRefreshUtil;
-import gui.model.StagedFileTableModel;
+import gui.filemanager.FileManager;
+import gui.filemanager.PanelRefreshUtil;
+import gui.filemanager.model.StagedFileTableModel;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -52,7 +52,7 @@ public class StagedFileList extends JScrollPane {
                             confirmPanel = new JPanel(new BorderLayout(3, 3));
                             confirmPanel.add(new JLabel("Do you really want to unstage this file?"), BorderLayout.WEST);
                         }
-                            int result = JOptionPane.showConfirmDialog(GitGUI.gui,confirmPanel,
+                            int result = JOptionPane.showConfirmDialog(FileManager.gui,confirmPanel,
                                     "Unstage file", JOptionPane.OK_CANCEL_OPTION);
                             if (result == JOptionPane.OK_OPTION) {
                                 try {
@@ -106,7 +106,7 @@ public class StagedFileList extends JScrollPane {
                     cellSizesSet = true;
                 }
 
-                GitGUI.gui.repaint();
+                FileManager.gui.repaint();
             }
         });
     }

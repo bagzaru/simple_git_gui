@@ -1,4 +1,4 @@
-package gui.model;
+package gui.filemanager.model;
 
 import java.awt.Component;
 import java.io.File;

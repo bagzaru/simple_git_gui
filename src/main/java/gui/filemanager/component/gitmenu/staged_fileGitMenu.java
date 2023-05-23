@@ -1,10 +1,10 @@
-package gui.component.gitmenu;
+package gui.filemanager.component.gitmenu;
 
-import gui.GitGUI;
+import gui.filemanager.FileManager;
 
 import javax.swing.*;
 
-import gui.PanelRefreshUtil;
+import gui.filemanager.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;
@@ -47,7 +47,7 @@ class staged_unstage_button extends JButton{
                     e1.printStackTrace();
                 }
                 PanelRefreshUtil.refreshAll();
-                GitGUI.gui.repaint();
+                FileManager.gui.repaint();
             }
         });
     }
