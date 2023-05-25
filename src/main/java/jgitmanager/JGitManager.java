@@ -6,12 +6,14 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.api.Status;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -432,6 +434,13 @@ public class JGitManager {
             //e.printStackTrace();
             throw e;
         }
+    }
+
+    public static ArrayList<RevCommit> gitLog(){
+        return gitLog("");
+    }
+    public static ArrayList<RevCommit> gitLog(String branch){
+        return new ArrayList<>();
     }
 
     // findGitRepository:
