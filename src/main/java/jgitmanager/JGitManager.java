@@ -436,10 +436,10 @@ public class JGitManager {
         }
     }
 
-    public static ArrayList<RevCommit> gitLog(){
-        return gitLog("");
+    public static ArrayList<RevCommit> gitLog(File dir){
+        return gitLog(dir, "");
     }
-    public static ArrayList<RevCommit> gitLog(String branch){
+    public static ArrayList<RevCommit> gitLog(File dir, String branch){
         return new ArrayList<>();
     }
 
