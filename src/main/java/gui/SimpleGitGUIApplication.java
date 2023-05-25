@@ -1,7 +1,7 @@
 package gui;
 
-import gui.branchmanager.BranchManager;
-import gui.filemanager.FileManager;
+import gui.branchpanel.BranchPanel;
+import gui.filepanel.FilePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,8 +21,8 @@ public class SimpleGitGUIApplication extends JFrame {
     private JButton branchManagerMode = new JButton("Branch Manager");
 
     private JPanel currentPanel;
-    private FileManager fileManager;
-    private BranchManager branchManager;
+    private FilePanel fileManager;
+    private BranchPanel branchManager;
 
     public SimpleGitGUIApplication() {
         super(APP_TITLE);
@@ -63,8 +63,8 @@ public class SimpleGitGUIApplication extends JFrame {
         menuBar.add(branchManagerMode);
         add(menuBar, BorderLayout.NORTH);
 
-        fileManager = new FileManager();
-        branchManager = new BranchManager();
+        fileManager = new FilePanel();
+        branchManager = new BranchPanel();
 
         currentPanel = fileManager;
         add(currentPanel, BorderLayout.CENTER);
