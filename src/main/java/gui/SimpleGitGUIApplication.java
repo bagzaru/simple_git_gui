@@ -55,6 +55,7 @@ public class SimpleGitGUIApplication extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(branchManager);
+                branchManager.commitHistoryPanel.Update("main");
             }
         });
 
