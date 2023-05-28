@@ -17,11 +17,25 @@ public class CommitHistoryModel extends AbstractTableModel {
     //현재 branch의 정보를 저장합니다.
     private String currentBranch = null;
 
-    private String[] columns = {
-            "Graph",
-            "Message",
-            "Author",
-            "Checksum"
+    private enum Column {
+        GRAPH(0, "Graph"),
+        MESSAGE(1, "Message"),
+        AUTHOR(2, "Author"),
+        CHECKSUM(3, "Checksum")
+        ;
+
+        private final int key;
+        private final String value;
+        Column(int key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+        public int getKey(){
+            return key;
+        }
+        public String getValue(){
+            return value;
+        }
     };
     public CommitHistoryModel(){
 
@@ -38,11 +52,22 @@ public class CommitHistoryModel extends AbstractTableModel {
     public int getColumnCount(){
         //override 함수
         //column의 length 구현
-        return columns.length;
+        return Column.values().length;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        RevCommit value = logs.get(rowIndex);
+        Column[] columns = Column.values();
+        if(columnIndex==Column.GRAPH.key){
+            //그래프 그리는 알고리즘 작성
+        }else if(columnIndex==Column.MESSAGE.key) {
+            return value.getFullMessage();
+        }else if(columnIndex==Column.AUTHOR.key){
+            return value.getAuthorIdent().getName();
+        }else if(columnIndex==Column.CHECKSUM.key){
+            return value.getId().getName();
+        }
         return null;
     }
 
