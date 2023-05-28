@@ -61,6 +61,17 @@ public class CommitHistoryModel extends AbstractTableModel {
             e.printStackTrace();
             return false;
         }
+        //View.PostUpdateMessage(); //아직 미구현
         return true;
+    }
+
+    //
+    public RevCommit getCommitByIndex(int tableIndex){
+        try{
+            return logs.get(tableIndex);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
