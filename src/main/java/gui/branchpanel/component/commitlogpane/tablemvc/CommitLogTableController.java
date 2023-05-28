@@ -20,7 +20,11 @@ public class CommitLogTableController {
                 //테이블이 클릭되었을 때 발동
                 //1. 선택한 부분의 정보를 모델에서 받아옵니다.
                 //2. 선택한 Commit을 <3번패널>로 보냅니다.
-
+                if(!e.getValueIsAdjusting()){ //false: 마우스가 떼어진 순간만 적용
+                    int clickedRow = table.getSelectedRow();
+                    String checksum = model.getCommitByIndex(clickedRow).getId().getName().substring(0,6);
+                    System.out.println("Table Clicked: "+checksum);
+                }
             }
         };
         table.getSelectionModel().addListSelectionListener(listSelectionListener);
