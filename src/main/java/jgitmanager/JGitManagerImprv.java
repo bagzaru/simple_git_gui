@@ -31,7 +31,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException e) {
             System.out.println("clone fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
@@ -57,7 +56,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException | IOException e) {
             System.out.println("branch create fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
@@ -83,7 +81,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException | IOException e) {
             System.out.println("branch delete fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
@@ -110,7 +107,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException | IOException e) {
             System.out.println("branch rename fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
@@ -142,7 +138,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException | IOException e) {
             System.out.println("merge fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
@@ -166,7 +161,6 @@ public class JGitManagerImprv {
         } catch (GitAPIException | IOException e) {
             System.out.println("merge fail");
 
-            e.printStackTrace();
             // 예외 발생
             throw e;
         }
