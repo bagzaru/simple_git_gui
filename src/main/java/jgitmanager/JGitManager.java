@@ -443,6 +443,7 @@ public class JGitManager {
 
     public static Iterable<RevCommit> gitLog(File dir, String branch) throws IOException, GitAPIException, NullPointerException {
         Iterable<RevCommit> logs = null;
+        System.out.println("git log, dir: "+dir.getName()+", branch: "+branch);
         try {
             Repository repository = openRepositoryFromFile(dir);
             if (repository == null) {

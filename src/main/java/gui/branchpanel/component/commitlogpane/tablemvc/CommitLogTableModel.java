@@ -67,7 +67,7 @@ public class CommitLogTableModel extends AbstractTableModel {
 
     //UpdateLogsByBranch: branch가 입력되면, 그에 맞게 모델의 데이터를 업데이트한 후, UI에 업데이트 신호를 보냅니다.
     //기본적으로 ModelController에서 호출됩니다.
-    boolean UpdateModelByBranch(File repositoryDir, String branch){
+    public boolean UpdateModelByBranch(File repositoryDir, String branch){
         currentBranch = branch;
         currentRepository = repositoryDir;
         try{
