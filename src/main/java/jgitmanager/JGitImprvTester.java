@@ -12,12 +12,20 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitCloneTest(testPath);
+        tester.gitCreateBranchTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
         try{
             jGitManagerImprv.gitClone(new File(filePath), "https://github.com/min-jp/testRepo.git", "min-jp", "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");
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitCreateBranchTest(String filePath){
+        try{
+            jGitManagerImprv.gitCreateBranch(new File(filePath), "branch1");
         } catch(Exception e){
             System.out.println(e.toString());
         }

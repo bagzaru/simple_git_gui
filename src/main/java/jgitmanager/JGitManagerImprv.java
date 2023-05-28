@@ -2,10 +2,15 @@ package jgitmanager;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.io.IOException;
+
+import static jgitmanager.JGitManager.openRepositoryFromFile;
 
 public class JGitManagerImprv {
     // gitClone
@@ -22,21 +27,40 @@ public class JGitManagerImprv {
                     .setCredentialsProvider(credentialsProvider)
                     .call();
 
-            System.out.println("Clone Success");
+            System.out.println("clone success");
         } catch (GitAPIException e) {
-            System.out.println("Clone Fail");
+            System.out.println("clone fail");
+
             e.printStackTrace();
             // 예외 발생
             throw e;
         }
     }
 
-    public static void gitMerge() {
+    // gitCreateBranch
+    // git branch <branchName> 실행
+    public static void gitCreateBranch(File nowDir, String branchName) throws GitAPIException, IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
-    }
+            // branch 생성
+            Ref branchRef = git.branchCreate()
+                    .setName(branchName)
+                    .call();
 
-    public static void gitCreateBranch() {
+            // Git 저장소 닫기
+            git.close();
 
+            System.out.println("branch create success");
+        } catch (GitAPIException | IOException e) {
+            System.out.println("branch create fail");
+
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
     }
 
     public static void gitDeleteBranch() {
@@ -44,6 +68,10 @@ public class JGitManagerImprv {
     }
 
     public static void gitRenameBranch() {
+
+    }
+
+    public static void gitMerge() {
 
     }
 
