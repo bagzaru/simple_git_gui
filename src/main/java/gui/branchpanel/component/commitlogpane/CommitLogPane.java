@@ -28,11 +28,11 @@ public class CommitLogPane extends JScrollPane {
         setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()/2));
     }
 
-    //임시적으로 String 타입으로 생성함
-    //외부에서 접근 가능하며, branch를 입력받아 GitCommitHistory를 업데이트함
+    //임시적으로 String 타입으로 생성합니다.
+    //외부에서 접근 가능하며, branch를 입력받아 CommitLogTable을 업데이트합니다.
     public void Update(String branch){
         //Model Update 구현하
-        controller.UpdateModel(SelectedFile.getInstance().getFile(), branch);
+        controller.UpdateCommitLogTable(SelectedFile.getInstance().getFile(), branch);
     }
 
 

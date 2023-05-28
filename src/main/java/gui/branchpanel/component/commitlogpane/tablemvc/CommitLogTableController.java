@@ -22,17 +22,23 @@ public class CommitLogTableController {
                 //1. 선택한 부분의 정보를 모델에서 받아옵니다.
                 //2. 선택한 Commit을 <3번패널>로 보냅니다.
                 if(!e.getValueIsAdjusting()){ //false: 마우스가 떼어진 순간만 적용
+
+                    //1. 선택한 부분의 정보를 모델에서 받아옵니다.
                     int clickedRow = table.getSelectedRow();
-                    String checksum = model.getCommitByIndex(clickedRow).getId().getName().substring(0,6);
+                    String checksum = model.getCommitByRowIndex(clickedRow).getId().getName().substring(0,6);
                     System.out.println("Table Clicked: "+checksum);
                 }
+                //선택한 Commit을 3번 패널로 보냅니다.
+                //merge 후에 구현 예정
             }
         };
         table.getSelectionModel().addListSelectionListener(listSelectionListener);
 
     }
 
-    public void UpdateModel(File repositoryDir, String branch){
+    //기본적으로 외부에서 호출됩니다.
+    //CommitLogTable의 값 변화에 대한 Update를 호출합니다.
+    public void UpdateCommitLogTable(File repositoryDir, String branch){
         model.UpdateModelByBranch(repositoryDir,branch);
     }
 

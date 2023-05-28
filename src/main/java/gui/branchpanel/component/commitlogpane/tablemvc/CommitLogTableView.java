@@ -5,8 +5,6 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 
 public class CommitLogTableView extends JTable {
-    //EventListner 추가하기
-    //모델 연결하기
     CommitLogTableModel model;
 
     public CommitLogTableView(CommitLogTableModel model) {
@@ -19,16 +17,16 @@ public class CommitLogTableView extends JTable {
         this.model = model;
         setModel(model);
 
-        //cell size를 지정해줍니다.
-
         //각 행의 길이를 정합니다.
         setColumnWidth(0, 8);
-        setColumnWidth(1, 50);
-        setColumnWidth(2, 20);
+        setColumnWidth(1, 24);
+        setColumnWidth(2, 12);
         setColumnWidth(3, 16);
 
     }
 
+    //Table의 열의 길이를 지정해 줍니다. 기기마다 글꼴이 달라 preferred를 이용합니다.
+    //column: 길이를 지정할 열, textLength: 영어 텍스트 길이
     public void setColumnWidth(int column, int textLength) {
         int width = 14;
         TableColumn tableColumn = getColumnModel().getColumn(column);

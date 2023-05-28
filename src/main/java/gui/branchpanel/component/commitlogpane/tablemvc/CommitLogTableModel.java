@@ -8,15 +8,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class CommitLogTableModel extends AbstractTableModel {
-    //String에서 Commit으로 교체 필요
-    //branch를 입력받아, parent를 따라가며 모델 데이터를 생성하는 함수 필요함. 완료 후 view에 refresh 요청
+    //Commit data, Update가 호출될 때마다 업데이트됩니다. 처음에는 길이가 0입니다.
     private ArrayList<RevCommit> logs;
 
-    //현재 로컬 Repo의 위치를 저장합니다.
-    private File currentRepository = null;
-    //현재 branch의 정보를 저장합니다.
-    private String currentBranch = null;
-
+    //테이블의 열 제목을 지정합니다. 추후에 enum으로 변경될 수 있습니다.
     private final String[] columns = {
             "Graph",
             "Message",
@@ -25,14 +20,14 @@ public class CommitLogTableModel extends AbstractTableModel {
     };
 
 
+    //생성자입니다.
     public CommitLogTableModel(){
         logs = new ArrayList<>();
     };
 
     @Override
     public int getRowCount(){
-        //override 함수
-        //row의 수 구현
+        //row의 수 반환
         if(logs==null)
             return 0;
         return logs.size();
@@ -40,11 +35,12 @@ public class CommitLogTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount(){
-        //override 함수
-        //column의 length 구현
+        //column의 수 반환
         return columns.length;
     }
 
+    //선택한 영역의 데이터를 반환합니다.
+    //Model의 데이터가 TableView에 저장될 때 Swing.JTable 내부적으로 호출됩니다.
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         RevCommit value = logs.get(rowIndex);
@@ -60,6 +56,7 @@ public class CommitLogTableModel extends AbstractTableModel {
         return null;
     }
 
+    //각 Column의 제목을 반환합니다.
     @Override
     public String getColumnName(int column){
         return columns[column];
@@ -68,8 +65,6 @@ public class CommitLogTableModel extends AbstractTableModel {
     //UpdateLogsByBranch: branch가 입력되면, 그에 맞게 모델의 데이터를 업데이트한 후, UI에 업데이트 신호를 보냅니다.
     //기본적으로 ModelController에서 호출됩니다.
     public boolean UpdateModelByBranch(File repositoryDir, String branch){
-        currentBranch = branch;
-        currentRepository = repositoryDir;
         try{
             logs.clear();
             Iterable<RevCommit> tlogs = JGitManager.gitLog(repositoryDir, branch);
@@ -86,10 +81,11 @@ public class CommitLogTableModel extends AbstractTableModel {
         return true;
     }
 
-    //
-    public RevCommit getCommitByIndex(int tableIndex){
+    //선택한 행을 입력받아 해당 행의 Commit 값을 반환합니다.
+    //기본적으로 외부에서 호출됩니다.
+    public RevCommit getCommitByRowIndex(int rowIndex){
         try{
-            return logs.get(tableIndex);
+            return logs.get(rowIndex);
         }catch(Exception e){
             e.printStackTrace();
             return null;
