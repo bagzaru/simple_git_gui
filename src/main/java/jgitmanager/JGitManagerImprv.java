@@ -195,10 +195,6 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitClickBranch() {
-
-    }
-
     public static void gitCommitInfo() {
 
     }
