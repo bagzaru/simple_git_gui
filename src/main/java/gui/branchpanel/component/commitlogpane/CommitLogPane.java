@@ -1,9 +1,9 @@
-package gui.branchpanel.component.commithistory;
+package gui.branchpanel.component.commitlogpane;
 
 import file.SelectedFile;
-import gui.branchpanel.component.commithistory.tablemvc.CommitHistoryModel;
-import gui.branchpanel.component.commithistory.tablemvc.CommitHistoryTableView;
-import gui.branchpanel.component.commithistory.tablemvc.CommitHistoryTableController;
+import gui.branchpanel.component.commitlogpane.tablemvc.CommitLogTableModel;
+import gui.branchpanel.component.commitlogpane.tablemvc.CommitLogTableView;
+import gui.branchpanel.component.commitlogpane.tablemvc.CommitLogTableController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +13,15 @@ public class CommitLogPane extends JScrollPane {
     //model: 표출할 데이터를 관리
     //view: 데이터를 가공하여 GUI로 표현
     //controller: 클릭 등 외부와의 상호작용 처리
-    CommitHistoryModel model;
-    CommitHistoryTableView view;
-    CommitHistoryTableController controller;
+    CommitLogTableModel model;
+    CommitLogTableView view;
+    CommitLogTableController controller;
 
     public CommitLogPane(){
         //FileTable처럼 JScrollPane에 UI 등록하기
-        model = new CommitHistoryModel();
-        view = new CommitHistoryTableView(model);
-        controller = new CommitHistoryTableController(model, view);
+        model = new CommitLogTableModel();
+        view = new CommitLogTableView(model);
+        controller = new CommitLogTableController(model, view);
 
         setViewportView(view);
         Dimension d = getPreferredSize();

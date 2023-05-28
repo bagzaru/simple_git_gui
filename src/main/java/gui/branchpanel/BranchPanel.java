@@ -1,6 +1,6 @@
 package gui.branchpanel;
 
-import gui.branchpanel.component.commithistory.CommitLogPane;
+import gui.branchpanel.component.commitlogpane.CommitLogPane;
 
 import javax.swing.*;
 

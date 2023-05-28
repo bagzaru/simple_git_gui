@@ -1,14 +1,13 @@
-package gui.branchpanel.component.commithistory.tablemvc;
+package gui.branchpanel.component.commitlogpane.tablemvc;
 
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CommitHistoryModel extends AbstractTableModel {
+public class CommitLogTableModel extends AbstractTableModel {
     //String에서 Commit으로 교체 필요
     //branch를 입력받아, parent를 따라가며 모델 데이터를 생성하는 함수 필요함. 완료 후 view에 refresh 요청
     private ArrayList<RevCommit> logs;
@@ -26,7 +25,7 @@ public class CommitHistoryModel extends AbstractTableModel {
     };
 
 
-    public CommitHistoryModel(){
+    public CommitLogTableModel(){
         logs = new ArrayList<>();
     };
 

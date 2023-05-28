@@ -1,15 +1,15 @@
-package gui.branchpanel.component.commithistory.tablemvc;
+package gui.branchpanel.component.commitlogpane.tablemvc;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 
-public class CommitHistoryTableView extends JTable {
+public class CommitLogTableView extends JTable {
     //EventListner 추가하기
     //모델 연결하기
-    CommitHistoryModel model;
+    CommitLogTableModel model;
 
-    public CommitHistoryTableView(CommitHistoryModel model) {
+    public CommitLogTableView(CommitLogTableModel model) {
         //table UI의 속성을 지정합니다.
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setAutoCreateRowSorter(true);

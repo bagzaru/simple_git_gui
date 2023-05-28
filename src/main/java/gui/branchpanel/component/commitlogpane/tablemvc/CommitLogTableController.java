@@ -1,17 +1,17 @@
-package gui.branchpanel.component.commithistory.tablemvc;
+package gui.branchpanel.component.commitlogpane.tablemvc;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class CommitHistoryTableController {
+public class CommitLogTableController {
     //클릭 처리 필요(모델에서 해당 커밋 데이터 받아오기, Panel3에 전달하기)
     //UI에 대한 외부 입력(함수)에 대한 모델의 상태 변화 처리를 담당하는 클래스
-    CommitHistoryModel model;
-    CommitHistoryTableView table;
+    CommitLogTableModel model;
+    CommitLogTableView table;
 
     ListSelectionListener listSelectionListener;
 
-    public CommitHistoryTableController(CommitHistoryModel model, CommitHistoryTableView table){
+    public CommitLogTableController(CommitLogTableModel model, CommitLogTableView table){
         this.model = model;
         this.table = table;
         this.listSelectionListener = new ListSelectionListener() {
