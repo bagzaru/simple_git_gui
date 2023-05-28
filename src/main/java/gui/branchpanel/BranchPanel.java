@@ -1,13 +1,13 @@
 package gui.branchpanel;
 
-import gui.branchpanel.component.commithistory.GitCommitHistory;
+import gui.branchpanel.component.commithistory.CommitLogPane;
 
 import javax.swing.*;
 
 public class BranchPanel extends JPanel {
-    public GitCommitHistory commitHistoryPanel;
+    public CommitLogPane commitHistoryPanel;
     public BranchPanel() {
-        commitHistoryPanel = new GitCommitHistory();
+        commitHistoryPanel = new CommitLogPane();
         add(commitHistoryPanel);
     }
 }

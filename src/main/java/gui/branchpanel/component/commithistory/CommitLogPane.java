@@ -8,7 +8,7 @@ import gui.branchpanel.component.commithistory.tablemvc.CommitHistoryTableContro
 import javax.swing.*;
 import java.awt.*;
 
-public class GitCommitHistory extends JScrollPane {
+public class CommitLogPane extends JScrollPane {
     //git table mvc(model, view, controller)
     //model: 표출할 데이터를 관리
     //view: 데이터를 가공하여 GUI로 표현
@@ -17,7 +17,7 @@ public class GitCommitHistory extends JScrollPane {
     CommitHistoryTableView view;
     CommitHistoryTableController controller;
 
-    public GitCommitHistory(){
+    public CommitLogPane(){
         //FileTable처럼 JScrollPane에 UI 등록하기
         model = new CommitHistoryModel();
         view = new CommitHistoryTableView(model);
