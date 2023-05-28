@@ -112,6 +112,8 @@ public class JGitManagerImprv {
         }
     }
 
+    // gitMerge
+    // target branch로 체크아웃 후 merge
     // git checkout <targetBranch>
     // git merge <sourceBranch>
     public static void gitMerge(File nowDir, String sourceBranch, String targetBranch) throws GitAPIException, IOException {
@@ -143,6 +145,8 @@ public class JGitManagerImprv {
         }
     }
 
+    // gitCheckout
+    // git checkout <branchName>
     public static void gitCheckout(File nowDir, String branchName) throws GitAPIException, IOException {
         try {
             // Git 저장소 열기
@@ -157,17 +161,38 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("merge success");
+            System.out.println("checkout success");
         } catch (GitAPIException | IOException e) {
-            System.out.println("merge fail");
+            System.out.println("checkout fail");
 
             // 예외 발생
             throw e;
         }
     }
 
-    public static void gitCurrentBranch() {
+    // gitCurrentBranch
+    // 현재 브랜치의 이름을 가져옴
+    public static String gitCurrentBranch(File nowDir) throws IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
+            // current branch 이름 가져옴
+            String branchName = repository.getBranch();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("get name of current branch");
+
+            return branchName;
+        } catch (IOException e) {
+            System.out.println("Failed to get name of current branch");
+
+            // 예외 발생
+            throw e;
+        }
     }
 
     public static void gitClickBranch() {

@@ -12,7 +12,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitCheckoutTest(testPath);
+        tester.gitCurrentBranchTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -58,6 +58,15 @@ public class JGitImprvTester {
     public void gitCheckoutTest(String filePath){
         try{
             jGitManagerImprv.gitCheckout(new File(filePath), "branch_re");
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitCurrentBranchTest(String filePath){
+        try{
+            String branchName = jGitManagerImprv.gitCurrentBranch(new File(filePath));
+            System.out.println(branchName);
         } catch(Exception e){
             System.out.println(e.toString());
         }
