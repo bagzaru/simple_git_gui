@@ -46,7 +46,7 @@ public class JGitManagerImprv {
             Git git = new Git(repository);
 
             // branch 생성
-            Ref branchRef = git.branchCreate()
+            git.branchCreate()
                     .setName(branchName)
                     .call();
 
@@ -63,8 +63,30 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitDeleteBranch() {
+    // gitDeleteBranch
+    // git branch -d <branchName> 실행
+    public static void gitDeleteBranch(File nowDir, String branchName) throws GitAPIException, IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
+            // branch 삭제
+            git.branchDelete()
+                    .setBranchNames(branchName)
+                    .call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("branch delete success");
+        } catch (GitAPIException | IOException e) {
+            System.out.println("branch delete fail");
+
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
     }
 
     public static void gitRenameBranch() {
