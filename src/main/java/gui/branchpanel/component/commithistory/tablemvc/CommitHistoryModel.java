@@ -38,7 +38,7 @@ public class CommitHistoryModel extends AbstractTableModel {
     public int getColumnCount(){
         //override 함수
         //column의 length 구현
-        return 0;
+        return columns.length;
     }
 
     @Override
