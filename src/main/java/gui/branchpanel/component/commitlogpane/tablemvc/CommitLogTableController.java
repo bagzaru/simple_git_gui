@@ -2,6 +2,7 @@ package gui.branchpanel.component.commitlogpane.tablemvc;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.io.File;
 
 public class CommitLogTableController {
     //클릭 처리 필요(모델에서 해당 커밋 데이터 받아오기, Panel3에 전달하기)
@@ -29,6 +30,10 @@ public class CommitLogTableController {
         };
         table.getSelectionModel().addListSelectionListener(listSelectionListener);
 
+    }
+
+    public void UpdateModel(File repositoryDir, String branch){
+        model.UpdateModelByBranch(repositoryDir,branch);
     }
 
 }

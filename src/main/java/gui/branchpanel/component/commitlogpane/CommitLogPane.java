@@ -32,7 +32,7 @@ public class CommitLogPane extends JScrollPane {
     //외부에서 접근 가능하며, branch를 입력받아 GitCommitHistory를 업데이트함
     public void Update(String branch){
         //Model Update 구현하
-        model.UpdateModelByBranch(SelectedFile.getInstance().getFile(), branch);
+        controller.UpdateModel(SelectedFile.getInstance().getFile(), branch);
     }
 
 
