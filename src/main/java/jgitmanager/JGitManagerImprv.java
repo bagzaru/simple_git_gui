@@ -116,6 +116,8 @@ public class JGitManagerImprv {
         }
     }
 
+    // git checkout <targetBranch>
+    // git merge <sourceBranch>
     public static void gitMerge(File nowDir, String sourceBranch, String targetBranch) throws GitAPIException, IOException {
         try {
             // Git 저장소 열기
@@ -146,8 +148,28 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitCheckout() {
+    public static void gitCheckout(File nowDir, String branchName) throws GitAPIException, IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
+            // checkout
+            git.checkout()
+                    .setName(branchName)
+                    .call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("merge success");
+        } catch (GitAPIException | IOException e) {
+            System.out.println("merge fail");
+
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
     }
 
     public static void gitCurrentBranch() {
