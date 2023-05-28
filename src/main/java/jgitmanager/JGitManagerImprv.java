@@ -1,8 +1,8 @@
 package jgitmanager;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -89,12 +89,61 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitRenameBranch() {
+    // gitRenameBranch
+    // git branch -m <oldName> <newName>
+    public static void gitRenameBranch(File nowDir, String oldName, String newName) throws GitAPIException, IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
+            // branch rename
+            git.branchRename()
+                    .setOldName(oldName)
+                    .setNewName(newName)
+                    .call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("branch rename success");
+        } catch (GitAPIException | IOException e) {
+            System.out.println("branch rename fail");
+
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
     }
 
-    public static void gitMerge() {
+    public static void gitMerge(File nowDir, String sourceBranch, String targetBranch) throws GitAPIException, IOException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
 
+            // 병합을 위해 타겟 브랜치로 체크아웃
+            git.checkout()
+                    .setName(targetBranch)
+                    .call();
+
+            // 소스 브랜치를 타겟 브랜치로 병합
+            git.merge()
+                    .include(repository.findRef(sourceBranch))
+                    .setFastForward(MergeCommand.FastForwardMode.FF)
+                    .call();
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("merge success");
+        } catch (GitAPIException | IOException e) {
+            System.out.println("merge fail");
+
+            e.printStackTrace();
+            // 예외 발생
+            throw e;
+        }
     }
 
     public static void gitCheckout() {

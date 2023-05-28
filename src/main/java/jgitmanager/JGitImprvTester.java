@@ -12,7 +12,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitDeleteBranchTest(testPath);
+        tester.gitMergeTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -34,6 +34,22 @@ public class JGitImprvTester {
     public void gitDeleteBranchTest(String filePath){
         try{
             jGitManagerImprv.gitDeleteBranch(new File(filePath), "branch1");
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitRenameBranchTest(String filePath){
+        try{
+            jGitManagerImprv.gitRenameBranch(new File(filePath), "branch1", "branch_re");
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitMergeTest(String filePath){
+        try{
+            jGitManagerImprv.gitMerge(new File(filePath), "branch_re", "branch1");
         } catch(Exception e){
             System.out.println(e.toString());
         }
