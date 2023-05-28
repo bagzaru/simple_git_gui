@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -272,7 +273,7 @@ public class JGitManager {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(fileToAdd);
-            if(repository==null){
+            if (repository == null) {
                 throw new NullPointerException("Git repository가 아닙니다.");
             }
             Git git = new Git(repository);
@@ -436,11 +437,33 @@ public class JGitManager {
         }
     }
 
-    public static ArrayList<RevCommit> gitLog(File dir){
+    public static Iterable<RevCommit> gitLog(File dir) throws IOException, GitAPIException, NullPointerException {
         return gitLog(dir, "");
     }
-    public static ArrayList<RevCommit> gitLog(File dir, String branch){
-        return new ArrayList<>();
+
+    public static Iterable<RevCommit> gitLog(File dir, String branch) throws IOException, GitAPIException, NullPointerException {
+        Iterable<RevCommit> logs = null;
+        try {
+            Repository repository = openRepositoryFromFile(dir);
+            if (repository == null) {
+                throw new NullPointerException("failed to open Repository from the file or directory");
+            }
+            Git git = new Git(repository);
+
+            //여기부터 다시 확인하기!!!
+            if (branch.equals("")) {
+                logs = git.log().call();
+            } else {
+                logs = git.log().add(repository.resolve(branch)).call();
+            }
+            //if you need all commits:
+            //logs = git.log().all().call();
+
+        } catch (Exception e) {
+            System.out.println("Something error happend in gitLog(dir, branch)");
+            e.printStackTrace();
+        }
+        return logs;
     }
 
     // findGitRepository:
