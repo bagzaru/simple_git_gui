@@ -1,10 +1,12 @@
 package file;
 
+import java.io.File;
+
 public class GitBranchData {
     private String CurrentBranch;
     private String SelectedBranch;
     private String SelectedCommit; //아마 RevCommit 객체로 바뀔 예정
-    private String SelectedChangeFile; //아마 File 객체로 바뀔 예정
+    private File SelectedChangeFile;
 
     GitBranchData() {
 
@@ -34,11 +36,11 @@ public class GitBranchData {
         SelectedCommit = commit;
     }
 
-    public String getSelectedChangeFile() {
+    public File getSelectedChangeFile() {
         return SelectedChangeFile;
     }
 
-    public void setSelectedChangeFile(String file) {
+    public void setSelectedChangeFile(File file) {
         SelectedChangeFile = file;
     }
 }
