@@ -4,11 +4,14 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
@@ -195,8 +198,15 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitCommitInfo() {
-
+    // gitCommitInfo
+    // 특정 commit의 정보를 리턴합니다
+    // CommitInfo 객체를 리턴합니다.
+    public static CommitInfo gitCommitInfo(RevCommit nowCommit) {
+        return new CommitInfo(nowCommit.getId().getName(),
+                nowCommit.getCommitTime(),
+                nowCommit.getFullMessage(),
+                nowCommit.getAuthorIdent().getName(),
+                nowCommit.getAuthorIdent().getEmailAddress());
     }
 
     public static void gitChangedFileList() {

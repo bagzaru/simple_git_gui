@@ -1,7 +1,17 @@
 package jgitmanager;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static jgitmanager.JGitManager.openRepositoryFromFile;
 
 public class JGitImprvTester {
     public static String testPath = "/Users/minjeong-in/민정인/open_prj/testPath";
@@ -12,7 +22,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitCurrentBranchTest(testPath);
+        tester.gitCommitInfoTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -69,6 +79,30 @@ public class JGitImprvTester {
             System.out.println(branchName);
         } catch(Exception e){
             System.out.println(e.toString());
+        }
+    }
+
+    public void gitCommitInfoTest(String filePath){
+        try{
+            Repository repository = openRepositoryFromFile(new File(filePath));
+            RevCommit latestCommit = getLatestCommit(repository);
+            CommitInfo info = jGitManagerImprv.gitCommitInfo(latestCommit);
+
+            System.out.println(info.getCheckSum());
+            System.out.println(info.getCommitTime());
+            System.out.println(info.getCommitMessage());
+            System.out.println(info.getAuthorName());
+            System.out.println(info.getAuthorEMail());
+
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public static RevCommit getLatestCommit(Repository repository) throws IOException {
+        try (RevWalk revWalk = new RevWalk(repository)) {
+            ObjectId head = repository.resolve("HEAD");
+            return revWalk.parseCommit(head);
         }
     }
 }
