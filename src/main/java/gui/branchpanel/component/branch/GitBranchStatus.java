@@ -1,4 +1,10 @@
 package gui.branchpanel.component.branch;
 
-public class GitBranchStatus {
+import javax.swing.*;
+
+public class GitBranchStatus extends JPanel {
+
+    public GitBranchStatus(){
+
+    }
 }

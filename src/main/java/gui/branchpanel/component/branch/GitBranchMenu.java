@@ -5,7 +5,14 @@ import gui.branchpanel.component.branch.button.*;
 import javax.swing.*;
 
 public class GitBranchMenu  extends JPanel {
-    GitBranchMenu(){
+    private static GitBranchMenu instance;
+    public static GitBranchMenu getInstance(){
+        if(instance==null){
+            instance=new GitBranchMenu();
+        }
+        return instance;
+    }
+    public GitBranchMenu(){
         GitBranchCreateButton CreateButton=new GitBranchCreateButton();
         CreateButton.setBounds(0,100,50,30);
         add(CreateButton);
