@@ -116,21 +116,15 @@ public class JGitManagerImprv {
     }
 
     // gitMerge
-    // target branch로 체크아웃 후 merge
-    // git checkout <targetBranch>
+    // 현재 branch에서 source branch를 merge
     // git merge <sourceBranch>
-    public static void gitMerge(File nowDir, String sourceBranch, String targetBranch) throws GitAPIException, IOException {
+    public static void gitMerge(File nowDir, String sourceBranch) throws GitAPIException, IOException {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(nowDir);
             Git git = new Git(repository);
 
-            // 병합을 위해 타겟 브랜치로 체크아웃
-            git.checkout()
-                    .setName(targetBranch)
-                    .call();
-
-            // 소스 브랜치를 타겟 브랜치로 병합
+            // git merge
             git.merge()
                     .include(repository.findRef(sourceBranch))
                     .setFastForward(MergeCommand.FastForwardMode.FF)
