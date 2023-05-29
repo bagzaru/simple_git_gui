@@ -42,4 +42,21 @@ public class CommitLogTableView extends JTable {
         tableColumn.setMaxWidth(width);
         tableColumn.setMinWidth(width);
     }
+
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        // 점 그리기
+        g.setColor(Color.RED);
+        g.fillRect(10, 10, 5, 5);
+
+        // 선 그리기
+        g.setColor(Color.BLUE);
+        g.drawLine(20, 20, 50, 50);
+
+        // 면 그리기
+        g.setColor(Color.GREEN);
+        g.fillRect(30, 30, 50, 50);
+    }
 }
