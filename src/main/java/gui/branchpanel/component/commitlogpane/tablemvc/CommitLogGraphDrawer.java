@@ -15,19 +15,23 @@ import java.util.PriorityQueue;
 
 public class CommitLogGraphDrawer {
 
+    double circleSize = 0.6;
+
     static class CommitNode {
         int column;
         int row;
         RevCommit commit;
         ArrayList<CommitNode> parents;
-        CommitNode(){
-            parents=new ArrayList<>();
+
+        CommitNode() {
+            parents = new ArrayList<>();
         }
     }
+
     //CommitLog의 Graph를 그릴 때 필요한 데이터입니다.
     ArrayList<CommitNode> graphNodes;
 
-    CommitLogGraphDrawer(){
+    CommitLogGraphDrawer() {
         graphNodes = new ArrayList<>();
     }
 
@@ -40,7 +44,7 @@ public class CommitLogGraphDrawer {
         PriorityQueue<Integer> enableList = new PriorityQueue<>(); //현재 가능한 줄 번호 중 가장 작은 번호를 호출
         Map<String, CommitNode> nextList = new HashMap<>();
         //enableList 초기화, 최대 탐색할 node의 수는 전체 log의 크기를 넘을 수 없다.
-        for(int i=0;i<=logs.size();i++){
+        for (int i = 0; i <= logs.size(); i++) {
             enableList.add(i);
         }
         //돌면서 Node 정보를 저장
@@ -48,29 +52,28 @@ public class CommitLogGraphDrawer {
         CommitNode initialNode = new CommitNode();
         initialNode.commit = logs.get(0);
         initialNode.column = enableList.poll();
-        nextList.put(initialNode.commit.getId().getName(),initialNode);
-        for(int i=0;i<logs.size();i++){
+        nextList.put(initialNode.commit.getId().getName(), initialNode);
+        for (int i = 0; i < logs.size(); i++) {
             CommitNode cur = nextList.remove(logs.get(i).getId().getName());
             cur.row = i;
             graphNodes.add(cur);
             enableList.add(cur.column);     //현재 컬럼을 추가한다.
-            for(RevCommit p: cur.commit.getParents()){
-                if(nextList.containsKey(p.getId().getName())){
+            for (RevCommit p : cur.commit.getParents()) {
+                if (nextList.containsKey(p.getId().getName())) {
                     //이미 누군가가 추가하였다면(동일한 부모를 가진 사람이 있다면)
                     CommitNode c = nextList.get(p.getId().getName());
                     //현재 가능한 값보다 더 큰 값을 사용하였을 경우, 교체
-                    if(c.column>enableList.peek()){
+                    if (c.column > enableList.peek()) {
                         enableList.add(c.column);
                         c.column = enableList.poll();
                     }
                     cur.parents.add(c);
-                }
-                else{
+                } else {
                     //아무도 추가하지 않았다면
                     CommitNode c = new CommitNode();
                     c.commit = p;
                     c.column = enableList.poll();
-                    nextList.put(p.getId().getName(),c);
+                    nextList.put(p.getId().getName(), c);
                     cur.parents.add(c);
                 }
             }
@@ -78,12 +81,12 @@ public class CommitLogGraphDrawer {
     }
 
     //graphNode가 잘 작동하나 test용 함수
-    public void printGraphNodes(){
+    public void printGraphNodes() {
         System.out.println("printGraphNodes: ");
-        for(CommitNode i: graphNodes){
-            System.out.print("commit: "+i.commit.getId().getName().substring(0,4)+", parent:");
-            for(CommitNode p: i.parents){
-                System.out.print(" "+p.commit.getId().getName().substring(0,4)+"["+p.column+"] ");
+        for (CommitNode i : graphNodes) {
+            System.out.print("commit: " + i.commit.getId().getName().substring(0, 4) + ", parent:");
+            for (CommitNode p : i.parents) {
+                System.out.print(" " + p.commit.getId().getName().substring(0, 4) + "[" + p.column + "] ");
             }
             System.out.println();
         }
@@ -92,9 +95,14 @@ public class CommitLogGraphDrawer {
     public void drawGraph(Graphics g, JTable table) {
         int h = table.getRowHeight();
         int i = 0;
-        for(CommitNode n:graphNodes){
-            g.setColor(Color.BLUE);
-            g.fillRect(n.column*h, i*h, h, h);
+        for (CommitNode n : graphNodes) {
+            g.setColor(BranchColorGenerator.getGraphColor(n.column));
+            g.fillOval(
+                    n.column * h + (int) (h * (1.0 - circleSize) * (0.5)),
+                    i * h + (int) (h * (1.0 - circleSize) * (0.5)),
+                    (int) (h * circleSize),
+                    (int) (h * circleSize)
+            );
             i++;
         }
     }
