@@ -14,7 +14,6 @@ public class BranchColorGenerator {
             0xb3ee02,
             0xee8002,
             0xe6ee02,
-            0xee8002,
             0xb50046,
             0xf1e94b,
             0x009984,
@@ -25,7 +24,6 @@ public class BranchColorGenerator {
             0x5d00da,
             0x8c0054,
             0x8bcfff,
-            0xd6ee02,
             0xee02d6,
             0x9002ee,
             0xd6ee02,
@@ -40,12 +38,12 @@ public class BranchColorGenerator {
             0x9b02ee,
             0xcbee02,
             0xee2502,
+            0x68ee02,
             0xee0267,
             0x02ee88,
             0xee02de,
             0xee1202,
             0xee8802,
-            0x68ee02,
     };
 
     public static Color getGraphColor(int i) {
