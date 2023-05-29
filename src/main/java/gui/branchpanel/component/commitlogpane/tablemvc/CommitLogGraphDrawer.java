@@ -96,6 +96,21 @@ public class CommitLogGraphDrawer {
         int h = table.getRowHeight();
         int i = 0;
         for (CommitNode n : graphNodes) {
+            for(CommitNode p: n.parents){
+                //부모를 향한 선을 그린다.
+                if(p.column<=n.column){
+                    //부모가 더 왼쪽에 있다면 갈라져 나온 것이므로 자식의 색상을 따름
+                    g.setColor(BranchColorGenerator.getGraphColor(n.column));
+                }
+                else{
+                    //부모가 더 오른쪽에 있다면 merge 된 것이므로 부모의 색상을 따름
+                    g.setColor(BranchColorGenerator.getGraphColor(p.column));
+                }
+                g.drawLine(
+                        n.column*h+(int)(h*0.5),i*h+(int)(h*0.5),
+                        p.column*h+(int)(h*0.5),p.row*h+(int)(h*0.5)
+                );
+            }
             g.setColor(BranchColorGenerator.getGraphColor(n.column));
             g.fillOval(
                     n.column * h + (int) (h * (1.0 - circleSize) * (0.5)),
@@ -103,14 +118,6 @@ public class CommitLogGraphDrawer {
                     (int) (h * circleSize),
                     (int) (h * circleSize)
             );
-            for(CommitNode p: n.parents){
-                //부모를 향한 선을 그린다.
-                g.setColor(BranchColorGenerator.getGraphColor(p.column));
-                g.drawLine(
-                        n.column*h+(int)(h*0.5),i*h+(int)(h*0.5),
-                        p.column*h+(int)(h*0.5),p.row*h+(int)(h*0.5)
-                        );
-            }
             i++;
         }
     }
