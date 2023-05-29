@@ -103,6 +103,14 @@ public class CommitLogGraphDrawer {
                     (int) (h * circleSize),
                     (int) (h * circleSize)
             );
+            for(CommitNode p: n.parents){
+                //부모를 향한 선을 그린다.
+                g.setColor(BranchColorGenerator.getGraphColor(p.column));
+                g.drawLine(
+                        n.column*h+(int)(h*0.5),i*h+(int)(h*0.5),
+                        p.column*h+(int)(h*0.5),p.row*h+(int)(h*0.5)
+                        );
+            }
             i++;
         }
     }
