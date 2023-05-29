@@ -54,6 +54,7 @@ public class CommitLogTableView extends JTable {
         //그래프 그리기
         drawer.setGraphNodes(model.getLogs());
         //drawer.printGraphNodes();
+        setColumnWidth(0, 2*drawer.getColumnCount());
         drawer.drawGraph(g,this);
 
         // 점 그리기

@@ -31,8 +31,11 @@ public class CommitLogGraphDrawer {
     //CommitLog의 Graph를 그릴 때 필요한 데이터입니다.
     ArrayList<CommitNode> graphNodes;
 
+    private int columnCount;
+
     CommitLogGraphDrawer() {
         graphNodes = new ArrayList<>();
+        columnCount = 0;
     }
 
     //1. Model의 logs 참조하여 각 행에 대한 commit 열 저장하기, 최대값도 저장하기
@@ -47,6 +50,8 @@ public class CommitLogGraphDrawer {
         for (int i = 0; i <= logs.size(); i++) {
             enableList.add(i);
         }
+        //columnCount를 업데이트하기 위한 로컬 변수
+        int max = 0;
         //돌면서 Node 정보를 저장
         //initial node
         CommitNode initialNode = new CommitNode();
@@ -58,6 +63,9 @@ public class CommitLogGraphDrawer {
             cur.row = i;
             graphNodes.add(cur);
             enableList.add(cur.column);     //현재 컬럼을 추가한다.
+            if(max<cur.column){
+                max = cur.column;
+            }
             for (RevCommit p : cur.commit.getParents()) {
                 if (nextList.containsKey(p.getId().getName())) {
                     //이미 누군가가 추가하였다면(동일한 부모를 가진 사람이 있다면)
@@ -78,6 +86,7 @@ public class CommitLogGraphDrawer {
                 }
             }
         }
+        columnCount = max;
     }
 
     //graphNode가 잘 작동하나 test용 함수
@@ -96,19 +105,19 @@ public class CommitLogGraphDrawer {
         int h = table.getRowHeight();
         int i = 0;
         for (CommitNode n : graphNodes) {
-            for(CommitNode p: n.parents){
+            for (CommitNode p : n.parents) {
                 //부모를 향한 선을 그린다.
-                if(p.column<=n.column){
+                if (p.column <= n.column) {
                     //부모가 더 왼쪽에 있다면 갈라져 나온 것이므로 자식의 색상을 따름
                     g.setColor(BranchColorGenerator.getGraphColor(n.column));
                 }
-                else{
+                else {
                     //부모가 더 오른쪽에 있다면 merge 된 것이므로 부모의 색상을 따름
                     g.setColor(BranchColorGenerator.getGraphColor(p.column));
                 }
                 g.drawLine(
-                        n.column*h+(int)(h*0.5),i*h+(int)(h*0.5),
-                        p.column*h+(int)(h*0.5),p.row*h+(int)(h*0.5)
+                        n.column * h + (int) (h * 0.5), i * h + (int) (h * 0.5),
+                        p.column * h + (int) (h * 0.5), p.row * h + (int) (h * 0.5)
                 );
             }
             g.setColor(BranchColorGenerator.getGraphColor(n.column));
@@ -120,5 +129,11 @@ public class CommitLogGraphDrawer {
             );
             i++;
         }
+    }
+
+    //현재 설정된 그래프의 최대 column값을 반환합니다.
+    int getColumnCount(){
+        //System.out.println("graph column: "+columnCount);
+        return columnCount;
     }
 }
