@@ -8,7 +8,7 @@ public class GitBranchData {
     private String SelectedCommit; //아마 RevCommit 객체로 바뀔 예정
     private File SelectedChangeFile;
 
-    GitBranchData() {
+    public GitBranchData() {
 
     }
 
