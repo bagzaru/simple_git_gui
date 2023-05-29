@@ -22,9 +22,9 @@ public class CommitLogTableView extends JTable {
 
         //각 행의 길이를 정합니다.
         setColumnWidth(0, 8);
-        setColumnWidth(1, 24);
-        setColumnWidth(2, 12);
-        setColumnWidth(3, 16);
+        setColumnWidth(1, 16);
+        setColumnWidth(2, 10);
+        setColumnWidth(3, 12);
 
     }
 
