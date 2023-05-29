@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GitBranchMergeButton extends JButton {
-    GitBranchMergeButton(){
+    public GitBranchMergeButton(){
         setText("M");
         addActionListener(new ActionListener() {
             @Override

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GitBranchRenameButton extends JButton {
-    GitBranchRenameButton(){
+    public GitBranchRenameButton(){
         setText("R");
         //messageBox new branch name 추가 예정
         addActionListener(new ActionListener() {

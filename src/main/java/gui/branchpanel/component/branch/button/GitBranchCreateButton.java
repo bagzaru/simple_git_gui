@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GitBranchCreateButton extends JButton {
-    GitBranchCreateButton(){
+    public GitBranchCreateButton(){
         setText("+");
         //messageBox 브랜치 이름
         addActionListener(new ActionListener() {

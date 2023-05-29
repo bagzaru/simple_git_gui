@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GitBranchDeleteButton extends JButton {
-    GitBranchDeleteButton(){
+    public GitBranchDeleteButton(){
         setText("-");
         addActionListener(new ActionListener() {
             @Override
