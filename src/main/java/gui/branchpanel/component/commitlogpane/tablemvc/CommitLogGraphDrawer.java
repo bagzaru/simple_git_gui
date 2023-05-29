@@ -14,6 +14,16 @@ import java.util.PriorityQueue;
 //2. drawGraph: graphNode를 기반으로 그려냄
 
 public class CommitLogGraphDrawer {
+
+    static class CommitNode {
+        int column;
+        int row;
+        RevCommit commit;
+        ArrayList<CommitNode> parents;
+        CommitNode(){
+            parents=new ArrayList<>();
+        }
+    }
     //CommitLog의 Graph를 그릴 때 필요한 데이터입니다.
     ArrayList<CommitNode> graphNodes;
 
@@ -87,15 +97,5 @@ public class CommitLogGraphDrawer {
             g.fillRect(n.column*h, i*h, h, h);
             i++;
         }
-    }
-}
-
-class CommitNode {
-    int column;
-    int row;
-    RevCommit commit;
-    ArrayList<CommitNode> parents;
-    CommitNode(){
-        parents=new ArrayList<>();
     }
 }
