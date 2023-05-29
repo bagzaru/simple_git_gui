@@ -11,6 +11,10 @@ public class CommitLogTableModel extends AbstractTableModel {
     //Commit data, Update가 호출될 때마다 업데이트됩니다. 처음에는 길이가 0입니다.
     private ArrayList<RevCommit> logs;
 
+    public ArrayList<RevCommit> getLogs() {
+        return logs;
+    }
+
     //테이블의 열 제목을 지정합니다. 추후에 enum으로 변경될 수 있습니다.
     private final String[] columns = {
             "Graph",

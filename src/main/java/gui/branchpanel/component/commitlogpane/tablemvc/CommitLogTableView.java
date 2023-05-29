@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class CommitLogTableView extends JTable {
     CommitLogTableModel model;
+    CommitLogGraphDrawer drawer;
 
     public CommitLogTableView(CommitLogTableModel model) {
         //table UI의 속성을 지정합니다.
@@ -16,6 +17,8 @@ public class CommitLogTableView extends JTable {
         //모델을 등록하여 줍니다.
         this.model = model;
         setModel(model);
+
+        this.drawer = new CommitLogGraphDrawer();
 
         //각 행의 길이를 정합니다.
         setColumnWidth(0, 8);
@@ -46,6 +49,11 @@ public class CommitLogTableView extends JTable {
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
+
+
+        //그래프 그리기
+        drawer.setGraphNodes(model.getLogs());
+        drawer.printGraphNodes();
 
         // 점 그리기
         g.setColor(Color.RED);
