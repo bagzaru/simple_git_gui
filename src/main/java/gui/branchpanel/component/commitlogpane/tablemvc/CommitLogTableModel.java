@@ -43,6 +43,9 @@ public class CommitLogTableModel extends AbstractTableModel {
     //Model의 데이터가 TableView에 저장될 때 Swing.JTable 내부적으로 호출됩니다.
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if(logs.size()<=rowIndex){
+            return null;
+        }
         RevCommit value = logs.get(rowIndex);
         if(columnIndex==0){
             //그래프 그리는 알고리즘 작성
