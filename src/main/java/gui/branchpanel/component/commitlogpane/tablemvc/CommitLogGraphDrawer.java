@@ -2,6 +2,8 @@ package gui.branchpanel.component.commitlogpane.tablemvc;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +76,16 @@ public class CommitLogGraphDrawer {
                 System.out.print(" "+p.commit.getId().getName().substring(0,4)+"["+p.column+"] ");
             }
             System.out.println();
+        }
+    }
+
+    public void drawGraph(Graphics g, JTable table) {
+        int h = table.getRowHeight();
+        int i = 0;
+        for(CommitNode n:graphNodes){
+            g.setColor(Color.BLUE);
+            g.fillRect(n.column*h, i*h, h, h);
+            i++;
         }
     }
 }

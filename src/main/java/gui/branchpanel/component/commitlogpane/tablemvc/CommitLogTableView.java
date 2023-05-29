@@ -53,18 +53,19 @@ public class CommitLogTableView extends JTable {
 
         //그래프 그리기
         drawer.setGraphNodes(model.getLogs());
-        drawer.printGraphNodes();
+        //drawer.printGraphNodes();
+        drawer.drawGraph(g,this);
 
         // 점 그리기
-        g.setColor(Color.RED);
-        g.fillRect(10, 10, 5, 5);
-
-        // 선 그리기
-        g.setColor(Color.BLUE);
-        g.drawLine(20, 20, 50, 50);
-
-        // 면 그리기
-        g.setColor(Color.GREEN);
-        g.fillRect(30, 30, 50, 50);
+//        g.setColor(Color.RED);
+//        g.fillRect(10, 10, 5, 5);
+//
+//        // 선 그리기
+//        g.setColor(Color.BLUE);
+//        g.drawLine(20, 20, 50, 50);
+//
+//        // 면 그리기
+//        g.setColor(Color.GREEN);
+//        g.fillRect(30, 30, 50, 50);
     }
 }
