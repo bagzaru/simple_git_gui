@@ -22,12 +22,21 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitDiffTest(testPath);
+        tester.gitCloneTest2(testPath);
     }
 
     public void gitCloneTest(String filePath){
         try{
-            jGitManagerImprv.gitClone(new File(filePath), "https://github.com/min-jp/testRepo.git", "min-jp", "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");
+            // "min-jp" "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"
+            jGitManagerImprv.gitClone(new File(filePath), "https://github.com/min-jp/testRepo.git");
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitCloneTest2(String filePath){
+        try{
+            jGitManagerImprv.gitClone(new File(filePath+"2"), "https://github.com/min-jp/simple_git_gui.git");
         } catch(Exception e){
             System.out.println(e.toString());
         }

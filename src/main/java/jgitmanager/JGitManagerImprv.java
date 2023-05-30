@@ -21,20 +21,23 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
+import java.io.*;
 
 public class JGitManagerImprv {
+    // ID와 access token을 저장하는 파일
+    private static final String FILE_PATH = "credentials.txt";
+
     // gitClone
     // git clone을 실행
-    public static void gitClone(File fileToClone, String cloneURL, String ID, String accessToken) throws GitAPIException {
+    public static void gitClone(File fileToClone, String cloneURL) throws GitAPIException, IOException {
         try {
             // ID와 access token 객체 생성
-            CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(ID, accessToken);
+            CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(getID(), getAccessToken());
 
             //git clone
             Git.cloneRepository()
@@ -50,6 +53,57 @@ public class JGitManagerImprv {
             // 예외 발생
             throw e;
         }
+    }
+
+    // setIdToken
+    // ID와 access token을 파일에 저장
+    public static void setIdToken(String ID, String accessToken) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            writer.write(ID + ":" + accessToken);
+        }
+    }
+
+    // getID
+    // ID를 리턴
+    public static String getID() throws IOException {
+        try {
+            String[] credentials = getCredentials();
+            return credentials[0];
+        } catch (IOException e) {
+            throw e;
+        }
+    }
+
+    // getAccessToken
+    // access token을 리턴
+    public static String getAccessToken() throws IOException {
+        try {
+            String[] credentials = getCredentials();
+            return credentials[1];
+        } catch (IOException e) {
+            throw e;
+        }
+    }
+
+    // getCredentials
+    // ID와 access token을 리턴
+    private static String[] getCredentials() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line = reader.readLine();
+            if (line != null && !line.isEmpty()) {
+                String[] parts = line.split(":");
+                String username = "";
+                String password = "";
+                if (parts.length > 0) {
+                    username = parts[0];
+                }
+                if (parts.length > 1) {
+                    password = parts[1];
+                }
+                return new String[]{username, password};
+            }
+        }
+        return new String[0];
     }
 
     // gitCreateBranch
