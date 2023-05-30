@@ -22,7 +22,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitChangedFileListTest(testPath);
+        tester.gitDiffTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -110,6 +110,28 @@ public class JGitImprvTester {
             RevCommit latestCommit = getLatestCommit(repository);
 
             jGitManagerImprv.gitChangedFileList(new File(filePath), previousCommit);
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitDiffTest(String filePath){
+        try{
+            Repository repository = openRepositoryFromFile(new File(filePath));
+            RevWalk revWalk = new RevWalk(repository);
+            ObjectId head = repository.resolve("HEAD"); // 현재 HEAD 커밋의 ObjectId를 가져옴
+            RevCommit headCommit = revWalk.parseCommit(head);
+            RevCommit previousCommit = revWalk.parseCommit(headCommit.getParent(0));
+
+            RevCommit latestCommit = getLatestCommit(repository);
+
+            File file = new File(testPath + "/무제.txt");
+
+            String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, new File(testPath + "/무제.txt"));
+
+            System.out.println("-------");
+            System.out.println(str);
+            System.out.println("-------");
         } catch(Exception e){
             System.out.println(e.toString());
         }

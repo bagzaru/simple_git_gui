@@ -2,11 +2,11 @@ package jgitmanager;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
-import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawTextComparator;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -16,9 +16,9 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -275,7 +275,42 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitDiff() {
+    public static String gitDiff(File nowDir, RevCommit commit, File file) throws IOException {
+        Repository repository = openRepositoryFromFile(nowDir);
+        ObjectId commitId = commit.getId();
 
+        try (Git git = new Git(repository);
+             ObjectReader reader = git.getRepository().newObjectReader();
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             DiffFormatter diffFormatter = new DiffFormatter(outputStream)) {
+
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+
+            RevCommit parentCommit = commit.getParent(0);
+            if (parentCommit == null) {
+                // 최초 커밋인 경우 비교할 이전 커밋이 없습니다.
+                return "No previous commit to compare.";
+            }
+
+            oldTreeIter.reset(reader, parentCommit.getTree().getId());
+            newTreeIter.reset(reader, commitId);
+
+            diffFormatter.setRepository(git.getRepository());
+            diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
+            diffFormatter.setDetectRenames(true);
+
+            List<DiffEntry> diffs = diffFormatter.scan(oldTreeIter, newTreeIter);
+            for (DiffEntry diff : diffs) {
+                if (diff.getNewPath().equals(file.getPath())) {
+                    diffFormatter.format(diff);
+                    diffFormatter.flush();
+
+                    return outputStream.toString();
+                }
+            }
+        }
+
+        return "No changes found for the file.";
     }
 }
