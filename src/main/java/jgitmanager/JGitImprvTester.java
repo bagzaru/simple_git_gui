@@ -14,7 +14,7 @@ import java.util.List;
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
 public class JGitImprvTester {
-    public static String testPath = "/Users/minjeong-in/민정인/open_prj/testPath";
+    public static String testPath = "/Users/minjeong-in/민정인/open_prj/testPath/testfolder";
 
     static JGitManagerImprv jGitManagerImprv;
 
@@ -22,7 +22,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitCommitInfoTest(testPath);
+        tester.gitChangedFileListTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -59,7 +59,7 @@ public class JGitImprvTester {
 
     public void gitMergeTest(String filePath){
         try{
-            jGitManagerImprv.gitMerge(new File(filePath), "branch_re", "branch1");
+            jGitManagerImprv.gitMerge(new File(filePath), "branch_re");
         } catch(Exception e){
             System.out.println(e.toString());
         }
@@ -98,6 +98,28 @@ public class JGitImprvTester {
             System.out.println(e.toString());
         }
     }
+
+    public void gitChangedFileListTest(String filePath){
+        try{
+            Repository repository = openRepositoryFromFile(new File(filePath));
+            RevWalk revWalk = new RevWalk(repository);
+            ObjectId head = repository.resolve("HEAD"); // 현재 HEAD 커밋의 ObjectId를 가져옴
+            RevCommit headCommit = revWalk.parseCommit(head);
+            RevCommit previousCommit = revWalk.parseCommit(headCommit.getParent(0));
+
+            RevCommit latestCommit = getLatestCommit(repository);
+
+            jGitManagerImprv.gitChangedFileList(new File(filePath), previousCommit);
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+
+
+
+
+
 
     public static RevCommit getLatestCommit(Repository repository) throws IOException {
         try (RevWalk revWalk = new RevWalk(repository)) {

@@ -2,16 +2,29 @@ package jgitmanager;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
+import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.RawTextComparator;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
@@ -208,8 +221,58 @@ public class JGitManagerImprv {
         }
     }
 
-    public static void gitChangedFileList() {
+    // gitChangedFileList
+    // 특정 commit에서 변경된 파일 리스트를 가져옵니다.
+    public static Set<File> gitChangedFileList(File nowDir, RevCommit nowCommit) throws IOException, GitAPIException {
+        Repository repository = openRepositoryFromFile(nowDir);
+        Set<File> changedFiles = new HashSet<>();
 
+        try (RevWalk revWalk = new RevWalk(repository)) {
+            // nowCommit의 부모 commit
+            RevCommit parentCommit = revWalk.parseCommit(nowCommit.getParent(0).getId());
+
+            try (Git git = new Git(repository)) {
+                DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
+                diffFormatter.setRepository(repository);
+                diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
+                // 파일명 변경도 감지
+                diffFormatter.setDetectRenames(true);
+
+                // nowCommit과 parentCommit의 변경사항
+                List<DiffEntry> diffs = git.diff()
+                        .setOldTree(prepareTreeParser(repository, parentCommit))
+                        .setNewTree(prepareTreeParser(repository, nowCommit))
+                        .call();
+
+                for (DiffEntry diff : diffs) {
+                    // 파일에 추가
+                    File file = new File(repository.getWorkTree(), diff.getNewPath());
+                    changedFiles.add(file);
+                }
+
+                return changedFiles;
+            }
+        }
+    }
+
+    // prepareTreeParser
+    // TreeParser 준비
+    private static AbstractTreeIterator prepareTreeParser(Repository repository, RevCommit commit) throws IOException {
+        try (RevWalk revWalk = new RevWalk(repository)) {
+            // 커밋의 트리
+            RevTree tree = revWalk.parseTree(commit.getTree().getId());
+
+            // tree paser 생성
+            CanonicalTreeParser treeParser = new CanonicalTreeParser();
+
+            // ObjectReader 생성
+            try (ObjectReader reader = repository.newObjectReader()) {
+                // tree reader, id 설정
+                treeParser.reset(reader, tree.getId());
+            }
+            revWalk.dispose();
+            return treeParser;
+        }
     }
 
     public static void gitDiff() {
