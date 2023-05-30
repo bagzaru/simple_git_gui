@@ -10,7 +10,8 @@ import java.awt.*;
 public class BranchPanel extends JPanel{
     private GitBranchData gitBranchData=new GitBranchData();
     public BranchPanel(){
-        add(GitBranch.getInstance(),BorderLayout.WEST);
+       add(GitBranch.getInstance(),BorderLayout.WEST);
+
     }
 
 }
