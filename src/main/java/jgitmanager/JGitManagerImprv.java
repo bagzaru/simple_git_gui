@@ -19,14 +19,12 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
-import java.io.*;
 
 public class JGitManagerImprv {
     // ID와 access token을 저장하는 파일
