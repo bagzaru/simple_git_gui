@@ -1,4 +1,7 @@
 package gui.branchpanel.component.commit;
 
-public class GitCommitStatus {
+import javax.swing.*;
+
+public class GitCommitStatus extends JPanel {
+
 }
