@@ -2,6 +2,7 @@ package gui.branchpanel.component;
 
 import gui.branchpanel.component.branch.GitBranchList;
 import gui.branchpanel.component.branch.GitBranchMenu;
+import gui.branchpanel.component.branch.GitBranchStatus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class GitBranch extends JPanel {
     }
     public GitBranch() {
         add(GitBranchMenu.getInstance(), BorderLayout.NORTH);
-        add(GitBranchList.getInstance(),BorderLayout.SOUTH);
+        add(GitBranchStatus.getInstance(),BorderLayout.SOUTH);
 
     }
 }
