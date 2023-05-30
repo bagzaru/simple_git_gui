@@ -55,6 +55,9 @@ public class SimpleGitGUIApplication extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switchPanel(branchManager);
+
+                //테스트용입니다. 실제로는 branch List Panel에서 작동해야합니다.
+                //branchManager.commitLogPane.Update("main");
             }
         });
 
