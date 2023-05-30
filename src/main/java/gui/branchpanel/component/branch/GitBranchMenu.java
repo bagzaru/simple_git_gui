@@ -1,18 +1,17 @@
 package gui.branchpanel.component.branch;
 
+import file.GitBranchData;
 import gui.branchpanel.component.branch.button.*;
 
 import javax.swing.*;
 
 public class GitBranchMenu  extends JPanel {
-    private static GitBranchMenu instance;
-    public static GitBranchMenu getInstance(){
-        if(instance==null){
-            instance=new GitBranchMenu();
-        }
-        return instance;
-    }
-    public GitBranchMenu(){
+    /** Branch 모드 공유 데이터 객체*/
+    private GitBranchData gitBranchData;
+
+    public GitBranchMenu(GitBranchData gitBranchData){
+        this.gitBranchData = gitBranchData;
+
         GitBranchCreateButton CreateButton=new GitBranchCreateButton();
         CreateButton.setBounds(0,100,50,30);
         add(CreateButton);

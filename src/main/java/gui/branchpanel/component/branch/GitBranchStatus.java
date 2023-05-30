@@ -6,23 +6,24 @@ import file.*;
 import java.awt.*;
 
 public class GitBranchStatus extends JPanel {
+    /** Branch 모드 공유 데이터 객체*/
+    private GitBranchData gitBranchData;
 
-    private static GitBranchStatus instance;
-    public static GitBranchStatus getInstance(){
-        if(instance==null){
-            instance=new GitBranchStatus();
-        }
-        return instance;
-    }
     private String CurrentBranch;
     private String SelectedBranch;
-    public GitBranchStatus() {
+
+    public GitBranchStatus(GitBranchData gitBranchData) {
+        this.gitBranchData = gitBranchData;
+
         //CurrentBranch=GitBranchData.getCurrentBranch();
         JLabel printCurrentBranch=new JLabel(CurrentBranch);
         //SelectedBranch=GitBranchData.getSelectedBranch();
         JLabel printSelectedBranch=new JLabel(SelectedBranch);
 
+        JLabel printTest=new JLabel("Test");
+
         add(printCurrentBranch, BorderLayout.NORTH);
         add(printSelectedBranch,BorderLayout.SOUTH);
+        add(printTest, BorderLayout.CENTER);
     }
 }
