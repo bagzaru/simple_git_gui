@@ -15,7 +15,7 @@ public class BranchPanel extends JPanel{
 
         JPanel status = new JPanel(new BorderLayout(3, 3));
         status.add(new CommitLogPane(gitBranchData), BorderLayout.CENTER);
-        //status.add(new GitCommit(gitBranchData), BorderLayout.SOUTH);
+        status.add(new GitCommit(gitBranchData), BorderLayout.SOUTH);
 
         add(status, BorderLayout.CENTER);
         add(new GitBranch(gitBranchData), BorderLayout.WEST);
