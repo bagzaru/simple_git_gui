@@ -1,5 +1,6 @@
 package jgitmanager;
 
+import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -16,6 +17,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -327,42 +329,39 @@ public class JGitManagerImprv {
         }
     }
 
-    public static String gitDiff(File nowDir, RevCommit commit, File file) throws IOException {
+    // gitDiff
+    // 구현중
+    public static void gitDiff(File nowDir, RevCommit commit, File file) throws IOException {
         Repository repository = openRepositoryFromFile(nowDir);
-        ObjectId commitId = commit.getId();
+        String commitId = commit.getId().getName();
+        Git git = new Git(repository);
+        try {
+            RevWalk revWalk = new RevWalk(repository);
+            RevTree commitTree = commit.getTree();
 
-        try (Git git = new Git(repository);
-             ObjectReader reader = git.getRepository().newObjectReader();
-             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             DiffFormatter diffFormatter = new DiffFormatter(outputStream)) {
+            ObjectId parentCommitId = commit.getParent(0).getId();
+            RevCommit parentCommit = revWalk.parseCommit(parentCommitId);
+            RevTree parentTree = parentCommit.getTree();
 
-            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-
-            RevCommit parentCommit = commit.getParent(0);
-            if (parentCommit == null) {
-                // 최초 커밋인 경우 비교할 이전 커밋이 없습니다.
-                return "No previous commit to compare.";
-            }
-
-            oldTreeIter.reset(reader, parentCommit.getTree().getId());
-            newTreeIter.reset(reader, commitId);
-
-            diffFormatter.setRepository(git.getRepository());
+            DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
+            diffFormatter.setRepository(repository);
             diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
-            diffFormatter.setDetectRenames(true);
 
-            List<DiffEntry> diffs = diffFormatter.scan(oldTreeIter, newTreeIter);
+            List<DiffEntry> diffs = diffFormatter.scan(parentTree, commitTree);
             for (DiffEntry diff : diffs) {
                 if (diff.getNewPath().equals(file.getPath())) {
+                    // 변경 내용 출력
                     diffFormatter.format(diff);
-                    diffFormatter.flush();
-
-                    return outputStream.toString();
+                    break;
                 }
             }
-        }
 
-        return "No changes found for the file.";
+            diffFormatter.close();
+            revWalk.dispose();
+        } finally {
+            if (git != null) {
+                git.close();
+            }
+        }
     }
 }

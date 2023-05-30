@@ -11,7 +11,7 @@ import java.io.IOException;
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
 public class JGitImprvTester {
-    public static String testPath = "/Users/minjeong-in/민정인/open_prj/testPath/testfolder";
+    public static String testPath = "/Users/minjeong-in/민정인/open_prj/testPath";
 
     static JGitManagerImprv jGitManagerImprv;
 
@@ -19,7 +19,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitCloneTest2(testPath);
+        tester.gitDiffTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -133,12 +133,14 @@ public class JGitImprvTester {
 
             File file = new File(testPath + "/무제.txt");
 
-            String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, new File(testPath + "/무제.txt"));
+            jGitManagerImprv.gitDiff(new File(filePath), latestCommit, new File(testPath + "/무제.txt"));
+            //String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, new File(testPath + "/무제.txt"));
 
-            System.out.println("-------");
-            System.out.println(str);
-            System.out.println("-------");
+            //System.out.println("-------");
+            //System.out.println(str);
+            //System.out.println("-------");
         } catch(Exception e){
+            System.out.println("eeee");
             System.out.println(e.toString());
         }
     }
