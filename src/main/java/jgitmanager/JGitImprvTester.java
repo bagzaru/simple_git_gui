@@ -131,10 +131,10 @@ public class JGitImprvTester {
 
             RevCommit latestCommit = getLatestCommit(repository);
 
-            File file = new File(testPath + "/무제.txt");
+            File file = new File(testPath + "/README.md");
 
             ///jGitManagerImprv.gitDiff(new File(filePath), latestCommit, new File(testPath + "/무제.txt"));
-            String str = jGitManagerImprv.gitDiff(new File(filePath), previousCommit, new File(testPath + "/무제.txt"));
+            String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, file);
 
             System.out.println("-------");
             System.out.println(str);

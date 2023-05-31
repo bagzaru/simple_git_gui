@@ -349,7 +349,10 @@ public class JGitManagerImprv {
             DiffFormatter formatter = new DiffFormatter(outputStream);
             formatter.setRepository(repository);
             for (DiffEntry entry : diffs) {
-                formatter.format(entry);
+                String newPath = nowDir + "/" + entry.getNewPath();
+                String oldPath = nowDir + "/" + entry.getOldPath();
+                if (file.getPath().equals(newPath) || file.getPath().equals(oldPath))
+                    formatter.format(entry);
             }
             return outputStream.toString(StandardCharsets.UTF_8);
         }
