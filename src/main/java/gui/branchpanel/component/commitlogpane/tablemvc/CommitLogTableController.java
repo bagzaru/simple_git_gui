@@ -1,10 +1,14 @@
 package gui.branchpanel.component.commitlogpane.tablemvc;
 
+import file.BranchDataChangeListener;
+import file.GitBranchData;
+import file.SelectedFile;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.io.File;
 
-public class CommitLogTableController {
+public class CommitLogTableController implements BranchDataChangeListener {
     //클릭 처리 필요(모델에서 해당 커밋 데이터 받아오기, Panel3에 전달하기)
     //UI에 대한 외부 입력(함수)에 대한 모델의 상태 변화 처리를 담당하는 클래스
     CommitLogTableModel model;
@@ -12,9 +16,15 @@ public class CommitLogTableController {
 
     ListSelectionListener listSelectionListener;
 
-    public CommitLogTableController(CommitLogTableModel model, CommitLogTableView table){
+    /** Branch 모드 공유 데이터 객체*/
+    private GitBranchData gitBranchData;
+
+    public CommitLogTableController(CommitLogTableModel model, CommitLogTableView table, GitBranchData gitBranchData){
         this.model = model;
         this.table = table;
+        this.gitBranchData = gitBranchData;
+        gitBranchData.addBranchDataChangeListener(this);
+
         this.listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -42,4 +52,11 @@ public class CommitLogTableController {
         model.UpdateModelByBranch(repositoryDir,branch);
     }
 
+    //위 메소드를 이벤트 리스너로 사실상 이름이랑 인자만 바꾼거인데 내(승재)가 아니라 승훈이가 만든거라 그냥 지우진 않고 일단 남겨둠
+    @Override
+    public void updateData() {
+        File repositoryDir = SelectedFile.getInstance().getFile();
+        String selectedBranch = gitBranchData.getSelectedBranch();
+        model.UpdateModelByBranch(repositoryDir, selectedBranch);
+    }
 }
