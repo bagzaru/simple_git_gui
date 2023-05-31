@@ -20,7 +20,7 @@ public class SimpleGitGUIApplication extends JFrame {
     private JToolBar menuBar = new JToolBar();
     private JButton fileManagerMode = new JButton("File Manager");
     private JButton branchManagerMode = new JButton("Branch Manager");
-    private JButton loginButton=new JButton("LOGIN");
+    private JButton loginButton=new JButton("LOGIN");//sj
 
 
     private JPanel currentPanel;
@@ -67,9 +67,10 @@ public class SimpleGitGUIApplication extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LoginDialog dialog=new LoginDialog();
 
             }
-        });
+        });//sj
 
         menuBar.setFloatable(false);
         menuBar.add(fileManagerMode);
