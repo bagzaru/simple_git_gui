@@ -310,7 +310,7 @@ public class JGitManagerImprv {
 
     // gitDiff
     // 특정 커밋의 특정 파일의 변경사항을 문자열로 반환
-    public static String gitDiff(File nowDir, RevCommit nowCommit, File file) throws IOException, GitAPIException {
+    public static String gitDiff(File nowDir, RevCommit nowCommit, File changedFile) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
 
         // 현재 커밋과 부모 커밋의 AbstractTreeIterator객체를 구함
@@ -333,7 +333,7 @@ public class JGitManagerImprv {
                 String oldPath = nowDir + "/" + entry.getOldPath();
 
                 // 파일과 현재 diff가 같으면 변화된 내용 가져옴
-                if (file.getPath().equals(newPath) || file.getPath().equals(oldPath))
+                if (changedFile.getPath().equals(newPath) || changedFile.getPath().equals(oldPath))
                     formatter.format(entry);
             }
             return outputStream.toString(StandardCharsets.UTF_8);
