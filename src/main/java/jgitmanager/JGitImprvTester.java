@@ -7,6 +7,8 @@ import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
@@ -19,7 +21,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitDiffTest(testPath);
+        tester.gitChangedFileListAndDiffTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -141,6 +143,30 @@ public class JGitImprvTester {
             System.out.println("-------");
         } catch(Exception e){
             System.out.println("eeee");
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitChangedFileListAndDiffTest(String filePath){
+        try{
+            Repository repository = openRepositoryFromFile(new File(filePath));
+            RevWalk revWalk = new RevWalk(repository);
+            ObjectId head = repository.resolve("HEAD"); // 현재 HEAD 커밋의 ObjectId를 가져옴
+            RevCommit headCommit = revWalk.parseCommit(head);
+            RevCommit previousCommit = revWalk.parseCommit(headCommit.getParent(0));
+
+            RevCommit latestCommit = getLatestCommit(repository);
+
+            Set<File> fileSet = jGitManagerImprv.gitChangedFileList(new File(filePath), latestCommit);
+
+            Iterator<File> fileIterator = fileSet.iterator();
+            while (fileIterator.hasNext()) {
+                System.out.println("----------------------");
+                String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, fileIterator.next());
+                System.out.println(str);
+            }
+
+        } catch(Exception e){
             System.out.println(e.toString());
         }
     }
