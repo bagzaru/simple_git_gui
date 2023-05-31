@@ -30,7 +30,9 @@ public class GitBranchListTableController {
         view.getSelectionModel().addListSelectionListener(listSelectionListener);
     }
 
-    public void updateData(String[] branchList) {
+    public void updateData() {
+        //String[] branchList = (jgit과 연동해서 현재 브랜치 목록을 호출하는 메소드)
+        String[] branchList = {"a", "b", "c"};
         model.setBranchList(branchList);
     }
 }
