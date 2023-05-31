@@ -308,34 +308,14 @@ public class JGitManagerImprv {
         }
     }
 
-    // prepareTreeParser
-    // TreeParser 준비
-    private static AbstractTreeIterator prepareTreeParser(Repository repository, RevCommit commit) throws IOException {
-        try (RevWalk revWalk = new RevWalk(repository)) {
-            // 커밋의 트리
-            RevTree tree = revWalk.parseTree(commit.getTree().getId());
-
-            // tree paser 생성
-            CanonicalTreeParser treeParser = new CanonicalTreeParser();
-
-            // ObjectReader 생성
-            try (ObjectReader reader = repository.newObjectReader()) {
-                // tree reader, id 설정
-                treeParser.reset(reader, tree.getId());
-            }
-            revWalk.dispose();
-            return treeParser;
-        }
-    }
-
     // gitDiff
     // 특정 커밋의 특정 파일의 변경사항을 문자열로 반환
     public static String gitDiff(File nowDir, RevCommit nowCommit, File file) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
 
         // 현재 커밋과 부모 커밋의 AbstractTreeIterator객체를 구함
-        AbstractTreeIterator newTreeParser = prepareTreeParser(repository,nowCommit.getId().getName());
-        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,nowCommit.getParent(0).getId().getName());
+        AbstractTreeIterator newTreeParser = prepareTreeParser(repository,nowCommit);
+        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,nowCommit.getParent(0));
 
         try (Git git = new Git(repository)) {
             // 새 트리와 이전 트리 비교
@@ -361,23 +341,21 @@ public class JGitManagerImprv {
     }
 
     // prepareTreeParser
-    // 특정 commit의 tree를 찾음
-    // cookbook 참고
-    // https://github.com/centic9/jgit-cookbook/blob/master/src/main/java/org/dstadler/jgit/porcelain/ShowFileDiff.java
-    private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
-        // from the commit we can build the tree which allows us to construct the TreeParser
-        //noinspection Duplicates
-        try (RevWalk walk = new RevWalk(repository)) {
-            RevCommit commit = walk.parseCommit(ObjectId.fromString(objectId));
-            RevTree tree = walk.parseTree(commit.getTree().getId());
+    // TreeParser 준비
+    private static AbstractTreeIterator prepareTreeParser(Repository repository, RevCommit commit) throws IOException {
+        try (RevWalk revWalk = new RevWalk(repository)) {
+            // 커밋의 트리
+            RevTree tree = revWalk.parseTree(commit.getTree().getId());
 
+            // tree paser 생성
             CanonicalTreeParser treeParser = new CanonicalTreeParser();
+
+            // ObjectReader 생성
             try (ObjectReader reader = repository.newObjectReader()) {
+                // tree reader, id 설정
                 treeParser.reset(reader, tree.getId());
             }
-
-            walk.dispose();
-
+            revWalk.dispose();
             return treeParser;
         }
     }
