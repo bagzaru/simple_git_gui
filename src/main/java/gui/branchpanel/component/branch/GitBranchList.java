@@ -25,10 +25,7 @@ public class GitBranchList extends JScrollPane {
         controller = new GitBranchListTableController(model, view, gitBranchData);
 
         view.setTableModel(model);
-
-        //테스트용 임시 코드
-        String[] testList = {"a", "b", "c"};
-        controller.updateData(testList);
+        controller.updateData();
 
         setViewportView(view);
         Dimension d = getPreferredSize();

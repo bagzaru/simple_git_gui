@@ -26,10 +26,7 @@ public class GitCommitFile extends JScrollPane {
         controller = new GitCommitFileTableController(model, view, gitBranchData);
 
         view.setTableModel(model);
-
-        //테스트용 임시 코드
-        File[] testFiles = {new File("a")};
-        controller.updateData(testFiles);
+        controller.updateData();
 
         setViewportView(view);
         Dimension d = getPreferredSize();
