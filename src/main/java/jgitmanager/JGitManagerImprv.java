@@ -293,8 +293,8 @@ public class JGitManagerImprv {
 
                 // nowCommit과 parentCommit의 변경사항
                 List<DiffEntry> diffs = git.diff()
-                        .setOldTree(prepareTreeParser(repository, parentCommit))
-                        .setNewTree(prepareTreeParser(repository, nowCommit))
+                        .setOldTree(prepareTreeParser(repository, parentCommit.getId().getName()))
+                        .setNewTree(prepareTreeParser(repository, nowCommit.getId().getName()))
                         .call();
 
                 for (DiffEntry diff : diffs) {
@@ -314,8 +314,8 @@ public class JGitManagerImprv {
         Repository repository = openRepositoryFromFile(nowDir);
 
         // 현재 커밋과 부모 커밋의 AbstractTreeIterator객체를 구함
-        AbstractTreeIterator newTreeParser = prepareTreeParser(repository,nowCommit);
-        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,nowCommit.getParent(0));
+        AbstractTreeIterator newTreeParser = prepareTreeParser(repository,nowCommit.getId().getName());
+        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,nowCommit.getParent(0).getId().getName());
 
         try (Git git = new Git(repository)) {
             // 새 트리와 이전 트리 비교
@@ -342,10 +342,11 @@ public class JGitManagerImprv {
 
     // prepareTreeParser
     // TreeParser 준비
-    private static AbstractTreeIterator prepareTreeParser(Repository repository, RevCommit commit) throws IOException {
-        try (RevWalk revWalk = new RevWalk(repository)) {
+    private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
+        try (RevWalk walk = new RevWalk(repository)) {
             // 커밋의 트리
-            RevTree tree = revWalk.parseTree(commit.getTree().getId());
+            RevCommit commit = walk.parseCommit(ObjectId.fromString(objectId));
+            RevTree tree = walk.parseTree(commit.getTree().getId());
 
             // tree paser 생성
             CanonicalTreeParser treeParser = new CanonicalTreeParser();
@@ -355,7 +356,9 @@ public class JGitManagerImprv {
                 // tree reader, id 설정
                 treeParser.reset(reader, tree.getId());
             }
-            revWalk.dispose();
+
+            walk.dispose();
+
             return treeParser;
         }
     }
