@@ -1,11 +1,12 @@
 package gui.branchpanel.component.branch.GitBranchListMVC;
 
+import file.BranchDataChangeListener;
 import file.GitBranchData;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class GitBranchListTableController {
+public class GitBranchListTableController implements BranchDataChangeListener {
     private GitBranchListTableModel model;
     private GitBranchListTableView view;
     private ListSelectionListener listSelectionListener;
@@ -17,6 +18,7 @@ public class GitBranchListTableController {
         this.model = model;
         this.view = view;
         this.gitBranchData = gitBranchData;
+        gitBranchData.addBranchDataChangeListener(this);
 
         this.listSelectionListener = new ListSelectionListener() {
             @Override
@@ -30,9 +32,10 @@ public class GitBranchListTableController {
         view.getSelectionModel().addListSelectionListener(listSelectionListener);
     }
 
+    @Override
     public void updateData() {
         //String[] branchList = (jgit과 연동해서 현재 브랜치 목록을 호출하는 메소드)
-        String[] branchList = {"a", "b", "c"};
+        String[] branchList = {"a", "b", "c"}; //테스트용 배열
         model.setBranchList(branchList);
     }
 }
