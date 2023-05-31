@@ -10,6 +10,7 @@ import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.patch.FileHeader;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -22,6 +23,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -331,6 +333,7 @@ public class JGitManagerImprv {
 
     // gitDiff
     // 구현중
+    /*
     public static void gitDiff(File nowDir, RevCommit commit, File file) throws IOException {
         Repository repository = openRepositoryFromFile(nowDir);
         String commitId = commit.getId().getName();
@@ -361,6 +364,36 @@ public class JGitManagerImprv {
         } finally {
             if (git != null) {
                 git.close();
+            }
+        }
+    }*/
+
+    // diff cookbook
+    public static void gitDiff(File nowDir, RevCommit commit, File file) throws IOException, GitAPIException {
+        Repository repository = openRepositoryFromFile(nowDir);
+
+        ObjectId oldHead = repository.resolve("HEAD^^{tree}");
+        ObjectId head = repository.resolve("HEAD^{tree}");
+
+        // prepare the two iterators to compute the diff between
+        try (ObjectReader reader = repository.newObjectReader()) {
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+            oldTreeIter.reset(reader, oldHead);
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+            newTreeIter.reset(reader, head);
+
+            // finally get the list of changed files
+            try (Git git = new Git(repository)) {
+                List<DiffEntry> diffs = git.diff()
+                        .setNewTree(newTreeIter)
+                        .setOldTree(oldTreeIter)
+                        .call();
+                for (DiffEntry entry : diffs) {
+                    PrintStream printStream = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+                    DiffFormatter formatter = new DiffFormatter(printStream);
+                    formatter.setRepository(repository);
+                    formatter.format(entry);
+                }
             }
         }
     }
