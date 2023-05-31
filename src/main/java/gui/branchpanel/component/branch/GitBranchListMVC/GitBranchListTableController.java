@@ -35,7 +35,7 @@ public class GitBranchListTableController implements BranchDataChangeListener {
     @Override
     public void updateData() {
         //String[] branchList = (jgit과 연동해서 현재 브랜치 목록을 호출하는 메소드)
-        String[] branchList = {"a", "b", "c"}; //테스트용 배열
+        String[] branchList = {"", "project2", "main"}; //테스트용 배열
         model.setBranchList(branchList);
     }
 }
