@@ -8,6 +8,7 @@ import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -239,13 +240,9 @@ public class JGitManagerImprv {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(nowDir);
-            Git git = new Git(repository);
 
             // current branch 이름 가져옴
             String branchName = repository.getBranch();
-
-            // Git 저장소 닫기
-            git.close();
 
             System.out.println("get name of current branch");
 
@@ -360,6 +357,33 @@ public class JGitManagerImprv {
             walk.dispose();
 
             return treeParser;
+        }
+    }
+
+    public static Set<String> gitBranchList (File nowDir) throws IOException, GitAPIException {
+        try {
+            // Git 저장소 열기
+            Repository repository = openRepositoryFromFile(nowDir);
+            Git git = new Git(repository);
+
+            // current branch 이름 가져옴
+            List<Ref> call = git.branchList().call();
+            Set<String> branchList = new HashSet<>();
+            for (Ref ref : call) {
+                branchList.add(Repository.shortenRefName(ref.getName()));
+            }
+
+            // Git 저장소 닫기
+            git.close();
+
+            System.out.println("get list of current branch");
+
+            return branchList;
+        } catch (IOException | GitAPIException e) {
+            System.out.println("Failed to get list of current branch");
+
+            // 예외 발생
+            throw e;
         }
     }
 }

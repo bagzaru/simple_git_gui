@@ -21,7 +21,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitChangedFileListAndDiffTest(testPath);
+        tester.gitBranchListTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
@@ -164,6 +164,20 @@ public class JGitImprvTester {
                 System.out.println("----------------------");
                 String str = jGitManagerImprv.gitDiff(new File(filePath), latestCommit, fileIterator.next());
                 System.out.println(str);
+            }
+
+        } catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void gitBranchListTest(String filePath){
+        try{
+            Set<String> branchSet = jGitManagerImprv.gitBranchList(new File(filePath));
+
+            Iterator<String> iterator = branchSet.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
             }
 
         } catch(Exception e){
