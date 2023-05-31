@@ -333,87 +333,32 @@ public class JGitManagerImprv {
 
     // gitDiff
     // 구현중
-    /*
-    public static void gitDiff(File nowDir, RevCommit commit, File file) throws IOException {
-        Repository repository = openRepositoryFromFile(nowDir);
-        String commitId = commit.getId().getName();
-        Git git = new Git(repository);
-        try {
-            RevWalk revWalk = new RevWalk(repository);
-            RevTree commitTree = commit.getTree();
-
-            ObjectId parentCommitId = commit.getParent(0).getId();
-            RevCommit parentCommit = revWalk.parseCommit(parentCommitId);
-            RevTree parentTree = parentCommit.getTree();
-
-            DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE);
-            diffFormatter.setRepository(repository);
-            diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
-
-            List<DiffEntry> diffs = diffFormatter.scan(parentTree, commitTree);
-            for (DiffEntry diff : diffs) {
-                if (diff.getNewPath().equals(file.getPath())) {
-                    // 변경 내용 출력
-                    diffFormatter.format(diff);
-                    break;
-                }
-            }
-
-            diffFormatter.close();
-            revWalk.dispose();
-        } finally {
-            if (git != null) {
-                git.close();
-            }
-        }
-    }*/
-
-    // diff cookbook
     public static String gitDiff(File nowDir, RevCommit commit, File file) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
 
-        ObjectId oldHead = repository.resolve("HEAD^^{tree}");
-        ObjectId head = repository.resolve("HEAD^{tree}");
+        AbstractTreeIterator nowTreeParser = prepareTreeParser(repository,commit.getId().getName());
+        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,commit.getParent(0).getId().getName());
 
-        RevCommit pCommit = commit.getParent(0);
-        //ObjectId oldHead_ = repository.resolve(pCommit.getTree().getId().getName());
-        ObjectId head_ = repository.resolve(commit.getTree().getId().getName());
-
-        //RevWalk revWalk = new RevWalk(repository);
-        //RevCommit oldcommit = revWalk.parseCommit(oldHead.toObjectId());
-
-        //System.out.println(oldcommit);
-        System.out.println(pCommit);
-        System.out.println(oldHead);
-        System.out.println(head);
-        //System.out.println(oldHead_);
-        System.out.println(head_);
-
-
-        // prepare the two iterators to compute the diff between
-        try (ObjectReader reader = repository.newObjectReader()) {
-            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-            oldTreeIter.reset(reader, oldHead);
-            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-            newTreeIter.reset(reader, head);
-
-            // finally get the list of changed files
-            try (Git git = new Git(repository)) {
-                List<DiffEntry> diffs = git.diff()
-                        .setNewTree(newTreeIter)
-                        .setOldTree(oldTreeIter)
-                        .call();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                DiffFormatter formatter = new DiffFormatter(outputStream);
-                formatter.setRepository(repository);
-                for (DiffEntry entry : diffs) {
-                    formatter.format(entry);
-                }
-                return outputStream.toString(StandardCharsets.UTF_8);
+        // finally get the list of changed files
+        try (Git git = new Git(repository)) {
+            List<DiffEntry> diffs = git.diff()
+                    .setNewTree(nowTreeParser)
+                    .setOldTree(oldTreeParser)
+                    .call();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            DiffFormatter formatter = new DiffFormatter(outputStream);
+            formatter.setRepository(repository);
+            for (DiffEntry entry : diffs) {
+                formatter.format(entry);
             }
+            return outputStream.toString(StandardCharsets.UTF_8);
         }
     }
 
+    // prepareTreeParser
+    // 특정 commit의 tree를 찾음
+    // cookbook 참고
+    // https://github.com/centic9/jgit-cookbook/blob/master/src/main/java/org/dstadler/jgit/porcelain/ShowFileDiff.java
     private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
         // from the commit we can build the tree which allows us to construct the TreeParser
         //noinspection Duplicates
@@ -431,5 +376,4 @@ public class JGitManagerImprv {
             return treeParser;
         }
     }
-}
 }
