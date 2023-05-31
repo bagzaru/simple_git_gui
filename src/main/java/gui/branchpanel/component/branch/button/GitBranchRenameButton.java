@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 public class GitBranchRenameButton extends JButton {
     public GitBranchRenameButton(){
         setText("R");
-        RenameMessageBox RenameBranchName=new RenameMessageBox();//messageBox new branch name 추가 예정
+        MessageBox RenameBranchName=new MessageBox();//messageBox new branch name 추가 예정
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -17,13 +17,4 @@ public class GitBranchRenameButton extends JButton {
     }
 }
 
-class RenameMessageBox extends JOptionPane{
 
-    RenameMessageBox(){
-
-    }
-
-    String ShowMessageBox(){
-        return showInputDialog("NEW NAME을 입력하세요");
-    }
-}
