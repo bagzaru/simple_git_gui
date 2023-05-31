@@ -11,7 +11,8 @@ public class GitBranchRenameButton extends JButton {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String BranchName=RenameBranchName.ShowMessageBox();
+
+                String NewBranchName=RenameBranchName.ShowMessageBox();
             }
         });
     }

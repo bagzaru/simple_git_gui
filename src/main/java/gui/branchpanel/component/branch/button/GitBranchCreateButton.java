@@ -24,6 +24,6 @@ class MessageBox extends JOptionPane{
     }
 
     String ShowMessageBox(){
-        return showInputDialog("NEW NAME을 입력하세요");
+        return showInputDialog("Branch NAME을 입력하세요");
     }
 }
