@@ -35,10 +35,6 @@ public class commited_fileGitMenu extends JPanel{
         commit_rename_button rename_button=new commit_rename_button();//rename button 추가
         rename_button.setBounds(0, 50,100,30);
         add(rename_button);
-
-        CloneButton CloneButton=new CloneButton();
-        CloneButton.setBounds(0,0,100,30);
-        add(CloneButton);
     }
     
 }

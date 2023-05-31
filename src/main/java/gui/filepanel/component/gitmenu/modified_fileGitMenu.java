@@ -31,6 +31,8 @@ public class modified_fileGitMenu extends JPanel {//modified파일 패널
         modified_undo_button undo_button=new modified_undo_button();//undo button 추가
         undo_button.setBounds(0, 200,100,30);
         add(undo_button);
+
+        
     }
 }
 
