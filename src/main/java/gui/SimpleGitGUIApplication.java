@@ -75,6 +75,7 @@ public class SimpleGitGUIApplication extends JFrame {
         menuBar.setFloatable(false);
         menuBar.add(fileManagerMode);
         menuBar.add(branchManagerMode);
+        menuBar.add(loginButton);
         add(menuBar, BorderLayout.NORTH);
 
         fileManager = new FilePanel();
