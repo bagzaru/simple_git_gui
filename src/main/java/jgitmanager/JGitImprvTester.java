@@ -146,11 +146,6 @@ public class JGitImprvTester {
     }
 
 
-
-
-
-
-
     public static RevCommit getLatestCommit(Repository repository) throws IOException {
         try (RevWalk revWalk = new RevWalk(repository)) {
             ObjectId head = repository.resolve("HEAD");

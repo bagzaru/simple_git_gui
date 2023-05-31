@@ -332,25 +332,30 @@ public class JGitManagerImprv {
     }
 
     // gitDiff
-    // 구현중
-    public static String gitDiff(File nowDir, RevCommit commit, File file) throws IOException, GitAPIException {
+    // 특정 커밋의 특정 파일의 변경사항을 문자열로 반환
+    public static String gitDiff(File nowDir, RevCommit nowCommit, File file) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
 
-        AbstractTreeIterator nowTreeParser = prepareTreeParser(repository,commit.getId().getName());
-        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,commit.getParent(0).getId().getName());
+        // 현재 커밋과 부모 커밋의 AbstractTreeIterator객체를 구함
+        AbstractTreeIterator newTreeParser = prepareTreeParser(repository,nowCommit.getId().getName());
+        AbstractTreeIterator oldTreeParser = prepareTreeParser(repository,nowCommit.getParent(0).getId().getName());
 
-        // finally get the list of changed files
         try (Git git = new Git(repository)) {
+            // 새 트리와 이전 트리 비교
             List<DiffEntry> diffs = git.diff()
-                    .setNewTree(nowTreeParser)
+                    .setNewTree(newTreeParser)
                     .setOldTree(oldTreeParser)
                     .call();
+
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             DiffFormatter formatter = new DiffFormatter(outputStream);
             formatter.setRepository(repository);
             for (DiffEntry entry : diffs) {
+                // 비교를 위한 디렉토리
                 String newPath = nowDir + "/" + entry.getNewPath();
                 String oldPath = nowDir + "/" + entry.getOldPath();
+
+                // 파일과 현재 diff가 같으면 변화된 내용 가져옴
                 if (file.getPath().equals(newPath) || file.getPath().equals(oldPath))
                     formatter.format(entry);
             }
