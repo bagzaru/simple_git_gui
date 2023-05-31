@@ -8,9 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BranchPanel extends JPanel{
-    private GitBranchData gitBranchData=new GitBranchData();
+    /** Branch 모드 공유 데이터 객체*/
+    private GitBranchData gitBranchData;
 
-    public BranchPanel() {
+    public BranchPanel(GitBranchData gitBranchData) {
+        this.gitBranchData = gitBranchData;
+
         setLayout(new BorderLayout(3, 3));
 
         JPanel status = new JPanel(new BorderLayout(3, 3));

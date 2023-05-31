@@ -20,7 +20,7 @@ public class GitBranchData {
         listeners.add(listener);
     }
 
-    private void notifyBranchDataChange() {
+    public void notifyBranchDataChange() {
         for(BranchDataChangeListener listener : listeners) {
             listener.updateData();
         }

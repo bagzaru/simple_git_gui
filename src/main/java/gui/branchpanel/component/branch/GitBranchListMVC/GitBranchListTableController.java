@@ -2,9 +2,16 @@ package gui.branchpanel.component.branch.GitBranchListMVC;
 
 import file.BranchDataChangeListener;
 import file.GitBranchData;
+import file.SelectedFile;
+import jgitmanager.JGitManager;
+import jgitmanager.JGitManagerImprv;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class GitBranchListTableController implements BranchDataChangeListener {
     private GitBranchListTableModel model;
@@ -36,8 +43,13 @@ public class GitBranchListTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
-        //String[] branchList = (jgit과 연동해서 현재 브랜치 목록을 호출하는 메소드)
-        String[] branchList = {"", "project2", "main"}; //테스트용 배열
-        model.setBranchList(branchList);
+        File currentDir = SelectedFile.getInstance().getFile();
+        if(JGitManager.findGitRepository(currentDir) == 1) {
+            try {
+                List<String> branchList = JGitManagerImprv.gitBranchList(currentDir);
+                model.setBranchList(branchList);
+            } catch (IOException | GitAPIException e) {
+            }
+        }
     }
 }

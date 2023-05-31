@@ -22,6 +22,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -360,7 +361,7 @@ public class JGitManagerImprv {
         }
     }
 
-    public static Set<String> gitBranchList (File nowDir) throws IOException, GitAPIException {
+    public static List<String> gitBranchList (File nowDir) throws IOException, GitAPIException {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(nowDir);
@@ -368,7 +369,7 @@ public class JGitManagerImprv {
 
             // current branch 이름 가져옴
             List<Ref> call = git.branchList().call();
-            Set<String> branchList = new HashSet<>();
+            List<String> branchList = new ArrayList<>();
             for (Ref ref : call) {
                 branchList.add(Repository.shortenRefName(ref.getName()));
             }
