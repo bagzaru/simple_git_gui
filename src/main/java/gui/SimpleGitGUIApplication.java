@@ -2,6 +2,7 @@ package gui;
 
 import gui.branchpanel.BranchPanel;
 import gui.filepanel.FilePanel;
+import gui.filepanel.component.GitMenu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,6 +20,8 @@ public class SimpleGitGUIApplication extends JFrame {
     private JToolBar menuBar = new JToolBar();
     private JButton fileManagerMode = new JButton("File Manager");
     private JButton branchManagerMode = new JButton("Branch Manager");
+    private JButton loginButton=new JButton("LOGIN");
+
 
     private JPanel currentPanel;
     private FilePanel fileManager;
@@ -58,6 +61,13 @@ public class SimpleGitGUIApplication extends JFrame {
 
                 //테스트용입니다. 실제로는 branch List Panel에서 작동해야합니다.
                 //branchManager.commitLogPane.Update("main");
+            }
+        });
+
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
 
