@@ -24,7 +24,9 @@ public class GitBranchListTableController implements BranchDataChangeListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if(!e.getValueIsAdjusting()){
-                    String selectedBranch = model.getBranch(view.getSelectedRow());
+                    int row = view.getSelectedRow();
+                    System.out.println("Test row: " + row);
+                    String selectedBranch = model.getBranch(row);
                     gitBranchData.setSelectedBranch(selectedBranch);
                 }
             }
