@@ -369,11 +369,26 @@ public class JGitManagerImprv {
     }*/
 
     // diff cookbook
-    public static void gitDiff(File nowDir, RevCommit commit, File file) throws IOException, GitAPIException {
+    public static String gitDiff(File nowDir, RevCommit commit, File file) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
 
         ObjectId oldHead = repository.resolve("HEAD^^{tree}");
         ObjectId head = repository.resolve("HEAD^{tree}");
+
+        RevCommit pCommit = commit.getParent(0);
+        //ObjectId oldHead_ = repository.resolve(pCommit.getTree().getId().getName());
+        ObjectId head_ = repository.resolve(commit.getTree().getId().getName());
+
+        //RevWalk revWalk = new RevWalk(repository);
+        //RevCommit oldcommit = revWalk.parseCommit(oldHead.toObjectId());
+
+        //System.out.println(oldcommit);
+        System.out.println(pCommit);
+        System.out.println(oldHead);
+        System.out.println(head);
+        //System.out.println(oldHead_);
+        System.out.println(head_);
+
 
         // prepare the two iterators to compute the diff between
         try (ObjectReader reader = repository.newObjectReader()) {
@@ -388,13 +403,33 @@ public class JGitManagerImprv {
                         .setNewTree(newTreeIter)
                         .setOldTree(oldTreeIter)
                         .call();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                DiffFormatter formatter = new DiffFormatter(outputStream);
+                formatter.setRepository(repository);
                 for (DiffEntry entry : diffs) {
-                    PrintStream printStream = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-                    DiffFormatter formatter = new DiffFormatter(printStream);
-                    formatter.setRepository(repository);
                     formatter.format(entry);
                 }
+                return outputStream.toString(StandardCharsets.UTF_8);
             }
         }
     }
+
+    private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
+        // from the commit we can build the tree which allows us to construct the TreeParser
+        //noinspection Duplicates
+        try (RevWalk walk = new RevWalk(repository)) {
+            RevCommit commit = walk.parseCommit(ObjectId.fromString(objectId));
+            RevTree tree = walk.parseTree(commit.getTree().getId());
+
+            CanonicalTreeParser treeParser = new CanonicalTreeParser();
+            try (ObjectReader reader = repository.newObjectReader()) {
+                treeParser.reset(reader, tree.getId());
+            }
+
+            walk.dispose();
+
+            return treeParser;
+        }
+    }
+}
 }
