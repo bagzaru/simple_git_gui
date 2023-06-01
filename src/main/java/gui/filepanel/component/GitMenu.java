@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import gui.filepanel.FilePanel;
 import gui.filepanel.PanelRefreshUtil;
+import gui.filepanel.component.gitmenu.CloneButton;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import file.SelectedFile;
@@ -47,6 +48,10 @@ public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 
             commit_button commit_button=new commit_button();//commit button 추가
             commit_button.setBounds(0, 100, 100, 30);
             add(commit_button);
+
+            CloneButton CloneButton =new CloneButton();
+            CloneButton.setBounds(0,50,100,30);
+            add(CloneButton);
         }
         else{
             //git repo가 아닌 경우
