@@ -1,5 +1,7 @@
 package file;
 
+import org.eclipse.jgit.revwalk.RevCommit;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ public class GitBranchData {
 
     private String CurrentBranch;
     private String SelectedBranch;
-    private String SelectedCommit; //아마 RevCommit 객체로 바뀔 예정
+    private RevCommit SelectedCommit; //아마 RevCommit 객체로 바뀔 예정
     private File SelectedChangeFile;
 
     public GitBranchData() {
@@ -44,11 +46,11 @@ public class GitBranchData {
         notifyBranchDataChange();
     }
 
-    public String getSelectedCommit() {
+    public RevCommit getSelectedCommit() {
         return SelectedCommit;
     }
 
-    public void setSelectedCommit(String commit) {
+    public void setSelectedCommit(RevCommit commit) {
         SelectedCommit = commit;
         notifyBranchDataChange();
     }

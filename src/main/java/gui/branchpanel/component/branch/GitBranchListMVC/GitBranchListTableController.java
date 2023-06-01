@@ -43,6 +43,7 @@ public class GitBranchListTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
+        System.out.println("Test3");
         File currentDir = SelectedFile.getInstance().getFile();
         if(JGitManager.findGitRepository(currentDir) == 1) {
             try {

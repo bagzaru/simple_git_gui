@@ -274,9 +274,9 @@ public class JGitManagerImprv {
 
     // gitChangedFileList
     // 특정 commit에서 변경된 파일 리스트를 가져옵니다.
-    public static Set<File> gitChangedFileList(File nowDir, RevCommit nowCommit) throws IOException, GitAPIException {
+    public static List<File> gitChangedFileList(File nowDir, RevCommit nowCommit) throws IOException, GitAPIException {
         Repository repository = openRepositoryFromFile(nowDir);
-        Set<File> changedFiles = new HashSet<>();
+        List<File> changedFiles = new ArrayList<>();
 
         try (RevWalk revWalk = new RevWalk(repository)) {
             // nowCommit의 부모 commit

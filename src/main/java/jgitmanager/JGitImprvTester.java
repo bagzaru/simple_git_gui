@@ -158,7 +158,7 @@ public class JGitImprvTester {
 
             RevCommit latestCommit = getLatestCommit(repository);
 
-            Set<File> fileSet = jGitManagerImprv.gitChangedFileList(new File(filePath), latestCommit);
+            List<File> fileSet = jGitManagerImprv.gitChangedFileList(new File(filePath), latestCommit);
 
             Iterator<File> fileIterator = fileSet.iterator();
             while (fileIterator.hasNext()) {

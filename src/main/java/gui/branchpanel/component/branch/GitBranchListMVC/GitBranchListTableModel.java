@@ -9,7 +9,7 @@ public class GitBranchListTableModel extends AbstractTableModel {
     private String[] columns = {"Branch List"};
 
     public GitBranchListTableModel() {
-        branchList = new ArrayList<>();
+        branchList = new ArrayList<String>();
     }
 
     public Object getValueAt(int row, int column) {

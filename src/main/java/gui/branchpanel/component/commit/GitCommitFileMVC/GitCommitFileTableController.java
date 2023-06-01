@@ -2,10 +2,17 @@ package gui.branchpanel.component.commit.GitCommitFileMVC;
 
 import file.BranchDataChangeListener;
 import file.GitBranchData;
+import file.SelectedFile;
+import jgitmanager.JGitManager;
+import jgitmanager.JGitManagerImprv;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class GitCommitFileTableController implements BranchDataChangeListener {
     private GitCommitFileTableModel model;
@@ -35,8 +42,18 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
-        //File[] commitFiles = (jgit과 연동해서 선택한 커밋의 파일 목록 반환하는 메소드)
-        File[] commitFiles = {new File("a")}; //테스트용 배열
-        model.setCommitFiles(commitFiles);
+        System.out.println("Test5");
+        File currentDir = SelectedFile.getInstance().getFile();
+        RevCommit selectedCommit = gitBranchData.getSelectedCommit();
+        /*
+        if(JGitManager.findGitRepository(currentDir) == 1) {
+            if(selectedCommit != null) {
+                try {
+                    List<File> commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
+                    model.setCommitFiles(commitFiles);
+                } catch(IOException | GitAPIException e) {
+                }
+            }
+        }*/
     }
 }
