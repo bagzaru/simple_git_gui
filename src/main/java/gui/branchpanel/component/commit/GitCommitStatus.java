@@ -9,6 +9,7 @@ public class GitCommitStatus extends JPanel {
     private GitBranchData gitBranchData;
     public GitCommitStatus(){
         this.setLayout(new GridLayout(5,2));
+        
     }
 
 }
