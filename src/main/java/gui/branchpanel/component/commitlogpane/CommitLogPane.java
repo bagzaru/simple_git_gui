@@ -27,9 +27,11 @@ public class CommitLogPane extends JScrollPane {
         //FileTable처럼 JScrollPane에 UI 등록하기
         model = new CommitLogTableModel();
         view = new CommitLogTableView(model);
-        controller = new CommitLogTableController(model, view);
+        controller = new CommitLogTableController(model, view, gitBranchData);
 
         setViewportView(view);
+        controller.updateData();
+
         Dimension d = getPreferredSize();
         setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()/2));
     }
@@ -39,7 +41,6 @@ public class CommitLogPane extends JScrollPane {
     public void Update(String branch){
         //Model Update 구현하
         controller.UpdateCommitLogTable(SelectedFile.getInstance().getFile(), branch);
-    }
-
+    } //updataCommitLogTable 메소드를 인터페이스 상속받은 메소드로 바꾸면서 인자 조건 달라져서 이거 필요 없을듯
 
 }
