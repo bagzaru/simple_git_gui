@@ -43,6 +43,8 @@ public class GitBranchData {
 
     public void setSelectedBranch(String branch) {
         SelectedBranch = branch;
+        SelectedCommit = null;
+        SelectedChangeFile = null;
         notifyBranchDataChange();
     }
 
@@ -52,6 +54,7 @@ public class GitBranchData {
 
     public void setSelectedCommit(RevCommit commit) {
         SelectedCommit = commit;
+        SelectedChangeFile = null;
         notifyBranchDataChange();
     }
 
