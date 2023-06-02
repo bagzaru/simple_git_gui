@@ -42,6 +42,9 @@ public class CommitLogGraphDrawer {
     //2. 해당 열 참조하여 각 graph draw하기
     public void setGraphNodes(ArrayList<RevCommit> logs) {
         graphNodes.clear();
+        if(logs.size()==0){
+            return;
+        }
         //실제 Model의 logs를 입력받아, Graph를 그리기 위한 준비를 한다.
         //그려질 그래프의 Node를 제작한다. 후에 drawGraph에서 사용된다.
         PriorityQueue<Integer> enableList = new PriorityQueue<>(); //현재 가능한 줄 번호 중 가장 작은 번호를 호출
