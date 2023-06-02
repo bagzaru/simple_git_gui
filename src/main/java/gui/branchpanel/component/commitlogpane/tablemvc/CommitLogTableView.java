@@ -21,7 +21,7 @@ public class CommitLogTableView extends JTable {
         this.drawer = new CommitLogGraphDrawer();
 
         //각 행의 길이를 정합니다.
-        setColumnWidth(0, 8);
+        setColumnWidth(0, 6);
         setColumnWidth(1, 16);
         setColumnWidth(2, 10);
         setColumnWidth(3, 12);
@@ -41,9 +41,9 @@ public class CommitLogTableView extends JTable {
         // altered 10->14 as per camickr comment.
         width = (int) preferred.getWidth() + 14;
 
-        tableColumn.setPreferredWidth(width);
         tableColumn.setMaxWidth(width);
         tableColumn.setMinWidth(width);
+        tableColumn.setPreferredWidth(width);
     }
 
     @Override
@@ -54,9 +54,12 @@ public class CommitLogTableView extends JTable {
         //그래프 그리기
         drawer.setGraphNodes(model.getLogs());
         //drawer.printGraphNodes();
-        setColumnWidth(0, 2*drawer.getColumnCount());
         drawer.drawGraph(g,this);
-
+        int graphColumnWidth = 6;
+        if(2*drawer.getColumnCount()>6){
+            graphColumnWidth = 2*drawer.getColumnCount();
+        }
+        setColumnWidth(0, graphColumnWidth);
         // 점 그리기
 //        g.setColor(Color.RED);
 //        g.fillRect(10, 10, 5, 5);
