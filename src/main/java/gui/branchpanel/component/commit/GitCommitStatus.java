@@ -19,7 +19,7 @@ public class GitCommitStatus extends JPanel {
 
 
         try{
-            commitInfo = JGitManagerImprv.gitCommitInfo(this.gitBranchData.getSelectedCommit());
+            commitInfo = JGitManagerImprv.gitCommitInfo(gitBranchData.getSelectedCommit());
 
         }catch (Exception e){
             System.out.println(e.toString());
@@ -57,7 +57,7 @@ public class GitCommitStatus extends JPanel {
 
 
 
-
     }
+
 
 }
