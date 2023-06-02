@@ -49,15 +49,16 @@ public class GitMenu extends JPanel {//커밋 같은 일반적인 깃 버튼을 
             commit_button.setBounds(0, 100, 100, 30);
             add(commit_button);
 
-            CloneButton CloneButton =new CloneButton();
-            CloneButton.setBounds(0,50,100,30);
-            add(CloneButton);
+
         }
         else{
             //git repo가 아닌 경우
             init_button init_button=new init_button();//init button 추가
             init_button.setBounds(0, 0, 100, 30);
             add(init_button);
+            CloneButton CloneButton =new CloneButton();
+            CloneButton.setBounds(0,50,100,30);
+            add(CloneButton);
         }
 
 

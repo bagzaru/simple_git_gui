@@ -1,8 +1,14 @@
 package gui.filepanel.component.gitmenu;
 
+import file.SelectedFile;
+import gui.filepanel.PanelRefreshUtil;
+import jgitmanager.JGitManagerImprv;
+import org.eclipse.jgit.api.errors.GitAPIException;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class CloneButton extends JButton {
     public CloneButton(){
@@ -13,6 +19,14 @@ public class CloneButton extends JButton {
              @Override
              public void actionPerformed(ActionEvent e) {
                 String CloneUrl =new CloneUrlMessageBox().showCloneUrldialog();
+                 try {
+                     JGitManagerImprv.gitClone(SelectedFile.getInstance().getFile(), CloneUrl);
+                 } catch (GitAPIException ex) {
+                     throw new RuntimeException(ex);
+                 } catch (IOException ex) {
+                     throw new RuntimeException(ex);
+                 }
+                 PanelRefreshUtil.refreshAll();
              }
          });
     }
