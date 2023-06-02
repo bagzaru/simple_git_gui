@@ -2,6 +2,8 @@ package file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -16,8 +18,10 @@ public class SelectedFile {
     /** instance variable */
     private File selectedFile;
     private FileStatus gitStatus;
+    private List<SelectedFileChangedEventListener> selectedFileChangedEventListenerList;
 
     SelectedFile() {
+        selectedFileChangedEventListenerList = new ArrayList<>();
     }
 
     public static SelectedFile getInstance() {
@@ -33,6 +37,7 @@ public class SelectedFile {
 
     public void setFile(File file) {
         selectedFile = file;
+        notifySelectedFileChange(selectedFile);
 
         if(file.isDirectory()) {
             gitStatus = FileStatus.DIRECTORY;
@@ -54,5 +59,17 @@ public class SelectedFile {
 
     public FileStatus getGitStatus() {
         return gitStatus;
+    }
+
+    public void addSelectedFileChangedListener(SelectedFileChangedEventListener listener){
+        selectedFileChangedEventListenerList.add(listener);
+    }
+
+    public void notifySelectedFileChange(File selected){
+        for(SelectedFileChangedEventListener listener: selectedFileChangedEventListenerList){
+            listener.selectedFileChanged(selected);
+            System.out.print("아!!!!!!!");
+        }
+        System.out.println("Notify!!!!!!");
     }
 }
