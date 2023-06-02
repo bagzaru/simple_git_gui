@@ -1,21 +1,36 @@
 package gui.branchpanel.component.branch.GitBranchListMVC;
 
+import file.GitBranchData;
+import gui.branchpanel.component.branch.GitBranchList;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GitBranchListTableModel extends AbstractTableModel {
     private List<String> branchList;
-    private String[] columns = {"Branch List"};
+    private String[] columns = {"", "Branch List"};
+    private GitBranchData gitBranchData;
 
-    public GitBranchListTableModel() {
+    public GitBranchListTableModel(GitBranchData gitBranchData) {
         branchList = new ArrayList<String>();
+        this.gitBranchData = gitBranchData;
     }
 
     public Object getValueAt(int row, int column) {
+        String branch = branchList.get(row);
+        String currentBranch = gitBranchData.getCurrentBranch();
+
         switch (column) {
             case 0:
-                return branchList.get(row);
+                if(branch.equals(currentBranch)) {
+                    return "V";
+                }
+                else {
+                    return "";
+                }
+            case 1:
+                return branch;
             default:
                 System.err.println("Logic Error");
         }
