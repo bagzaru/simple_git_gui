@@ -9,7 +9,8 @@ import jgitmanager.JGitManagerImprv;
 import javax.swing.*;
 import java.awt.*;
 
-public class GitCommitModify extends JPanel implements BranchDataChangeListener {
+public class GitCommitModify extends JScrollPane implements BranchDataChangeListener {
+
     private String Diff;
     private JTextArea Differences;
     private GitBranchData gitBranchData;
@@ -20,7 +21,8 @@ public class GitCommitModify extends JPanel implements BranchDataChangeListener 
         gitBranchData.addBranchDataChangeListener(this);
 
         Differences=new JTextArea();
-        this.add(Differences, BorderLayout.CENTER);
+        setViewportView(Differences);
+        //this.add(Differences);
     }
 
     @Override

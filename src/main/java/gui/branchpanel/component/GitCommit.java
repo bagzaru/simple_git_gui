@@ -16,12 +16,12 @@ public class GitCommit extends JPanel {
     public GitCommit(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
 
-        setLayout(new BorderLayout(3,3));
+        setLayout(new GridLayout(1,2));
 
         JPanel commit = new JPanel();
-        commit.setLayout(new BorderLayout(3,3));
-        commit.add(new GitCommitStatus(gitBranchData), BorderLayout.NORTH);
-        commit.add(new GitCommitFile(gitBranchData), BorderLayout.CENTER);
+        commit.setLayout(new GridLayout(2,1));
+        commit.add(new GitCommitStatus(gitBranchData));
+        commit.add(new GitCommitFile(gitBranchData));
 
         add(commit, BorderLayout.CENTER);
         add(new GitCommitModify(gitBranchData), BorderLayout.EAST);
