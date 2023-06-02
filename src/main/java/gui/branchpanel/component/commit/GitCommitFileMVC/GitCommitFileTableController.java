@@ -27,7 +27,11 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
         this.model = model;
         this.view = view;
         this.gitBranchData = gitBranchData;
-        gitBranchData.addBranchDataChangeListener(this);
+        gitBranchData.addCurrentBranchChangeEventListeners(this);
+        gitBranchData.addCommitSelectionEventListeners(this);
+        gitBranchData.addBranchSelectionEventListener(this);
+        gitBranchData.addFileSelectionEventListeners(this);
+        gitBranchData.addGitBranchCommandEventListener(this);
 
         this.listSelectionListener = new ListSelectionListener() {
             @Override

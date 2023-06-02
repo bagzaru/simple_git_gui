@@ -12,7 +12,7 @@ public class GitBranchMenu  extends JPanel {
     public GitBranchMenu(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
 
-        GitBranchCreateButton CreateButton=new GitBranchCreateButton();
+        GitBranchCreateButton CreateButton=new GitBranchCreateButton(gitBranchData);
         CreateButton.setBounds(0,100,50,30);
         add(CreateButton);
 

@@ -25,7 +25,8 @@ public class GitBranchListTableController implements BranchDataChangeListener {
         this.model = model;
         this.view = view;
         this.gitBranchData = gitBranchData;
-        gitBranchData.addBranchDataChangeListener(this);
+        gitBranchData.addCurrentBranchChangeEventListeners(this);
+        gitBranchData.addGitBranchCommandEventListener(this);
 
         this.listSelectionListener = new ListSelectionListener() {
             @Override
