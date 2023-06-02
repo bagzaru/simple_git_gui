@@ -2,6 +2,8 @@ package file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -16,8 +18,10 @@ public class SelectedFile {
     /** instance variable */
     private File selectedFile;
     private FileStatus gitStatus;
+    private List<BranchDataChangeListener> selectedFileChangedEventListenerList;
 
     SelectedFile() {
+        selectedFileChangedEventListenerList = new ArrayList<>();
     }
 
     public static SelectedFile getInstance() {
@@ -41,6 +45,7 @@ public class SelectedFile {
             try {
                 if(JGitManager.findGitRepository(file) == 1) {
                     gitStatus = JGitManager.gitCheckFileStatus(file);
+                    notifySelectedFileChange();
                 }
                 else {
                     gitStatus = FileStatus.UNTRACKED;
@@ -54,5 +59,15 @@ public class SelectedFile {
 
     public FileStatus getGitStatus() {
         return gitStatus;
+    }
+
+    public void addSelectedFileChangedListener(BranchDataChangeListener listener){
+        selectedFileChangedEventListenerList.add(listener);
+    }
+
+    public void notifySelectedFileChange(){
+        for(BranchDataChangeListener listener: selectedFileChangedEventListenerList){
+            listener.updateData();
+        }
     }
 }
