@@ -17,6 +17,14 @@ public class GitCommitStatus extends JPanel {
     private GitBranchData gitBranchData;
     public GitCommitStatus(GitBranchData gitBranchData){
 
+
+        try{
+            commitInfo = JGitManagerImprv.gitCommitInfo(this.gitBranchData.getSelectedCommit());
+
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+
         JPanel CommitDetailLabel=new JPanel(new GridLayout(0,1,2,2));
         this.add(CommitDetailLabel,BorderLayout.WEST);
 
