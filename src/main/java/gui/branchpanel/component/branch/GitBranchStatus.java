@@ -13,7 +13,7 @@ public class GitBranchStatus extends JPanel {
 
     public GitBranchStatus(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
-        this.setLayout(new GridLayout(4,1));
+        this.setLayout(new GridLayout(4,1,4,4));
         JLabel CurrentBranchName=new JLabel("CURRENT BRANCH");
         String CurrentBranch=gitBranchData.getCurrentBranch();
         JLabel printCurrentBranch=new JLabel(CurrentBranch);
