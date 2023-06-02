@@ -30,10 +30,11 @@ public class GitBranchListTableController implements BranchDataChangeListener {
         this.listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    int row = view.getSelectedRow();
-                    System.out.println("Test row: " + row);
-                    String selectedBranch = model.getBranch(row);
+                System.out.println("Test double");
+                int clickedRow = view.getSelectedRow();
+                if(!e.getValueIsAdjusting() && clickedRow != -1){
+                    System.out.println("Test row: " + clickedRow);
+                    String selectedBranch = model.getBranch(clickedRow);
                     gitBranchData.setSelectedBranch(selectedBranch);
                 }
             }

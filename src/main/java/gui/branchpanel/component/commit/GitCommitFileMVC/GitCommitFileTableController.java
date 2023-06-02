@@ -31,8 +31,9 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
         this.listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    File selectedCommitFile = model.getCommitFile(view.getSelectedRow());
+                int clickedRow = view.getSelectedRow();
+                if(!e.getValueIsAdjusting() && clickedRow != -1) {
+                    File selectedCommitFile = model.getCommitFile(clickedRow);
                     gitBranchData.setSelectedChangeFile(selectedCommitFile); //이름 불일치 수정해야할 듯
                 }
             }
