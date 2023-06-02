@@ -22,11 +22,17 @@ public class CommitInfo {
     public CommitInfo (String checkSum, int commitTime, String commitMessage, String authorName, String authorEMail) {
         this.checkSum = checkSum;
 
-        //timestamp 시간 변환
+        // timestamp 시간 변환
         long longCommitTime = commitTime * 1000L;
         Timestamp timestamp = new Timestamp(longCommitTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 hh시 mm분 ss초");
-        this.commitTime = simpleDateFormat.format(timestamp);
+
+        // 시간값이 -1 일 때
+        if (commitTime == -1) {
+            this.commitTime = " ";
+        } else {
+            this.commitTime = simpleDateFormat.format(timestamp);
+        }
 
         this.commitMessage = commitMessage;
         this.authorName = authorName;

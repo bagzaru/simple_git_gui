@@ -30,10 +30,9 @@ public class GitBranchListTableController implements BranchDataChangeListener {
         this.listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    int row = view.getSelectedRow();
-                    System.out.println("Test row: " + row);
-                    String selectedBranch = model.getBranch(row);
+                int clickedRow = view.getSelectedRow();
+                if(!e.getValueIsAdjusting() && clickedRow != -1){
+                    String selectedBranch = model.getBranch(clickedRow);
                     gitBranchData.setSelectedBranch(selectedBranch);
                 }
             }
@@ -43,7 +42,6 @@ public class GitBranchListTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
-        System.out.println("Test3");
         File currentDir = SelectedFile.getInstance().getFile();
         if(JGitManager.findGitRepository(currentDir) == 1) {
             try {

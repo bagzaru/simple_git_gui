@@ -71,28 +71,33 @@ public class CommitLogTableModel extends AbstractTableModel {
 
     //UpdateLogsByBranch: branch가 입력되면, 그에 맞게 모델의 데이터를 업데이트한 후, UI에 업데이트 신호를 보냅니다.
     //기본적으로 ModelController에서 호출됩니다.
+
     public boolean UpdateModelByBranch(File repositoryDir, String branch) {
-        System.out.println("Test4-1-1");
         try {
             logs.clear();
-            Iterable<RevCommit> tlogs = JGitManager.gitLog(repositoryDir, branch);
+            Iterable<RevCommit> tlogs;
+
+            if(branch == null)
+                tlogs = null;
+            else
+                tlogs = JGitManager.gitLog(repositoryDir, branch);
+
             if (tlogs != null) {
                 for (RevCommit r : tlogs) {
                     logs.add(r);
                 }
             } else {
-                System.out.println("UpdateModelByBranch: Commit-Log is null");
+                //System.out.println("UpdateModelByBranch: Commit-Log is null");
             }
         } catch (Exception e) {
-            //System.out.println("Test4-1-3");
             System.out.println("Something error happened on CommitHistoryModel.UpdateModelByBranch");
             e.printStackTrace();
             return false;
         }
-        //System.out.println("Test4-1-4");
+
         //View에 변경사항 반영
         fireTableDataChanged();
-        //System.out.println("Test4-1-5");
+
         return true;
     }
 

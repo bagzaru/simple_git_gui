@@ -2,28 +2,51 @@ package gui.branchpanel.component.branch;
 
 import javax.swing.*;
 import file.*;
+import jgitmanager.JGitManagerImprv;
 
 import java.awt.*;
 
-public class GitBranchStatus extends JPanel {
+public class GitBranchStatus extends JPanel implements BranchDataChangeListener {
+    private JLabel PrintCurrentBranch;
+    private JLabel PrintSelectedBranch;
+    private String CurrentBranch;
+    private String SelectedBranch;
     /** Branch 모드 공유 데이터 객체*/
     private GitBranchData gitBranchData;
 
-    private String CurrentBranch;
-    private String SelectedBranch;
 
     public GitBranchStatus(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
 
-        CurrentBranch=gitBranchData.getCurrentBranch();
-        JLabel printCurrentBranch=new JLabel(CurrentBranch);
-        SelectedBranch=gitBranchData.getSelectedBranch();
-        JLabel printSelectedBranch=new JLabel(SelectedBranch);
+        gitBranchData.addBranchDataChangeListener(this);
+
+        this.setLayout(new GridLayout(4,1,4,4));
+
+        JLabel CurrentBranchName=new JLabel("CURRENT BRANCH");
+
+        PrintCurrentBranch=new JLabel();
+
+        JLabel SelectedBranchName=new JLabel("SELECTED BRANCH");
+
+        PrintSelectedBranch=new JLabel();
+
+        add(CurrentBranchName);
+        add(PrintCurrentBranch);
+        add(SelectedBranchName);
+        add(PrintSelectedBranch);
 
 
 
-        add(printCurrentBranch, BorderLayout.NORTH);
-        add(printSelectedBranch,BorderLayout.CENTER);
-
+    }
+    @Override
+    public void updateData(){
+        try{
+            CurrentBranch=gitBranchData.getCurrentBranch();
+            SelectedBranch=gitBranchData.getSelectedBranch();
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+        PrintCurrentBranch.setText(CurrentBranch);
+        PrintSelectedBranch.setText(SelectedBranch);
     }
 }

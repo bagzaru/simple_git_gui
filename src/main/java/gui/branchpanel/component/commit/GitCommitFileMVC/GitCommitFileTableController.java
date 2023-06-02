@@ -12,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GitCommitFileTableController implements BranchDataChangeListener {
@@ -31,8 +32,9 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
         this.listSelectionListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    File selectedCommitFile = model.getCommitFile(view.getSelectedRow());
+                int clickedRow = view.getSelectedRow();
+                if(!e.getValueIsAdjusting() && clickedRow != -1) {
+                    File selectedCommitFile = model.getCommitFile(clickedRow);
                     gitBranchData.setSelectedChangeFile(selectedCommitFile); //이름 불일치 수정해야할 듯
                 }
             }
@@ -42,18 +44,22 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
-        System.out.println("Test5");
         File currentDir = SelectedFile.getInstance().getFile();
         RevCommit selectedCommit = gitBranchData.getSelectedCommit();
-        /*
+        List<File> commitFiles;
+
         if(JGitManager.findGitRepository(currentDir) == 1) {
-            if(selectedCommit != null) {
+            if(selectedCommit == null) {
+                commitFiles = new ArrayList<File>();
+                model.setCommitFiles(commitFiles);
+            }
+            else {
                 try {
-                    List<File> commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
+                    commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
                     model.setCommitFiles(commitFiles);
                 } catch(IOException | GitAPIException e) {
                 }
             }
-        }*/
+        }
     }
 }
