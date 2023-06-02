@@ -34,15 +34,11 @@ public class CommitLogTableController implements BranchDataChangeListener {
                 //2. 선택한 Commit을 <3번패널>로 보냅니다.
                 int clickedRow = table.getSelectedRow();
                 if(!e.getValueIsAdjusting() && clickedRow != -1){ //false: 마우스가 떼어진 순간만 적용
-                    System.out.println("Test0");
                     //1. 선택한 부분의 정보를 모델에서 받아옵니다.
                     String checksum = model.getCommitByRowIndex(clickedRow).getId().getName().substring(0,6);
-                    System.out.println("Table Clicked: "+checksum);
 
                     RevCommit selectCommit = model.getCommitByRowIndex(clickedRow);
-                    System.out.println("Test1");
                     gitBranchData.setSelectedCommit(selectCommit);
-                    System.out.println("Test2");
                 }
                 //선택한 Commit을 3번 패널로 보냅니다.
                 //merge 후에 구현 예정
@@ -61,17 +57,13 @@ public class CommitLogTableController implements BranchDataChangeListener {
     //위 메소드를 이벤트 리스너로 사실상 이름이랑 인자만 바꾼거인데 내(승재)가 아니라 승훈이가 만든거라 그냥 지우진 않고 일단 남겨둠
     @Override
     public void updateData() {
-        System.out.println("Test4");
         File repositoryDir = SelectedFile.getInstance().getFile();
         String selectedBranch = gitBranchData.getSelectedBranch();
-        System.out.println("Test4-1");
+
         if(repositoryDir != null && selectedBranch != null) {
             //git에 관리 안되는 폴더거나 브랜치 선택 안했을때 null 에러 뜨는 것 때문에 임시로 추가한건데
             //나중에 예외 처리 위치 수정할 예정
-            System.out.println("dir: " + repositoryDir);
-            System.out.println("branch: " + selectedBranch);
             model.UpdateModelByBranch(repositoryDir, selectedBranch);
         }
-        System.out.println("Test4-2");
     }
 }

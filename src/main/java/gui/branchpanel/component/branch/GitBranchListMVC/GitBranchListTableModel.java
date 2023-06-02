@@ -40,7 +40,6 @@ public class GitBranchListTableModel extends AbstractTableModel {
 
     public void setBranchList(List<String> branchList) {
         this.branchList = branchList;
-        System.out.println("Double Click Test");
         fireTableDataChanged();
     }
 }

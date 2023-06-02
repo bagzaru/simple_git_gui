@@ -43,7 +43,6 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
 
     @Override
     public void updateData() {
-        System.out.println("Test5");
         File currentDir = SelectedFile.getInstance().getFile();
         RevCommit selectedCommit = gitBranchData.getSelectedCommit();
         /*
