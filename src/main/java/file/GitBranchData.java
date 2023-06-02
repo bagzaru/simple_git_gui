@@ -1,8 +1,10 @@
 package file;
 
+import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +30,22 @@ public class GitBranchData {
         }
     }
 
+    public void initGitBranchData() {
+        SelectedBranch = null;
+        SelectedCommit = null;
+        SelectedChangeFile = null;
+        setCurrentBranch();
+    }
+
     public String getCurrentBranch() {
         return CurrentBranch;
     }
 
-    public void setCurrentBranch(String branch) {
-        CurrentBranch = branch;
+    public void setCurrentBranch() {
+        try {
+            CurrentBranch = JGitManagerImprv.gitCurrentBranch(SelectedFile.getInstance().getFile());
+        } catch (IOException e) {
+        }
         notifyBranchDataChange();
     }
 
