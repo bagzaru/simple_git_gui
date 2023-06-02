@@ -3,6 +3,7 @@ package gui.branchpanel.component.branch.button;
 import file.GitBranchData;
 import file.SelectedFile;
 import jgitmanager.JGitManagerImprv;
+import jgitmanager.MergeException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.swing.*;
@@ -21,9 +22,7 @@ public class GitBranchMergeButton extends JButton {
                 try {
                     JGitManagerImprv.gitMerge(SelectedFile.getInstance().getFile(),
                             gitBranchData.getSelectedBranch());
-                } catch (GitAPIException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
+                } catch (GitAPIException | IOException | MergeException ex) {
                     throw new RuntimeException(ex);
                 }
             }

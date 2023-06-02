@@ -2,6 +2,7 @@ package jgitmanager;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand;
+import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -10,6 +11,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.merge.ResolveMerger;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -22,10 +24,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
@@ -186,24 +185,35 @@ public class JGitManagerImprv {
     // gitMerge
     // 현재 branch에서 source branch를 merge
     // git merge <sourceBranch>
-    public static void gitMerge(File nowDir, String sourceBranch) throws GitAPIException, IOException {
+    public static void gitMerge(File nowDir, String sourceBranch) throws GitAPIException, IOException, MergeException {
         try {
             // Git 저장소 열기
             Repository repository = openRepositoryFromFile(nowDir);
             Git git = new Git(repository);
 
             // git merge
-            git.merge()
+            MergeResult mergeResult = git.merge()
                     .include(repository.findRef(sourceBranch))
                     .setFastForward(MergeCommand.FastForwardMode.FF)
                     .call();
+
+            // 충돌이 나면 예외 발생
+            StringBuilder conflictFiles = new StringBuilder("Conflict in file");
+            mergeResult.getFailingPaths();
+            if (mergeResult.getConflicts() != null) {
+                for (String conflictedFile : mergeResult.getConflicts().keySet()) {
+                    conflictFiles.append("\n").append(conflictedFile);
+                }
+                throw new MergeException(String.valueOf(conflictFiles));
+            }
 
             // Git 저장소 닫기
             git.close();
 
             System.out.println("merge success / " + sourceBranch);
-        } catch (GitAPIException | IOException e) {
+        } catch (GitAPIException | IOException | MergeException e) {
             System.out.println("merge fail");
+
 
             // 예외 발생
             throw e;
