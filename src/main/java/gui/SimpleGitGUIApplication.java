@@ -1,20 +1,25 @@
 package gui;
 
+import file.BranchDataChangeListener;
 import file.GitBranchData;
+import file.SelectedFile;
+import file.SelectedFileChangedEventListener;
 import gui.branchpanel.BranchPanel;
 import gui.filepanel.FilePanel;
 import gui.filepanel.component.GitMenu;
+import jgitmanager.JGitManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
 
-public class SimpleGitGUIApplication extends JFrame {
+public class SimpleGitGUIApplication extends JFrame implements SelectedFileChangedEventListener {
     /** Title of the application */
     public static final String APP_TITLE = "Simple Git GUI Application";
 
@@ -92,6 +97,10 @@ public class SimpleGitGUIApplication extends JFrame {
         setLocationByPlatform(true);
         setMinimumSize(getSize());
         setVisible(true);
+
+        //Git 상태에 따른 BranchManager 버튼 처리
+        SelectedFile.getInstance().addSelectedFileChangedListener(this);
+        setBranchManagerModeEnabledByGit(SelectedFile.getInstance().getFile());
     }
 
     private void switchPanel(JPanel panel) {
@@ -109,5 +118,23 @@ public class SimpleGitGUIApplication extends JFrame {
                 mainFrame.setVisible(true);
             }
         });
+    }
+
+    @Override
+    public void selectedFileChanged(File selectedFile) {
+        System.out.println("shival!!!!!!!!");
+        setBranchManagerModeEnabledByGit(selectedFile);
+    }
+
+    private void setBranchManagerModeEnabledByGit(File selectedFile){
+        if(selectedFile==null){
+            return;
+        }
+        if(JGitManager.findGitRepository(selectedFile)==1){
+            branchManagerMode.setEnabled(true);
+        }else{
+            branchManagerMode.setEnabled(false);
+        }
+
     }
 }

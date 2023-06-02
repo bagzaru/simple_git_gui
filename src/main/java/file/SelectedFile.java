@@ -18,7 +18,7 @@ public class SelectedFile {
     /** instance variable */
     private File selectedFile;
     private FileStatus gitStatus;
-    private List<BranchDataChangeListener> selectedFileChangedEventListenerList;
+    private List<SelectedFileChangedEventListener> selectedFileChangedEventListenerList;
 
     SelectedFile() {
         selectedFileChangedEventListenerList = new ArrayList<>();
@@ -37,6 +37,7 @@ public class SelectedFile {
 
     public void setFile(File file) {
         selectedFile = file;
+        notifySelectedFileChange(selectedFile);
 
         if(file.isDirectory()) {
             gitStatus = FileStatus.DIRECTORY;
@@ -45,7 +46,6 @@ public class SelectedFile {
             try {
                 if(JGitManager.findGitRepository(file) == 1) {
                     gitStatus = JGitManager.gitCheckFileStatus(file);
-                    notifySelectedFileChange();
                 }
                 else {
                     gitStatus = FileStatus.UNTRACKED;
@@ -61,13 +61,15 @@ public class SelectedFile {
         return gitStatus;
     }
 
-    public void addSelectedFileChangedListener(BranchDataChangeListener listener){
+    public void addSelectedFileChangedListener(SelectedFileChangedEventListener listener){
         selectedFileChangedEventListenerList.add(listener);
     }
 
-    public void notifySelectedFileChange(){
-        for(BranchDataChangeListener listener: selectedFileChangedEventListenerList){
-            listener.updateData();
+    public void notifySelectedFileChange(File selected){
+        for(SelectedFileChangedEventListener listener: selectedFileChangedEventListenerList){
+            listener.selectedFileChanged(selected);
+            System.out.print("아!!!!!!!");
         }
+        System.out.println("Notify!!!!!!");
     }
 }
