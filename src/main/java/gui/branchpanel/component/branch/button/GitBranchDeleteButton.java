@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class GitBranchDeleteButton extends JButton {
     private GitBranchData gitBranchData;
-    public GitBranchDeleteButton(){
+    public GitBranchDeleteButton(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
         setText("-");
         addActionListener(new ActionListener() {

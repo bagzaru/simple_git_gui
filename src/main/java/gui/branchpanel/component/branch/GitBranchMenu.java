@@ -16,15 +16,15 @@ public class GitBranchMenu  extends JPanel {
         CreateButton.setBounds(0,100,50,30);
         add(CreateButton);
 
-        GitBranchDeleteButton DeleteButton=new GitBranchDeleteButton();
+        GitBranchDeleteButton DeleteButton=new GitBranchDeleteButton(gitBranchData);
         DeleteButton.setBounds(50,100,50,30);
         add(DeleteButton);
 
-        GitBranchRenameButton RenameButton=new GitBranchRenameButton();
+        GitBranchRenameButton RenameButton=new GitBranchRenameButton(gitBranchData);
         RenameButton.setBounds(100,100,50,30);
         add(RenameButton);
 
-        GitBranchMergeButton MergeButton=new GitBranchMergeButton();
+        GitBranchMergeButton MergeButton=new GitBranchMergeButton(gitBranchData);
         MergeButton.setBounds(150,100,50,30);
         add(MergeButton);
     }
