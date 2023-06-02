@@ -22,7 +22,7 @@ public class JGitImprvTester {
         System.out.println("Hello World from JGitTester");
         JGitImprvTester tester = new JGitImprvTester();
 
-        tester.gitMergeTest(testPath);
+        tester.gitDiffTest(testPath);
     }
 
     public void gitCloneTest(String filePath){
