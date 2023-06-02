@@ -20,7 +20,7 @@ public class GitBranchList extends JScrollPane {
     public GitBranchList(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
 
-        model = new GitBranchListTableModel();
+        model = new GitBranchListTableModel(gitBranchData);
         view = new GitBranchListTableView();
         controller = new GitBranchListTableController(model, view, gitBranchData);
 
