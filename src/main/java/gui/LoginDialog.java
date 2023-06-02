@@ -14,9 +14,9 @@ public class LoginDialog extends JDialog {
         this.setTitle("LOGIN");
         this.setLayout(new GridLayout(3,2));
 
-        JLabel IdLabel = new JLabel("ID");
+        JLabel IdLabel = new JLabel("ID",JLabel.TRAILING);
         inputLoginId = new JTextField("ID를 입력하세요");
-        JLabel TokenLabel = new JLabel("TOKEN");
+        JLabel TokenLabel = new JLabel("TOKEN",JLabel.TRAILING);
         inputLoginToken = new JTextField("TOKEN을 입력하세요");
         loginButton = new JButton("Log In");
         this.add(IdLabel);
