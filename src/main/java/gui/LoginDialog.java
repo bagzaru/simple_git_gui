@@ -1,11 +1,16 @@
 package gui;
 
+import jgitmanager.JGitManagerImprv;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LoginDialog extends JDialog {
+    private String Id;
+    private String Token;
     private JTextField inputLoginId;
     private JTextField inputLoginToken;
     private JButton loginButton;
@@ -14,10 +19,21 @@ public class LoginDialog extends JDialog {
         this.setTitle("LOGIN");
         this.setLayout(new GridLayout(3,2));
 
+        try {
+            Id = JGitManagerImprv.getID();
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        try{
+            Token=JGitManagerImprv.getAccessToken();
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+
         JLabel IdLabel = new JLabel("ID",JLabel.TRAILING);
-        inputLoginId = new JTextField("ID를 입력하세요");
+        inputLoginId = new JTextField(Id);
         JLabel TokenLabel = new JLabel("TOKEN",JLabel.TRAILING);
-        inputLoginToken = new JTextField("TOKEN을 입력하세요");
+        inputLoginToken = new JTextField(Token);
         loginButton = new JButton("Log In");
         this.add(IdLabel);
         this.add(inputLoginId);
@@ -28,6 +44,11 @@ public class LoginDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 String loginID = inputLoginId.getText();
                 String token = inputLoginToken.getText();
+                try {
+                    JGitManagerImprv.setIdToken(loginID,token);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 dispose();
             }
         });
