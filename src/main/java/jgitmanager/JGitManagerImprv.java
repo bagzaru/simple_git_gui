@@ -261,11 +261,16 @@ public class JGitManagerImprv {
     // CommitInfo 객체를 리턴합니다.
     public static CommitInfo gitCommitInfo(RevCommit nowCommit) throws Exception {
         try {
-            return new CommitInfo(nowCommit.getId().getName(),
-                    nowCommit.getCommitTime(),
-                    nowCommit.getFullMessage(),
-                    nowCommit.getAuthorIdent().getName(),
-                    nowCommit.getAuthorIdent().getEmailAddress());
+            if (nowCommit != null) {
+                return new CommitInfo(nowCommit.getId().getName(),
+                        nowCommit.getCommitTime(),
+                        nowCommit.getFullMessage(),
+                        nowCommit.getAuthorIdent().getName(),
+                        nowCommit.getAuthorIdent().getEmailAddress());
+            } else {
+                return new CommitInfo(" ", -1, " ", " ", " ");
+            }
+
         } catch (Exception e) {
             System.out.println("Failed to get commit information");
             throw e;
