@@ -123,7 +123,7 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("branch create success");
+            System.out.println(branchName + " branch create success");
         } catch (GitAPIException | IOException e) {
             System.out.println("branch create fail");
 
@@ -148,7 +148,7 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("branch delete success");
+            System.out.println(branchName + " branch delete success");
         } catch (GitAPIException | IOException e) {
             System.out.println("branch delete fail");
 
@@ -174,7 +174,7 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("branch rename success");
+            System.out.println("branch rename success / old name: " + oldName + " new name: " + newName);
         } catch (GitAPIException | IOException e) {
             System.out.println("branch rename fail");
 
@@ -201,7 +201,7 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("merge success");
+            System.out.println("merge success / " + sourceBranch);
         } catch (GitAPIException | IOException e) {
             System.out.println("merge fail");
 
@@ -226,7 +226,7 @@ public class JGitManagerImprv {
             // Git 저장소 닫기
             git.close();
 
-            System.out.println("checkout success");
+            System.out.println(branchName + " checkout success");
         } catch (GitAPIException | IOException e) {
             System.out.println("checkout fail");
 
@@ -245,7 +245,7 @@ public class JGitManagerImprv {
             // current branch 이름 가져옴
             String branchName = repository.getBranch();
 
-            System.out.println("get name of current branch");
+            System.out.println("get name of current branch / " + branchName);
 
             return branchName;
         } catch (IOException e) {
