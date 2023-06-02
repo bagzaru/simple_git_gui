@@ -68,8 +68,6 @@ public class SelectedFile {
     public void notifySelectedFileChange(File selected){
         for(SelectedFileChangedEventListener listener: selectedFileChangedEventListenerList){
             listener.selectedFileChanged(selected);
-            System.out.print("아!!!!!!!");
         }
-        System.out.println("Notify!!!!!!");
     }
 }

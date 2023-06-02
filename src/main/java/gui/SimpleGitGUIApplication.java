@@ -122,7 +122,6 @@ public class SimpleGitGUIApplication extends JFrame implements SelectedFileChang
 
     @Override
     public void selectedFileChanged(File selectedFile) {
-        System.out.println("shival!!!!!!!!");
         setBranchManagerModeEnabledByGit(selectedFile);
     }
 
