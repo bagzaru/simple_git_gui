@@ -18,7 +18,11 @@ public class GitCommitModify extends JScrollPane implements BranchDataChangeList
 
     public GitCommitModify(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
-        gitBranchData.addBranchDataChangeListener(this);
+        gitBranchData.addCurrentBranchChangeEventListeners(this);
+        gitBranchData.addCommitSelectionEventListeners(this);
+        gitBranchData.addBranchSelectionEventListener(this);
+        gitBranchData.addFileSelectionEventListeners(this);
+        gitBranchData.addGitBranchCommandEventListener(this);
 
         Differences=new JTextArea();
         setViewportView(Differences);

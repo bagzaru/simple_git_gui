@@ -19,7 +19,11 @@ public class GitCommitStatus extends JPanel implements BranchDataChangeListener 
 
     public GitCommitStatus(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
-        gitBranchData.addBranchDataChangeListener(this);
+        gitBranchData.addCurrentBranchChangeEventListeners(this);
+        gitBranchData.addCommitSelectionEventListeners(this);
+        gitBranchData.addBranchSelectionEventListener(this);
+        gitBranchData.addFileSelectionEventListeners(this);
+        gitBranchData.addGitBranchCommandEventListener(this);
 
         JPanel CommitDetailLabel=new JPanel(new GridLayout(0,1,2,2));
         this.add(CommitDetailLabel,BorderLayout.WEST);
