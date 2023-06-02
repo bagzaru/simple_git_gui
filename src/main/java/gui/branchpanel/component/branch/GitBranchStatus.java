@@ -18,6 +18,7 @@ public class GitBranchStatus extends JPanel implements BranchDataChangeListener 
     public GitBranchStatus(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
 
+        gitBranchData.addBranchSelectionEventListener(this);
         gitBranchData.addCurrentBranchChangeEventListeners(this);
         gitBranchData.addGitBranchCommandEventListener(this);
 

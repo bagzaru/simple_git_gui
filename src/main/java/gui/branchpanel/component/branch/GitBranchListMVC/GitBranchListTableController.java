@@ -69,6 +69,7 @@ public class GitBranchListTableController implements BranchDataChangeListener {
                                 //체크아웃 시도
                                 JGitManagerImprv.gitCheckout(SelectedFile.getInstance().getFile(), selected);
                                 gitBranchData.notifyGitBranchCommandCalled();
+                                gitBranchData.setCurrentBranch();
                             } catch (Throwable t) {
                                 JOptionPane.showMessageDialog(null,"Error Occured: Checkout Failed",
                                         "Checkout error", JOptionPane.INFORMATION_MESSAGE);
