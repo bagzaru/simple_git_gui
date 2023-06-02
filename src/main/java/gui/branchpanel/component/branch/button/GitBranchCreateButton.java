@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class GitBranchCreateButton extends JButton {
     public GitBranchCreateButton(){
+
         setText("+");
         MessageBox CreateBranchName=new MessageBox();//messageBox 브랜치 이름
         addActionListener(new ActionListener() {

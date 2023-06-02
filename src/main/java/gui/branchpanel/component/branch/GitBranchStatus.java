@@ -15,15 +15,15 @@ public class GitBranchStatus extends JPanel {
     public GitBranchStatus(GitBranchData gitBranchData) {
         this.gitBranchData = gitBranchData;
 
-        //CurrentBranch=GitBranchData.getCurrentBranch();
+        CurrentBranch=gitBranchData.getCurrentBranch();
         JLabel printCurrentBranch=new JLabel(CurrentBranch);
-        //SelectedBranch=GitBranchData.getSelectedBranch();
+        SelectedBranch=gitBranchData.getSelectedBranch();
         JLabel printSelectedBranch=new JLabel(SelectedBranch);
 
-        JLabel printTest=new JLabel("Test");
+
 
         add(printCurrentBranch, BorderLayout.NORTH);
-        add(printSelectedBranch,BorderLayout.SOUTH);
-        add(printTest, BorderLayout.CENTER);
+        add(printSelectedBranch,BorderLayout.CENTER);
+
     }
 }

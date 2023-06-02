@@ -13,6 +13,7 @@ import java.io.IOException;
 public class GitBranchMergeButton extends JButton {
     private GitBranchData gitBranchData;
     public GitBranchMergeButton(){
+        this.gitBranchData = gitBranchData;
         setText("M");
         addActionListener(new ActionListener() {
             @Override

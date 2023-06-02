@@ -13,6 +13,7 @@ import java.io.IOException;
 public class GitBranchRenameButton extends JButton {
     private GitBranchData gitBranchData;
     public GitBranchRenameButton(){
+        this.gitBranchData = gitBranchData;
         setText("R");
         MessageBox RenameBranchName=new MessageBox();//messageBox new branch name 추가 예정
         addActionListener(new ActionListener() {
