@@ -1,24 +1,21 @@
 package gui.branchpanel.component.branch.GitBranchListMVC;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GitBranchListTableModel extends AbstractTableModel {
-    private String[] branchList;
+    private List<String> branchList;
     private String[] columns = {"Branch List"};
 
     public GitBranchListTableModel() {
-        this(new String[0]);
-    }
-
-    GitBranchListTableModel(String[] list) {
-        this.branchList = list;
+        branchList = new ArrayList<String>();
     }
 
     public Object getValueAt(int row, int column) {
-        String branch = branchList[row];
         switch (column) {
             case 0:
-                return branch;
+                return branchList.get(row);
             default:
                 System.err.println("Logic Error");
         }
@@ -34,14 +31,14 @@ public class GitBranchListTableModel extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return branchList.length;
+        return branchList.size();
     }
 
     public String getBranch(int row) {
-        return branchList[row];
+        return branchList.get(row);
     }
 
-    public void setBranchList(String[] branchList) {
+    public void setBranchList(List<String> branchList) {
         this.branchList = branchList;
         fireTableDataChanged();
     }

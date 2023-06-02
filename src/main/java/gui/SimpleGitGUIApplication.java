@@ -1,5 +1,6 @@
 package gui;
 
+import file.GitBranchData;
 import gui.branchpanel.BranchPanel;
 import gui.filepanel.FilePanel;
 import gui.filepanel.component.GitMenu;
@@ -26,6 +27,8 @@ public class SimpleGitGUIApplication extends JFrame {
     private JPanel currentPanel;
     private FilePanel fileManager;
     private BranchPanel branchManager;
+
+    private GitBranchData gitBranchData = new GitBranchData();
 
     public SimpleGitGUIApplication() {
         super(APP_TITLE);
@@ -57,6 +60,7 @@ public class SimpleGitGUIApplication extends JFrame {
         branchManagerMode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                gitBranchData.notifyBranchDataChange();
                 switchPanel(branchManager);
 
                 //테스트용입니다. 실제로는 branch List Panel에서 작동해야합니다.
@@ -79,7 +83,7 @@ public class SimpleGitGUIApplication extends JFrame {
         add(menuBar, BorderLayout.NORTH);
 
         fileManager = new FilePanel();
-        branchManager = new BranchPanel();
+        branchManager = new BranchPanel(gitBranchData);
 
         currentPanel = fileManager;
         add(currentPanel, BorderLayout.CENTER);

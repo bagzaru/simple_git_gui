@@ -25,8 +25,6 @@ public class GitBranchList extends JScrollPane {
         controller = new GitBranchListTableController(model, view, gitBranchData);
 
         view.setTableModel(model);
-        controller.updateData();
-
         setViewportView(view);
         Dimension d = getPreferredSize();
         setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()/2));

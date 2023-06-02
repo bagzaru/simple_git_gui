@@ -30,7 +30,6 @@ public class CommitLogPane extends JScrollPane {
         controller = new CommitLogTableController(model, view, gitBranchData);
 
         setViewportView(view);
-        controller.updateData();
 
         Dimension d = getPreferredSize();
         setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()/2));

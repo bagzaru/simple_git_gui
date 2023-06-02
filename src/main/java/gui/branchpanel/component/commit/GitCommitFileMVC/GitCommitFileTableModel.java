@@ -2,24 +2,21 @@ package gui.branchpanel.component.commit.GitCommitFileMVC;
 
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GitCommitFileTableModel extends AbstractTableModel {
-    private File[] commitFiles;
+    private List<File> commitFiles;
     private String[] columns = {"File"};
 
     public GitCommitFileTableModel() {
-        this(new File[0]);
-    }
-
-    GitCommitFileTableModel(File[] files) {
-        this.commitFiles = files;
+        commitFiles = new ArrayList<File>();
     }
 
     public Object getValueAt(int row, int column) {
-        File file = commitFiles[row];
         switch (column) {
             case 0:
-                return file;
+                return commitFiles.get(row).getName();
             default:
                 System.err.println("Logic Error");
         }
@@ -35,14 +32,14 @@ public class GitCommitFileTableModel extends AbstractTableModel {
     }
 
     public int getRowCount() {
-        return commitFiles.length;
+        return commitFiles.size();
     }
 
     public File getCommitFile(int row) {
-        return commitFiles[row];
+        return commitFiles.get(row);
     }
 
-    public void setCommitFiles(File[] commitFiles) {
+    public void setCommitFiles(List<File> commitFiles) {
         this.commitFiles = commitFiles;
         fireTableDataChanged();
     }

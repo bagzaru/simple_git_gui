@@ -8,6 +8,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
@@ -157,7 +158,7 @@ public class JGitImprvTester {
 
             RevCommit latestCommit = getLatestCommit(repository);
 
-            Set<File> fileSet = jGitManagerImprv.gitChangedFileList(new File(filePath), latestCommit);
+            List<File> fileSet = jGitManagerImprv.gitChangedFileList(new File(filePath), latestCommit);
 
             Iterator<File> fileIterator = fileSet.iterator();
             while (fileIterator.hasNext()) {
@@ -173,7 +174,7 @@ public class JGitImprvTester {
 
     public void gitBranchListTest(String filePath){
         try{
-            Set<String> branchSet = jGitManagerImprv.gitBranchList(new File(filePath));
+            List<String> branchSet = jGitManagerImprv.gitBranchList(new File(filePath));
 
             Iterator<String> iterator = branchSet.iterator();
             while (iterator.hasNext()) {

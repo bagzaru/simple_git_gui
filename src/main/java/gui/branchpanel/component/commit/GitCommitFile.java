@@ -26,7 +26,6 @@ public class GitCommitFile extends JScrollPane {
         controller = new GitCommitFileTableController(model, view, gitBranchData);
 
         view.setTableModel(model);
-        controller.updateData();
 
         setViewportView(view);
         Dimension d = getPreferredSize();
