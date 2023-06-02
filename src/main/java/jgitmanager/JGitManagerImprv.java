@@ -19,6 +19,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.util.FileUtils;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -342,8 +343,10 @@ public class JGitManagerImprv {
             formatter.setRepository(repository);
             for (DiffEntry entry : diffs) {
                 // 비교를 위한 디렉토리
-                String newPath = nowDir + "/" + entry.getNewPath();
-                String oldPath = nowDir + "/" + entry.getOldPath();
+                File newPathFile = new File(nowDir, entry.getNewPath());
+                File oldPathFile = new File(nowDir, entry.getOldPath());
+                String newPath = newPathFile.getPath();
+                String oldPath = oldPathFile.getPath();
 
                 // 파일과 현재 diff가 같으면 변화된 내용 가져옴
                 if (changedFile.getPath().equals(newPath) || changedFile.getPath().equals(oldPath))
