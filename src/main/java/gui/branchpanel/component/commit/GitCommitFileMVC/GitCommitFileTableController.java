@@ -45,7 +45,7 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
     public void updateData() {
         File currentDir = SelectedFile.getInstance().getFile();
         RevCommit selectedCommit = gitBranchData.getSelectedCommit();
-        /*
+
         if(JGitManager.findGitRepository(currentDir) == 1) {
             if(selectedCommit != null) {
                 try {
@@ -54,6 +54,6 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
                 } catch(IOException | GitAPIException e) {
                 }
             }
-        }*/
+        }
     }
 }
