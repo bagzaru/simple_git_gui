@@ -16,7 +16,15 @@ public class GitCommitStatus extends JPanel {
 
         CommitDetailLabel.add(new JLabel("COMMIT",JLabel.TRAILING));
         //COMMIT 내용 입력
-        
+        CommitDetailLabel.add(new JLabel("TRACKING COMMIT",JLabel.TRAILING));
+        //TRACKING COMMIT 냬용
+        CommitDetailLabel.add(new JLabel("AUTHOR",JLabel.TRAILING));
+        //AUTHOR
+        CommitDetailLabel.add(new JLabel("DATE",JLabel.TRAILING));
+        //DATE
+        CommitDetailLabel.add(new JLabel("USER",JLabel.TRAILING));
+        //USER
+
 
     }
 
