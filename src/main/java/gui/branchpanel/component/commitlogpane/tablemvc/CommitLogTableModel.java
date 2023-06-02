@@ -75,13 +75,19 @@ public class CommitLogTableModel extends AbstractTableModel {
     public boolean UpdateModelByBranch(File repositoryDir, String branch) {
         try {
             logs.clear();
-            Iterable<RevCommit> tlogs = JGitManager.gitLog(repositoryDir, branch);
+            Iterable<RevCommit> tlogs;
+
+            if(branch == null)
+                tlogs = null;
+            else
+                tlogs = JGitManager.gitLog(repositoryDir, branch);
+
             if (tlogs != null) {
                 for (RevCommit r : tlogs) {
                     logs.add(r);
                 }
             } else {
-                System.out.println("UpdateModelByBranch: Commit-Log is null");
+                //System.out.println("UpdateModelByBranch: Commit-Log is null");
             }
         } catch (Exception e) {
             System.out.println("Something error happened on CommitHistoryModel.UpdateModelByBranch");

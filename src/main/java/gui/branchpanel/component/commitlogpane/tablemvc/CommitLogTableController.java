@@ -60,9 +60,7 @@ public class CommitLogTableController implements BranchDataChangeListener {
         File repositoryDir = SelectedFile.getInstance().getFile();
         String selectedBranch = gitBranchData.getSelectedBranch();
 
-        if(repositoryDir != null && selectedBranch != null) {
-            //git에 관리 안되는 폴더거나 브랜치 선택 안했을때 null 에러 뜨는 것 때문에 임시로 추가한건데
-            //나중에 예외 처리 위치 수정할 예정
+        if(repositoryDir != null) {
             model.UpdateModelByBranch(repositoryDir, selectedBranch);
         }
     }

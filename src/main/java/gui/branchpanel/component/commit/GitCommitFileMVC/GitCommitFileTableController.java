@@ -12,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GitCommitFileTableController implements BranchDataChangeListener {
@@ -45,11 +46,16 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
     public void updateData() {
         File currentDir = SelectedFile.getInstance().getFile();
         RevCommit selectedCommit = gitBranchData.getSelectedCommit();
+        List<File> commitFiles;
 
         if(JGitManager.findGitRepository(currentDir) == 1) {
-            if(selectedCommit != null) {
+            if(selectedCommit == null) {
+                commitFiles = new ArrayList<File>();
+                model.setCommitFiles(commitFiles);
+            }
+            else {
                 try {
-                    List<File> commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
+                    commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
                     model.setCommitFiles(commitFiles);
                 } catch(IOException | GitAPIException e) {
                 }

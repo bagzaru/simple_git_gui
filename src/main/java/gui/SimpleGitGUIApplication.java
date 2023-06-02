@@ -65,7 +65,7 @@ public class SimpleGitGUIApplication extends JFrame implements SelectedFileChang
         branchManagerMode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gitBranchData.notifyBranchDataChange();
+                gitBranchData.initGitBranchData();
                 switchPanel(branchManager);
 
                 //테스트용입니다. 실제로는 branch List Panel에서 작동해야합니다.
