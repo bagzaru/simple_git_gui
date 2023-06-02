@@ -24,7 +24,10 @@ public class CommitLogTableController implements BranchDataChangeListener {
         this.model = model;
         this.table = table;
         this.gitBranchData = gitBranchData;
-        gitBranchData.addBranchDataChangeListener(this);
+        gitBranchData.addBranchSelectionEventListener(this);
+        gitBranchData.addCurrentBranchChangeEventListeners(this);
+        //Branch Command Call
+        gitBranchData.addGitBranchCommandEventListener(this);
 
         this.listSelectionListener = new ListSelectionListener() {
             @Override

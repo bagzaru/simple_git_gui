@@ -1,5 +1,6 @@
 package gui.branchpanel.component.branch.button;
 
+import file.GitBranchData;
 import file.SelectedFile;
 import jgitmanager.JGitManager;
 import jgitmanager.JGitManagerImprv;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 
 public class GitBranchCreateButton extends JButton {
-    public GitBranchCreateButton(){
+    public GitBranchCreateButton(GitBranchData gitBranchData){
 
         setText("+");
         MessageBox CreateBranchName=new MessageBox();//messageBox 브랜치 이름
@@ -27,7 +28,8 @@ public class GitBranchCreateButton extends JButton {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-
+                //Branch Command Call
+                gitBranchData.notifyGitBranchCommandCalled();
             }
         });
     }

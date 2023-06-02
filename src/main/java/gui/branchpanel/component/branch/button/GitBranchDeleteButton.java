@@ -26,6 +26,8 @@ public class GitBranchDeleteButton extends JButton {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                //Branch Command Call
+                gitBranchData.notifyGitBranchCommandCalled();
             }
         });
     }
