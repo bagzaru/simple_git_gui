@@ -19,11 +19,11 @@ public class GitCommit extends JPanel {
         setLayout(new GridLayout(1,2));
 
         JPanel commit = new JPanel();
-        commit.setLayout(new GridLayout(2,1));
-        commit.add(new GitCommitStatus(gitBranchData));
-        commit.add(new GitCommitFile(gitBranchData));
+        commit.setLayout(new BorderLayout(2,1));
+        commit.add(new GitCommitStatus(gitBranchData), BorderLayout.NORTH);
+        commit.add(new GitCommitFile(gitBranchData), BorderLayout.CENTER);
 
-        add(commit, BorderLayout.CENTER);
-        add(new GitCommitModify(gitBranchData), BorderLayout.EAST);
+        add(commit);
+        add(new GitCommitModify(gitBranchData));
     }
 }

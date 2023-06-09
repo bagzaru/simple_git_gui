@@ -26,10 +26,7 @@ public class GitCommitStatus extends JPanel implements BranchDataChangeListener 
         gitBranchData.addGitBranchCommandEventListener(this);
 
         JPanel CommitDetailLabel=new JPanel(new GridLayout(0,1,2,2));
-        this.add(CommitDetailLabel,BorderLayout.WEST);
-
         JPanel CommitDetailValue=new JPanel(new GridLayout(0,1,2,2));
-        this.add(CommitDetailValue,BorderLayout.CENTER);
 
         CommitDetailLabel.add(new JLabel("CHECKSUM",JLabel.TRAILING));
         /*COMMIT 내용 입력*/
@@ -54,6 +51,9 @@ public class GitCommitStatus extends JPanel implements BranchDataChangeListener 
         Date=new JLabel();
         CommitDetailValue.add(Date);
         //DATE
+
+        this.add(CommitDetailLabel,BorderLayout.WEST);
+        this.add(CommitDetailValue,BorderLayout.CENTER);
     }
 
     @Override
@@ -64,8 +64,16 @@ public class GitCommitStatus extends JPanel implements BranchDataChangeListener 
             System.out.println(e.toString());
         }
 
-        CheckSum.setText(commitInfo.getCheckSum());
-        CommitMessage.setText(commitInfo.getCommitMessage());
+        if(commitInfo.getCheckSum().length() > 6)
+            CheckSum.setText(commitInfo.getCheckSum().substring(0,6));
+        else
+            CheckSum.setText(commitInfo.getCheckSum());
+
+        if(commitInfo.getCommitMessage().length() > 30)
+            CommitMessage.setText(commitInfo.getCommitMessage().substring(0, 30) + "...");
+        else
+            CommitMessage.setText(commitInfo.getCommitMessage());
+
         AuthorName.setText(commitInfo.getAuthorName());
         AuthorEmail.setText(commitInfo.getAuthorEMail());
         Date.setText(commitInfo.getCommitTime());
