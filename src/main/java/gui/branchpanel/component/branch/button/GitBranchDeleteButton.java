@@ -24,6 +24,7 @@ public class GitBranchDeleteButton extends JButton {
                     JGitManagerImprv.gitDeleteBranch(SelectedFile.getInstance().getFile(),
                             gitBranchData.getSelectedBranch());
                 } catch (GitAPIException ex) {
+                    ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
                     ConflictBox.showMessageDialog(null,ex.toString());

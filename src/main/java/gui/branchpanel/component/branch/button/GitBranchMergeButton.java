@@ -25,6 +25,7 @@ public class GitBranchMergeButton extends JButton {
                     JGitManagerImprv.gitMerge(SelectedFile.getInstance().getFile(),
                             gitBranchData.getSelectedBranch());
                 } catch (GitAPIException | IOException ex) {
+                    ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
                 }catch(MergeException ex){
                     ConflictBox.showMessageDialog(null,ex.toString());
