@@ -16,7 +16,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
 group = 'kr.ac.cau.OSS23'
-version = '1.1'
+version = '2.0 prototype'
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ test {
 jar{
     finalizedBy shadowJar
     manifest{
-        attributes 'Main-Class': 'simplegitgui.SimpleGitGUIApplication'
+        attributes 'Main-Class': 'gui.SimpleGitGUIApplication'
     }
 }
 
