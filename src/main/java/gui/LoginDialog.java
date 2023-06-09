@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class LoginDialog extends JDialog {
+    private JOptionPane ConflictBox;
     private String Id;
     private String Token;
     private JTextField inputLoginId;
@@ -18,6 +19,7 @@ public class LoginDialog extends JDialog {
     public LoginDialog() {
         this.setTitle("LOGIN");
         this.setLayout(new GridLayout(3,2));
+        ConflictBox =new JOptionPane();
 
         try {
             Id = JGitManagerImprv.getID();
@@ -47,6 +49,7 @@ public class LoginDialog extends JDialog {
                 try {
                     JGitManagerImprv.setIdToken(loginID,token);
                 } catch (IOException ex) {
+                    ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
                 }
                 dispose();
