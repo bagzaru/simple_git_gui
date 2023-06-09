@@ -34,7 +34,6 @@ public class StagedFileList extends JScrollPane {
         table = new JTable();
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
 
         //더블클릭으로 Restore를 실행

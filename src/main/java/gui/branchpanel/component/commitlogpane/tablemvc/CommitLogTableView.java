@@ -11,7 +11,6 @@ public class CommitLogTableView extends JTable {
     public CommitLogTableView(CommitLogTableModel model) {
         //table UI의 속성을 지정합니다.
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setAutoCreateRowSorter(true);
         setShowVerticalLines(false);
 
         //모델을 등록하여 줍니다.

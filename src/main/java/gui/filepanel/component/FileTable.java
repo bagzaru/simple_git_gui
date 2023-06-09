@@ -36,7 +36,6 @@ public class FileTable extends JScrollPane {
         table = new JTable();
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setAutoCreateRowSorter(true);
         table.setShowVerticalLines(false);
 
         listSelectionListener = new ListSelectionListener() {
