@@ -39,7 +39,7 @@ test {
 jar{
     finalizedBy shadowJar
     manifest{
-        attributes 'Main-Class': 'gui.SimpleGitGUIApplication'
+        attributes 'Main-Class': 'SimpleGitGUI'
     }
 }
 
