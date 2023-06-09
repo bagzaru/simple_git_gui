@@ -56,5 +56,8 @@ public class GitBranchListTableModel extends AbstractTableModel {
     public void setBranchList(List<String> branchList) {
         this.branchList = branchList;
         fireTableDataChanged();
+
+        //모델 리스트를 갱신하면, 선택 데이터가 초기화됩니다. 따라서 selected를 초기화합니다.
+        gitBranchData.setSelectedBranch("");
     }
 }
