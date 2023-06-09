@@ -66,6 +66,12 @@ public class JGitManagerImprv {
     // ID를 리턴
     public static String getID() throws IOException {
         try {
+            // credentials.txt 파일이 없다면 생성
+            File credentialsFile = new File(FILE_PATH);
+            if (!credentialsFile.exists()) {
+                setIdToken("","");
+            }
+
             String[] credentials = getCredentials();
             return credentials[0];
         } catch (IOException e) {
