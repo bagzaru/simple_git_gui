@@ -13,10 +13,11 @@ import java.io.IOException;
 
 
 public class GitBranchCreateButton extends JButton {
+    private JOptionPane ConflictBox;
     private GitBranchData gitBranchData;
     public GitBranchCreateButton(GitBranchData gitBranchData){
-
         this.gitBranchData=gitBranchData;
+        ConflictBox=new JOptionPane();
         setText("+");
         MessageBox CreateBranchName=new MessageBox();//messageBox 브랜치 이름
         addActionListener(new ActionListener() {
@@ -26,8 +27,10 @@ public class GitBranchCreateButton extends JButton {
                 try {
                     JGitManagerImprv.gitCreateBranch(SelectedFile.getInstance().getFile(),BranchName);
                 } catch (GitAPIException ex) {
+                    ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
+                    ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
                 }
 
