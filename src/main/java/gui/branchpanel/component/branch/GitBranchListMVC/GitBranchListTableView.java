@@ -14,7 +14,6 @@ public class GitBranchListTableView extends JTable {
     public void setTableModel(GitBranchListTableModel model) {
         setModel(model);
         setColumnWidth(0, 20);
-        setColumnWidth(1, 200);
     }
 
     private void setColumnWidth(int column, int width) {

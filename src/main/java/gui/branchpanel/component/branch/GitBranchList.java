@@ -26,7 +26,5 @@ public class GitBranchList extends JScrollPane {
 
         view.setTableModel(model);
         setViewportView(view);
-        Dimension d = getPreferredSize();
-        setPreferredSize(new Dimension((int)d.getWidth(),(int)d.getHeight()/2));
     }
 }
