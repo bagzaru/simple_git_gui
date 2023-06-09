@@ -44,6 +44,7 @@ public class GitBranchListTableController implements BranchDataChangeListener {
             public void valueChanged(ListSelectionEvent e) {
                 int clickedRow = view.getSelectedRow();
                 if(!e.getValueIsAdjusting() && clickedRow != -1){
+                    //클릭 시 Selected Branch 갱신
                     String selectedBranch = model.getBranch(clickedRow);
                     gitBranchData.setSelectedBranch(selectedBranch);
                 }

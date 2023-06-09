@@ -64,7 +64,4 @@ public class GitRepositoryStatusPanel extends JPanel {
         add(gitRelativeJLabel,BorderLayout.CENTER);
         add(gitSelectedFileJLabel, BorderLayout.SOUTH);
     }
-
-
-
 }
