@@ -326,7 +326,10 @@ public class JGitManagerImprv {
                 for (DiffEntry diff : diffs) {
                     // 파일에 추가
                     File file = new File(repository.getWorkTree(), diff.getNewPath());
-                    changedFiles.add(file);
+                    //가끔 파일이 잘못들어옴
+                    if(!file.getName().equals("null")){
+                        changedFiles.add(file);
+                    }
                 }
 
                 return changedFiles;
