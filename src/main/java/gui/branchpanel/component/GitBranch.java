@@ -19,5 +19,9 @@ public class GitBranch extends JPanel {
         add(new GitBranchMenu(gitBranchData), BorderLayout.NORTH);
         add(new GitBranchList(gitBranchData), BorderLayout.CENTER);
         add(new GitBranchStatus(gitBranchData), BorderLayout.SOUTH);
+
+        Dimension preferredSize = getPreferredSize();
+        Dimension widePreferred = new Dimension(300, (int)preferredSize.getHeight());
+        setPreferredSize(widePreferred);
     }
 }
