@@ -25,16 +25,16 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
-위의 링크에서 simple_git_gui-1.1-all.jar파일을 다운받습니다.
+위의 링크에서 simple_git_gui-2.0-all.jar 파일과 credentials.txt 을 다운받습니다. 두 파일은 같은 폴더에 위치해야 합니다.
 
 명령 프롬프트에서 파일의 위치로 이동합니다.
 
 ```bash
-java -jar simple_git_gui-1.1-all.jar
+java -jar simple_git_gui-2.0-all.jar
 
 ```
 
-위 명령어를 통해 simple_git_gui-1.1-all.jar을 실행합니다.
+위 명령어를 통해 simple_git_gui-2.0-all.jar을 실행합니다.
 (자바 17버전에서 실행해야 합니다.)
 
 ## 모드 설정
@@ -149,10 +149,10 @@ java -jar simple_git_gui-1.1-all.jar
 
 {사진}
 
-- [+] 브랜치를 
-- [-]
-- [R]
-- [M]
+- [+] 브랜치를 추가합니다.
+- [-] 클릭한 브랜치를 삭제합니다.
+- [R] 클릭한 브랜치의 이름을 변경합니다.
+- [M] 현재 브랜치에 클릭한 브랜치를 merge합니다. 충돌이 날 경우 오류 메시지를 출력합니다.
 
 ### 좌측 중앙 패널
 
@@ -167,7 +167,7 @@ java -jar simple_git_gui-1.1-all.jar
 
 {사진}
 
-- 체크아웃 되어있는 브랜치의 이름을 출력합니다
+- 체크아웃 되어있는 브랜치의 이름을 출력합니다.
 - 브랜치 리스트 (좌측 중앙 패널)에서 클릭한 브랜치의 이름을 출력합니다.
 
 ### 우측 상단 패널
@@ -188,16 +188,18 @@ java -jar simple_git_gui-1.1-all.jar
 
 하단 패널
 - 현재 커밋에서 변경된 파일의 리스트를 출력합니다.
+- 파일을 선택할 경우 변경사항을 출력합니다.
 
 ### 우측 하단 패널
 
 {사진}
 
+- 선택한 파일의 변경 내용을 출력합니다.
 
 ## 로그인 안내
 
 {사진}
 
 - 미리 저장되어있는 ID와 Token값을 출력합니다.
-- 만약 등록한 적이 없다면 빈 문자열을 출력합니다.
+- 사전에 정보를 등록한 적이 없다면 빈 문자열을 출력합니다.
 - Log In 버튼을 누르면 입력(수정)한 ID와 Token값을 저장합니다.
