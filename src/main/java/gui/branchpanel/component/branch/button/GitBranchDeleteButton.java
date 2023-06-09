@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class GitBranchDeleteButton extends JButton {
+    private JOptionPane ConflictBox;
     private GitBranchData gitBranchData;
     public GitBranchDeleteButton(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
+        ConflictBox=new JOptionPane();
         setText("-");
         addActionListener(new ActionListener() {
             @Override
@@ -24,7 +26,7 @@ public class GitBranchDeleteButton extends JButton {
                 } catch (GitAPIException ex) {
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    ConflictBox.showMessageDialog(null,ex.toString());
                 }
                 //Branch Command Call
                 gitBranchData.notifyGitBranchCommandCalled();
