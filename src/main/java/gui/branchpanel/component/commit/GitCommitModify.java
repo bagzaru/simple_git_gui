@@ -10,8 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GitCommitModify extends JScrollPane implements BranchDataChangeListener {
-    private JOptionPane ExceptionBox;
-
     private String Diff;
     private JTextArea Differences;
     private GitBranchData gitBranchData;
@@ -19,7 +17,7 @@ public class GitCommitModify extends JScrollPane implements BranchDataChangeList
 
     public GitCommitModify(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
-        ExceptionBox=new JOptionPane();
+
         gitBranchData.addCurrentBranchChangeEventListeners(this);
         gitBranchData.addCommitSelectionEventListeners(this);
         gitBranchData.addBranchSelectionEventListener(this);
@@ -42,7 +40,7 @@ public class GitCommitModify extends JScrollPane implements BranchDataChangeList
             // 브랜치, 커밋 선택 등 파일 목록이 없어져도 발생
             // Diff 값을 초기화
             Diff = "";
-            ExceptionBox.showMessageDialog(null,e.toString());
+            System.out.println(e.toString());
 
         }
 
