@@ -61,7 +61,9 @@ public class GitCommitFileTableController implements BranchDataChangeListener {
                 try {
                     commitFiles = JGitManagerImprv.gitChangedFileList(currentDir, selectedCommit);
                     model.setCommitFiles(commitFiles);
-                } catch(IOException | GitAPIException e) {
+                } catch(Exception e){
+                    commitFiles = new ArrayList<>();
+                    model.setCommitFiles(commitFiles);
                 }
             }
         }
