@@ -24,11 +24,11 @@ public class GitBranchStatus extends JPanel implements BranchDataChangeListener 
 
         this.setLayout(new GridLayout(4,1,4,4));
 
-        JLabel CurrentBranchName=new JLabel("CURRENT BRANCH");
+        JLabel CurrentBranchName=new JLabel("CURRENT BRANCH",JLabel.TRAILING);
 
         PrintCurrentBranch=new JLabel();
 
-        JLabel SelectedBranchName=new JLabel("SELECTED BRANCH");
+        JLabel SelectedBranchName=new JLabel("SELECTED BRANCH",JLabel.TRAILING);
 
         PrintSelectedBranch=new JLabel();
 
