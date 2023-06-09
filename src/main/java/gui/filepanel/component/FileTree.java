@@ -45,7 +45,9 @@ public class FileTree extends JScrollPane {
                 showChildren(node);
                 selectedFile.setFile((File)node.getUserObject());
 
-                PanelRefreshUtil.refreshAll();      //우측 git 패널 새로고침
+                PanelRefreshUtil.refreshGitFilePanel();
+                PanelRefreshUtil.refreshGitRepoStatusPanel();
+                PanelRefreshUtil.refreshGitMenu();      //우측 git 패널 새로고침
             }
         };
 
