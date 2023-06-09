@@ -37,6 +37,8 @@ java -jar simple_git_gui-2.0-all.jar
 위 명령어를 통해 simple_git_gui-2.0-all.jar을 실행합니다.
 (자바 17버전에서 실행해야 합니다.)
 
+clone을 하거나 로그인을 하게 되면 ID / Access Token 정보를 저장하는 credentials.txt 파일이 생성됩니다.
+
 ## 모드 설정
 
 ### 상단 툴바
