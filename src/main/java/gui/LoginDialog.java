@@ -32,9 +32,9 @@ public class LoginDialog extends JDialog {
             System.out.println(e.toString());
         }
 
-        JLabel IdLabel = new JLabel("ID",JLabel.TRAILING);
+        JLabel IdLabel = new JLabel("ID",JLabel.CENTER);
         inputLoginId = new JTextField(Id);
-        JLabel TokenLabel = new JLabel("TOKEN",JLabel.TRAILING);
+        JLabel TokenLabel = new JLabel("TOKEN",JLabel.CENTER);
         inputLoginToken = new JTextField(Token);
         loginButton = new JButton("Log In");
         this.add(IdLabel);
