@@ -1,9 +1,6 @@
 package jgitmanager;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.MergeCommand;
-import org.eclipse.jgit.api.MergeResult;
-import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -193,6 +190,15 @@ public class JGitManagerImprv {
             Repository repository = openRepositoryFromFile(nowDir);
             Git git = new Git(repository);
 
+            // git staged나 modified가 있다면 merge 안하도록
+            Status status = git.status().call();
+            int isClean = status.getModified().size() +
+                    status.getAdded().size() +
+                    status.getChanged().size() +
+                    status.getRemoved().size();
+            if (isClean != 0) {
+                throw new MergeException("Before you merge, please commit");
+            }
             // git merge
             MergeResult mergeResult = git.merge()
                     .include(repository.findRef(sourceBranch))
@@ -207,8 +213,9 @@ public class JGitManagerImprv {
                     conflictFiles.append("\n").append(conflictedFile);
                 }
 
-                // git reset --merge
-                git.reset().setMode(ResetCommand.ResetType.MERGE).call();
+                // git reset --hard
+                git.reset().setMode(ResetCommand.ResetType.HARD).call();
+
 
                 // throw
                 throw new MergeException(String.valueOf(conflictFiles));
