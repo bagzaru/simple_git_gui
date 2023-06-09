@@ -93,14 +93,15 @@ public class SimpleGitGUIApplication extends JFrame implements SelectedFileChang
         currentPanel = fileManager;
         add(currentPanel, BorderLayout.CENTER);
 
-        pack();
-        setLocationByPlatform(true);
-        setMinimumSize(getSize());
-        setVisible(true);
-
         //Git 상태에 따른 BranchManager 버튼 처리
         SelectedFile.getInstance().addSelectedFileChangedListener(this);
         setBranchManagerModeEnabledByGit(SelectedFile.getInstance().getFile());
+
+        pack();
+        setLocationByPlatform(true);
+        setMinimumSize(getSize());
+        setResizable(false);
+        setVisible(true);
     }
 
     private void switchPanel(JPanel panel) {
