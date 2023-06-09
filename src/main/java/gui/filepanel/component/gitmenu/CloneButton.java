@@ -11,8 +11,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class CloneButton extends JButton {
+    private JOptionPane ConflictBox;
     public CloneButton(){
         this.setText("CLONE");
+        ConflictBox =new JOptionPane();
          CloneUrlMessageBox CloneRepoUrl=new CloneUrlMessageBox();
 
          this.addActionListener(new ActionListener() {
@@ -22,8 +24,10 @@ public class CloneButton extends JButton {
                  try {
                      JGitManagerImprv.gitClone(SelectedFile.getInstance().getFile(), CloneUrl);
                  } catch (GitAPIException ex) {
+                     ConflictBox.showMessageDialog(null,ex.toString());
                      throw new RuntimeException(ex);
                  } catch (IOException ex) {
+                     ConflictBox.showMessageDialog(null,ex.toString());
                      throw new RuntimeException(ex);
                  }
                  PanelRefreshUtil.refreshAll();
