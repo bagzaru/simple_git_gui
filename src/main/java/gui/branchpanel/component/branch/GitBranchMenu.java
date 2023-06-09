@@ -4,6 +4,7 @@ import file.GitBranchData;
 import gui.branchpanel.component.branch.button.*;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GitBranchMenu  extends JPanel {
     /** Branch 모드 공유 데이터 객체*/
@@ -11,21 +12,21 @@ public class GitBranchMenu  extends JPanel {
 
     public GitBranchMenu(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
-
+        this.setLayout(new FlowLayout());
         GitBranchCreateButton CreateButton=new GitBranchCreateButton(gitBranchData);
-        CreateButton.setBounds(0,100,50,30);
+        CreateButton.setSize(50,30);
         add(CreateButton);
 
         GitBranchDeleteButton DeleteButton=new GitBranchDeleteButton(gitBranchData);
-        DeleteButton.setBounds(50,100,50,30);
+        DeleteButton.setSize(50,30);
         add(DeleteButton);
 
         GitBranchRenameButton RenameButton=new GitBranchRenameButton(gitBranchData);
-        RenameButton.setBounds(100,100,50,30);
+        RenameButton.setSize(50,30);
         add(RenameButton);
 
         GitBranchMergeButton MergeButton=new GitBranchMergeButton(gitBranchData);
-        MergeButton.setBounds(150,100,50,30);
+        MergeButton.setSize(50,30);
         add(MergeButton);
     }
 }
