@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GitCommitModify extends JScrollPane implements BranchDataChangeListener {
+    private JOptionPane ExceptionBox;
 
     private String Diff;
     private JTextArea Differences;
@@ -18,6 +19,7 @@ public class GitCommitModify extends JScrollPane implements BranchDataChangeList
 
     public GitCommitModify(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
+        ExceptionBox=new JOptionPane();
         gitBranchData.addCurrentBranchChangeEventListeners(this);
         gitBranchData.addCommitSelectionEventListeners(this);
         gitBranchData.addBranchSelectionEventListener(this);
@@ -34,16 +36,14 @@ public class GitCommitModify extends JScrollPane implements BranchDataChangeList
         try {
             Diff = JGitManagerImprv.gitDiff(SelectedFile.getInstance().getFile(),
                     gitBranchData.getSelectedCommit(), gitBranchData.getSelectedChangeFile());
-            System.out.println("Test1: " + SelectedFile.getInstance().getFile().getName());
-            System.out.println("Test2: " + gitBranchData.getSelectedCommit().getName());
-            System.out.println("Test3: " + gitBranchData.getSelectedChangeFile().getName());
-            System.out.println("Test4: " + gitBranchData.getSelectedChangeFile().getAbsolutePath());
+
         }catch (Exception e){
             //GitDiff failed, selectedChangeFile이 잘못 선택되면 발생
             // 브랜치, 커밋 선택 등 파일 목록이 없어져도 발생
             // Diff 값을 초기화
             Diff = "";
-            System.out.println(e.toString());
+            ExceptionBox.showMessageDialog(null,e.toString());
+
         }
 
         System.out.println("Test Diff: " + Diff);
