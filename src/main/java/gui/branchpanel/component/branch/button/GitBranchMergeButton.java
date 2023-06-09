@@ -12,18 +12,22 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class GitBranchMergeButton extends JButton {
+    private JOptionPane ConflictBox;
     private GitBranchData gitBranchData;
     public GitBranchMergeButton(GitBranchData gitBranchData){
         this.gitBranchData = gitBranchData;
         setText("M");
+        ConflictBox=new JOptionPane();
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     JGitManagerImprv.gitMerge(SelectedFile.getInstance().getFile(),
                             gitBranchData.getSelectedBranch());
-                } catch (GitAPIException | IOException | MergeException ex) {
+                } catch (GitAPIException | IOException ex) {
                     throw new RuntimeException(ex);
+                }catch(MergeException ex){
+                    ConflictBox.showMessageDialog(null,ex.toString());
                 }
                 //Branch Command Call
                 gitBranchData.notifyGitBranchCommandCalled();
