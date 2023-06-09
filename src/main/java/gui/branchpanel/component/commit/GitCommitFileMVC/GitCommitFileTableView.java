@@ -5,7 +5,6 @@ import javax.swing.*;
 public class GitCommitFileTableView extends JTable {
     public GitCommitFileTableView() {
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setAutoCreateRowSorter(true);
         setShowVerticalLines(false);
     }
 

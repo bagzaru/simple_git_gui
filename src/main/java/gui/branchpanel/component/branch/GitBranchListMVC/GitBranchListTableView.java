@@ -7,7 +7,6 @@ import java.awt.*;
 public class GitBranchListTableView extends JTable {
     public GitBranchListTableView() {
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setAutoCreateRowSorter(true);
         setShowVerticalLines(false);
     }
 
