@@ -24,8 +24,12 @@ public class GitBranchRenameButton extends JButton {
 
                 String NewBranchName=RenameBranchName.ShowMessageBox();
                 try {
+                    boolean isCurrentBranch = (gitBranchData.getCurrentBranch().equals(gitBranchData.getSelectedBranch()));
                     JGitManagerImprv.gitRenameBranch(SelectedFile.getInstance().getFile(),
                             gitBranchData.getSelectedBranch(),NewBranchName);
+                    if(isCurrentBranch){
+                        gitBranchData.setCurrentBranch();
+                    }
                 } catch (GitAPIException ex) {
                     ConflictBox.showMessageDialog(null,ex.toString());
                     throw new RuntimeException(ex);
