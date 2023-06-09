@@ -1,12 +1,10 @@
 package gui;
 
-import file.BranchDataChangeListener;
 import file.GitBranchData;
 import file.SelectedFile;
 import file.SelectedFileChangedEventListener;
 import gui.branchpanel.BranchPanel;
 import gui.filepanel.FilePanel;
-import gui.filepanel.component.GitMenu;
 import jgitmanager.JGitManager;
 
 import javax.imageio.ImageIO;
@@ -19,7 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class SimpleGitGUIApplication extends JFrame implements SelectedFileChangedEventListener {
+public class SimpleGitGUIFrame extends JFrame implements SelectedFileChangedEventListener {
     /** Title of the application */
     public static final String APP_TITLE = "Simple Git GUI Application";
 
@@ -35,7 +33,7 @@ public class SimpleGitGUIApplication extends JFrame implements SelectedFileChang
 
     private GitBranchData gitBranchData = new GitBranchData();
 
-    public SimpleGitGUIApplication() {
+    public SimpleGitGUIFrame() {
         super(APP_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -110,15 +108,6 @@ public class SimpleGitGUIApplication extends JFrame implements SelectedFileChang
         add(currentPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
-    }
-
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                SimpleGitGUIApplication mainFrame = new SimpleGitGUIApplication();
-                mainFrame.setVisible(true);
-            }
-        });
     }
 
     @Override
