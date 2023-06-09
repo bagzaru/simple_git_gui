@@ -38,10 +38,20 @@ public class JGitManagerImprv {
             // ID와 access token 객체 생성
             CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(getID(), getAccessToken());
 
+            // 폴더명 파싱
+            String tempFileName = cloneURL.substring(cloneURL.lastIndexOf("/") + 1);
+            String newFileName;
+            // 마지막 네글자가 .git이면 삭제
+            if (tempFileName.endsWith(".git")) {
+                newFileName = tempFileName.substring(0, tempFileName.length() - 4);
+            } else {
+                newFileName = tempFileName;
+            }
+
             //git clone
             Git.cloneRepository()
                     .setURI(cloneURL)
-                    .setDirectory(fileToClone)
+                    .setDirectory(new File(fileToClone, newFileName))
                     .setCredentialsProvider(credentialsProvider)
                     .call();
 
