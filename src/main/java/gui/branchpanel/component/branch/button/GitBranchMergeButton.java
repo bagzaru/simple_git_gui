@@ -29,6 +29,7 @@ public class GitBranchMergeButton extends JButton {
                     throw new RuntimeException(ex);
                 }catch(MergeException ex){
                     ConflictBox.showMessageDialog(null,ex.toString());
+                    throw new RuntimeException(ex);
                 }
                 //Branch Command Call
                 gitBranchData.notifyGitBranchCommandCalled();

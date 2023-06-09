@@ -28,6 +28,7 @@ public class GitBranchDeleteButton extends JButton {
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
                     ConflictBox.showMessageDialog(null,ex.toString());
+                    throw new RuntimeException(ex);
                 }
                 //Branch Command Call
                 gitBranchData.notifyGitBranchCommandCalled();
