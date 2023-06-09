@@ -25,7 +25,7 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
-위의 링크에서 simple_git_gui-2.0-all.jar 파일과 credentials.txt 을 다운받습니다. 두 파일은 같은 폴더에 위치해야 합니다.
+위의 링크에서 simple_git_gui-2.0-all.jar 파일을 다운받습니다.
 
 명령 프롬프트에서 파일의 위치로 이동합니다.
 
