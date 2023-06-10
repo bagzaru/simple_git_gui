@@ -1,5 +1,7 @@
 package jgitmanager;
 
+import jgitmanager.CommitInfo;
+import jgitmanager.MergeException;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;

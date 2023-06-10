@@ -1,5 +1,7 @@
-package jgitmanager;
+package jgitmanager.testjgit;
 
+import jgitmanager.CommitInfo;
+import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -9,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import static jgitmanager.JGitManager.openRepositoryFromFile;
 
