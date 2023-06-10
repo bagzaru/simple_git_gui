@@ -50,7 +50,6 @@ public class CloneButton extends JButton {
                         JOptionPane.showMessageDialog(
                                 null, "Git clone from ["+CloneUrl+"] on ["+targetDir.getAbsolutePath()+"] completed",
                                 "Git Clone", JOptionPane.INFORMATION_MESSAGE);
-                        PanelRefreshUtil.refreshAll();
                         return null;
                     }
                 };
