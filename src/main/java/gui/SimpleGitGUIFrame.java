@@ -3,8 +3,8 @@ package gui;
 import file.GitBranchData;
 import file.SelectedFile;
 import file.SelectedFileChangedEventListener;
-import gui.branchpanel.BranchPanel;
-import gui.filepanel.FilePanel;
+import gui.branchmanager.BranchManager;
+import gui.filemanager.FileManager;
 import jgitmanager.JGitManager;
 
 import javax.imageio.ImageIO;
@@ -28,8 +28,8 @@ public class SimpleGitGUIFrame extends JFrame implements SelectedFileChangedEven
 
 
     private JPanel currentPanel;
-    private FilePanel fileManager;
-    private BranchPanel branchManager;
+    private FileManager fileManager;
+    private BranchManager branchManager;
 
     private GitBranchData gitBranchData = new GitBranchData();
 
@@ -85,8 +85,8 @@ public class SimpleGitGUIFrame extends JFrame implements SelectedFileChangedEven
         menuBar.add(loginButton);
         add(menuBar, BorderLayout.NORTH);
 
-        fileManager = new FilePanel();
-        branchManager = new BranchPanel(gitBranchData);
+        fileManager = new FileManager();
+        branchManager = new BranchManager(gitBranchData);
 
         currentPanel = fileManager;
         add(currentPanel, BorderLayout.CENTER);

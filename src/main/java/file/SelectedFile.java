@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import gui.filepanel.PanelRefreshUtil;
+import gui.filemanager.PanelRefreshUtil;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
 
