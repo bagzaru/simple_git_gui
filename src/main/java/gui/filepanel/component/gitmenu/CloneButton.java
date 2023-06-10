@@ -17,7 +17,7 @@ public class CloneButton extends JButton {
     public CloneButton() {
         this.setText("CLONE");
         ConflictBox = new JOptionPane();
-        CloneUrlMessageBox CloneRepoUrl = new CloneUrlMessageBox();
+
 
         this.addActionListener(new ActionListener() {
             @Override
