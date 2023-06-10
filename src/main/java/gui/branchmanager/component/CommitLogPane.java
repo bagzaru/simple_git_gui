@@ -1,4 +1,4 @@
-package gui.branchmanager.component.commitlogpane;
+package gui.branchmanager.component;
 
 import datamodel.GitBranchData;
 import datamodel.SelectedFile;

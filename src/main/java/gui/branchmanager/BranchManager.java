@@ -2,7 +2,7 @@ package gui.branchmanager;
 
 import datamodel.GitBranchData;
 import gui.branchmanager.component.*;
-import gui.branchmanager.component.commitlogpane.CommitLogPane;
+import gui.branchmanager.component.CommitLogPane;
 
 import javax.swing.*;
 import java.awt.*;
