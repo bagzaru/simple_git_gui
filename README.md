@@ -1,126 +1,243 @@
-# simple_git_gui
+# Simple-git-gui
 
-![./img/v1.1/1_main.png](./img/v1.1/1_main.png)
+![./img/v2.0/0-222423.png](./img/v2.0/0-222423.png)
+![./img/v2.0/12-225054.png](./img/v2.0/12-225054.png)
 
-Simple-git-gui는 Git과 연동하여 파일을 탐색하는 GUI 파일브라우저입니다.
+Simple-git-gui is a GUI file browser that allows you to explore and manage files using Git integration.
 
-## 주요 특징
+# Key Features
 
-- 파일 탐색 기능 제공
-- Git을 통한 파일 관리 기능 제공
+1. File Exploration: Simple-git-gui provides the ability to explore files and directories managed by Git. You can navigate through files and directories by clicking on them in the left panel.
 
-## 지원 플랫폼
+2. File Management with Git: You can use Simple-git-gui to manage files through Git. The status of files can be easily identified using icons. You can create a directory as a Git repository, stage or unstage changes, create commits, delete files, and rename files.
 
-- Windows 10 x64 또는 그 이상
+3. Branch Management: Simple-git-gui offers features to manage Git branches. You can add, delete, and rename branches, as well as perform merge operations between branches. Commit logs and graphs provide a visual representation of branch relationships.
 
-## 요구사항
+4. Commit Information: Simple-git-gui allows you to view information about commits. You can see commit messages, authors, time, and a detailed list of changed files and their modifications.
 
-- 자바 개발 키트(JDK) 17 설치
-- 버전 17의 자바 런타임 환경(JRE) 설치
+5. Login Feature: Users can register and store their ID and access tokens. This information can be used for cloning repositories.
 
-## 실행 방법
+# Supported Platforms
+
+- Windows 10 x64 or higher
+
+# Requirements
+
+- Java Development Kit (JDK) 17 installed
+- Java Runtime Environment (JRE) version 17 installed
+- Git installed
+
+# How to Run
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
-위의 링크에서 simple_git_gui-1.1-all.jar파일을 다운받습니다.
+Download the simple_git_gui-2.0-all.jar file from the above link.
 
-명령 프롬프트에서 파일의 위치로 이동합니다.
+Navigate to the location of the file in the command prompt.
 
 ```bash
-java -jar simple_git_gui-1.1-all.jar
+java -jar simple_git_gui-2.0-all.jar
 
 ```
 
-위 명령어를 통해 simple_git_gui-1.1-all.jar을 실행합니다.
-(자바 17버전에서 실행해야 합니다.)
+Run the simple_git_gui-2.0-all.jar file using the above command.
+(It needs to be executed with Java version 17.)
 
-## 파일 탐색 안내
+When performing a clone or login, a credentials.txt file will be created to store the ID/Access Token information.
 
-![./img/v1.1/9_main.png](./img/v1.1/9_main.png)
+# Program Description
 
-[좌측 패널]
+## Mode Selection
 
-- 좌측 패널에서 파일과 디렉토리를 클릭을 통해 탐색할 수 있습니다.
+![./img/v2.0/1-222423.png](./img/v2.0/1-222423.png)
 
-[중앙 상단 패널(Directory)]
+### Top Toolbar
+- Choose between File Manager, Branch Manager, or Login.
+- If the current directory is not a Git repository, the Branch Manager button is disabled.
 
-- Current Directory에서는 현재 폴더 내의 파일과 폴더를 탐색할 수 있습니다.
-- 각 파일의 Git status를 아이콘을 통해 확인할 수 있습니다.
+## File Exploration Guide (File Manager)
 
-[중앙 툴바]
+![./img/v2.0/2-222719.png](./img/v2.0/2-222719.png)
 
-- 파일의 실행, 생성, 삭제를 할 수 있습니다.
-- StageAll 버튼을 누르면 현재 Git Repository의 변경사항을 모두 Stage할 수 있습니다. (git add .)
-- Refresh 버튼을 누르면 파일 브라우저 외부에서 일어난 일들도 새로고침 할 수 있습니다.
+### Left Panel
 
-[중앙 하단 패널(Staged List)]
+- Use the left panel to navigate through files and directories by clicking on them.
 
-- Staged List에서는 현재 Git에 staged된 파일 목록을 확인할 수 있습니다.
+### Top Center Panel (Directory)
 
-[우측 패널]
+- In the Current Directory, you can explore files and folders within the current folder.
+- The Git status of each file can be identified using icons.
 
-- Git repository가 아닐 경우, 해당 디렉토리를 Git repository로 만들 수 있습니다.
+### Center Toolbar
 
-[우측 패널 - 파일 선택]
+- Perform file execution, creation, and deletion.
+- Click the StageAll button to stage all changes in the current Git repository (git add .).
+- Click the Refresh button to refresh any external changes that occurred outside the file browser.
 
-- Git repository일 경우, 선택된 파일을 Git 명령어를 통해 관리할 수 있습니다.
+### Bottom Center Panel (Staged List)
 
-## Git을 통한 파일 관리 안내
+- The Staged List displays the currently staged files in Git.
 
-파일을 선택하여 해당 파일을 Git을 통해 관리할 수 있습니다.
+### Right Panel
 
-### 파일의 상태 - Directory
+- If it is not a Git repository, you can make the selected directory a Git repository.
 
-![./img/v1.1/2_directory.png](./img/v1.1/2_directory.png)
+### Right Panel - File Selection
 
-중앙 상단의 테이블에서 파일의 상태를 볼 수 있습니다.
-우측 상단의 패널로 각 상태에 맞는 명령을 실행할 수 있습니다.
+- If it is a Git repository, you can manage the selected file using Git commands.
 
-- Committed: 파일이 마지막 Commit의 상태와 동일함을 나타냅니다.
-- Modified: 파일이 Git에서 관리하고 있는 내용과 다름을 의미합니다.
-- Staged: 파일의 변경 사항이 Stage되었고, Staged 파일과 로컬 파일의 내용이 동일함을 의미합니다.
-- Untracked: 파일이 Git에 의해 관리되고 있지 않음을 나타냅니다.
+## File Management with Git Guide (File Manager)
 
-### 파일의 상태 - Staged List
+You can select a file and manage it using Git.
 
-![./img/v1.1/3_StagedList.png](./img/v1.1/3_StagedList.png)
+### File Status - Directory
 
-중앙 하단 테이블에서는 Staged 상태인 파일들을 나타냅니다.
-더블클릭으로 Staged 상태인 파일은 Unstage할 수 있습니다.
+![./img/v2.0/3-222423.png](./img/v2.0/3-222423.png)
 
-- Added: 파일이 Git에 새로 추가되어 Stage되었습니다.
-- Staged: 파일이 이전 Commit에서 수정되어 Stage되었습니다.
-- Deleted: git rm 등을 통해 파일이 삭제되었다는 내용이 Staged 된 상태입니다.
+In the top center table, you can see the status of files.
+You can execute commands corresponding to each status using the panel on the top right.
 
-### Git을 통한 버전 관리
+- Committed: Indicates that the file is in the same state as the last commit.
+- Modified: Indicates that the file differs from the content managed by Git.
+- Staged: Indicates that the file's changes have been staged, and the content of the staged file is the same as the local file.
+- Untracked: Indicates that the file is not managed by Git.
 
-![./img/v1.1/4_Untracked.png](./img/v1.1/4_Untracked.png)
+### File Status - Staged List
 
-Untracked
+![./img/v2.0/4-222423.png](./img/v2.0/4-222423.png)
 
-- Add: 선택한 파일을 Staged List에 추가합니다.
+The bottom center table represents the files in the staged state.
+You can unstage a file in the staged state by double-clicking on it.
 
-![./img/v1.1/5_Modified.png](./img/v1.1/5_Modified.png)
+- Added: The file has been newly added to Git and staged.
+- Staged: The file has been modified in a previous commit and staged.
+- Deleted: The file has been deleted using git rm or similar commands and is in a staged state.
 
-Modified
+### Version Control with Git
 
-- Add: 선택한 파일을 Staged List에 추가합니다.
-- Undo: 선택한 파일을 마지막 Commit의 상태로 되돌립니다.
+![./img/v2.0/5-222620.png](./img/v2.0/5-222620.png)
 
-![./img/v1.1/6_Staged.png](./img/v1.1/6_Staged.png)
+[Untracked]
 
-Staged
+- Add: Adds the selected file to the Staged List.
 
-- Unstage: 선택한 파일을 Staged List에서 제거합니다. (파일의 내용은 변경되지 않습니다.)
+![./img/v2.0/6-222630.png](./img/v2.0/6-222630.png)
 
-![./img/v1.1/7_Committed.png](./img/v1.1/7_Committed.png)
+[Modified]
 
-Committed
+- Add: Adds the selected file to the Staged List.
+- Undo: Reverts the selected file to the state of the last commit.
 
-- Delete: 파일을 삭제하고 Git에 반영합니다.
-- Untrack: 파일을 Untracked모드로 변경합니다.
-- Rename: 파일의 이름을 변경하고 Git에 반영합니다.
+![./img/v2.0/7-233333.png](./img/v2.0/7-233333.png)
 
-![./img/v1.1/8_commit_msg.png](./img/v1.1/8_commit_msg.png)
+[Staged]
 
-- Commit: 현재 Staged List의 내용을 Git에 Commit합니다.
+- Unstage: Removes the selected file from the Staged List (file content remains unchanged).
+
+![./img/v2.0/8-222658.png](./img/v2.0/8-222658.png)
+
+[Committed]
+
+- Delete: Deletes the file and reflects the change in Git.
+- Untrack: Changes the file to an untracked mode.
+- Rename: Renames the file and reflects the change in Git.
+
+### Commit
+
+![./img/v2.0/commit_msg.png](./img/v2.0/commit_msg.png)
+
+- Commit: Commits the current content in the Staged List to Git.
+
+### Clone
+
+![./img/v2.0/9-222817.png](./img/v2.0/9-222817.png)
+
+- Clones the repository using the stored ID, Access Token, and the entered URL to the current directory.
+
+![./img/v2.0/11-222931.png](./img/v2.0/11-222931.png)
+![./img/v2.0/10-222925.png](./img/v2.0/10-222925.png)
+
+- Cloning may take some time, and once it is completed, a message window will be displayed.
+
+## Branch / Commit Management Guide (Branch Manager)
+
+![./img/v2.0/12-225054.png](./img/v2.0/12-225054.png)
+
+### Top Left Buttons
+
+![./img/v2.0/13-224819.png](./img/v2.0/13-224819.png)
+
+- [+] Add a new branch.
+- [-] Delete the selected branch.
+- [R] Rename the selected branch.
+- [M] Merge the selected branch into the currently checkout branch. If conflicts occur, an error message will be displayed.
+
+### Left Center Panel
+
+![./img/v2.0/14-224819.png](./img/v2.0/14-224819.png)
+
+- Displays all branches in the Git repository.
+- The currently checkout branch is marked with a checkmark on the left.
+- When a branch is clicked once, its log is displayed in the top right panel.
+- Double-clicking a branch checks out that branch.
+
+### Bottom Left Panel
+
+![./img/v2.0/15-224850.png](./img/v2.0/15-224850.png)
+
+- Displays the name of the currently checkout branch.
+- Displays the name of the branch clicked in the branch list (left center panel).
+
+### Top Right Panel
+
+![./img/v2.0/16-225054.png](./img/v2.0/16-225054.png)
+
+- Displays a graph of commit logs.
+- Displays commit messages, authors, and checksums.
+- Clicking a commit displays detailed
+
+information about the commit in the bottom center panel.
+
+### Bottom Center Panel
+
+![./img/v2.0/17-224956.png](./img/v2.0/17-224956.png)
+
+Top Panel:
+- Displays information about the clicked commit from the top right panel.
+- Shows the checksum, commit time, commit message, author's name, and author's email.
+
+Bottom Panel:
+- It displays the list of files that have been changed in the selected commit.
+- When a file is selected, it displays the changes made to that file.
+
+### Bottom Right Panel
+
+![./img/v2.0/18-225020.png](./img/v2.0/18-225020.png)
+
+- Displays the changes made to the selected file.
+
+## Login Guide
+
+![./img/v2.0/19-225032.png](./img/v2.0/19-225032.png)
+
+- Displays the pre-saved ID and token values.
+- If no information has been previously registered, it displays an empty string.
+- Clicking the "Log In" button saves the entered (or modified) ID and token values.
+
+# Code of Conduct
+
+Refer to the file:
+[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+
+# Contribution Guidelines
+
+If you are interested in contributing, please send an email to <bagzaru3690@gmail.com>.
+
+# License
+
+[MIT License](./LICENSE.txt)
+
+# Open Source Credits
+
+Refer to the file:
+[OpensourceCredit.txt](./OpensourceCredit.txt)
