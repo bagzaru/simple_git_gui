@@ -1,4 +1,4 @@
-package gui;
+package gui.logindialog;
 
 import jgitmanager.JGitManagerImprv;
 

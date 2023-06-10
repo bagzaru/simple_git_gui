@@ -5,6 +5,7 @@ import datamodel.SelectedFile;
 import eventmanager.SelectedFileChangedEventListener;
 import gui.branchmanager.BranchManager;
 import gui.filemanager.FileManager;
+import gui.logindialog.LoginDialog;
 import jgitmanager.JGitManager;
 
 import javax.imageio.ImageIO;
