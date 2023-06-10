@@ -13,7 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import gui.filemanager.model.FileTableModel;
 import datamodel.SelectedFile;
 

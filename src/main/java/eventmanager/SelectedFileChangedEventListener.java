@@ -1,4 +1,4 @@
-package datamodel;
+package eventmanager;
 
 import java.io.File;
 

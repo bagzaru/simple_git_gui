@@ -1,5 +1,6 @@
 package datamodel;
 
+import eventmanager.BranchDataChangeListener;
 import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.revwalk.RevCommit;
 

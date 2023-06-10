@@ -1,6 +1,6 @@
 package gui.branchmanager.component.commitlogpane.tablemvc;
 
-import datamodel.BranchDataChangeListener;
+import eventmanager.BranchDataChangeListener;
 import datamodel.GitBranchData;
 import datamodel.SelectedFile;
 import org.eclipse.jgit.revwalk.RevCommit;

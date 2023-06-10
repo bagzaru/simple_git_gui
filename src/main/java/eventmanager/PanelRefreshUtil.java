@@ -1,4 +1,4 @@
-package gui.filemanager;
+package eventmanager;
 
 import java.io.File;
 import javax.swing.*;
@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import datamodel.SelectedFile;
+import gui.filemanager.FileManager;
 import gui.filemanager.component.*;
 
 public class PanelRefreshUtil {

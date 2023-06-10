@@ -1,6 +1,6 @@
 package gui.branchmanager.component.commit.GitCommitFileMVC;
 
-import datamodel.BranchDataChangeListener;
+import eventmanager.BranchDataChangeListener;
 import datamodel.GitBranchData;
 import datamodel.SelectedFile;
 import jgitmanager.JGitManager;

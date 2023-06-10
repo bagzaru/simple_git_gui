@@ -1,7 +1,7 @@
 package gui.filemanager.component.gitmenu;
 
 import datamodel.SelectedFile;
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.api.errors.GitAPIException;
 

@@ -4,7 +4,7 @@ import gui.filemanager.FileManager;
 
 import javax.swing.*;
 
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import datamodel.SelectedFile;

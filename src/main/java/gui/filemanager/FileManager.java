@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import datamodel.SelectedFile;
+import eventmanager.PanelRefreshUtil;
 import gui.filemanager.component.*;
 
 public class FileManager extends JPanel {

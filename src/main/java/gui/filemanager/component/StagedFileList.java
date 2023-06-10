@@ -13,7 +13,7 @@ import java.util.Set;
 
 import datamodel.SelectedFile;
 import gui.filemanager.FileManager;
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import gui.filemanager.model.StagedFileTableModel;
 import jgitmanager.JGitManager;
 import org.eclipse.jgit.api.errors.GitAPIException;

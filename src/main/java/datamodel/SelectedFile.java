@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import eventmanager.SelectedFileChangedEventListener;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import jgitmanager.FileStatus;
 import jgitmanager.JGitManager;
 

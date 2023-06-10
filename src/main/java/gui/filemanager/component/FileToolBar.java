@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import gui.filemanager.FileManager;
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import org.apache.commons.io.FileUtils;
 
 import datamodel.SelectedFile;

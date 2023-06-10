@@ -3,7 +3,7 @@ package gui.filemanager.component;
 import javax.swing.*;
 
 import gui.filemanager.FileManager;
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import gui.filemanager.component.gitmenu.CloneButton;
 import org.eclipse.jgit.api.errors.GitAPIException;
 

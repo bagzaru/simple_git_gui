@@ -1,7 +1,7 @@
 package gui.filemanager.component;
 
 import datamodel.SelectedFile;
-import gui.filemanager.PanelRefreshUtil;
+import eventmanager.PanelRefreshUtil;
 import gui.filemanager.model.FileTreeRenderer;
 
 import javax.swing.*;

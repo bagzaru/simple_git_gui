@@ -2,6 +2,7 @@ package gui.branchmanager.component.branch;
 
 import javax.swing.*;
 import datamodel.*;
+import eventmanager.BranchDataChangeListener;
 
 import java.awt.*;
 
