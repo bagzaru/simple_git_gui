@@ -1,6 +1,7 @@
 # Simple-git-gui
 
-![./img/v1.1/1_main.png](./img/v1.1/1_main.png)
+![./img/v2.0/0-222423.png](./img/v2.0/0-222423.png)
+![./img/v2.0/12-225054.png](./img/v2.0/12-225054.png)
 
 Simple-git-gui is a GUI file browser that allows you to explore and manage files using Git integration.
 
@@ -48,7 +49,7 @@ When performing a clone or login, a credentials.txt file will be created to stor
 
 ## Mode Selection
 
-{Image}
+![./img/v2.0/1-222423.png](./img/v2.0/1-222423.png)
 
 ### Top Toolbar
 - Choose between File Manager, Branch Manager, or Login.
@@ -56,7 +57,7 @@ When performing a clone or login, a credentials.txt file will be created to stor
 
 ## File Exploration Guide (File Manager)
 
-![./img/v1.1/9_main.png](./img/v1.1/9_main.png)
+![./img/v2.0/2-222719.png](./img/v2.0/2-222719.png)
 
 ### Left Panel
 
@@ -91,7 +92,7 @@ You can select a file and manage it using Git.
 
 ### File Status - Directory
 
-![./img/v1.1/2_directory.png](./img/v1.1/2_directory.png)
+![./img/v2.0/3-222423.png](./img/v2.0/3-222423.png)
 
 In the top center table, you can see the status of files.
 You can execute commands corresponding to each status using the panel on the top right.
@@ -103,7 +104,7 @@ You can execute commands corresponding to each status using the panel on the top
 
 ### File Status - Staged List
 
-![./img/v1.1/3_StagedList.png](./img/v1.1/3_StagedList.png)
+![./img/v2.0/4-222423.png](./img/v2.0/4-222423.png)
 
 The bottom center table represents the files in the staged state.
 You can unstage a file in the staged state by double-clicking on it.
@@ -114,26 +115,26 @@ You can unstage a file in the staged state by double-clicking on it.
 
 ### Version Control with Git
 
-![./img/v1.1/4_Untracked.png](./img/v1.1/4_Untracked.png)
+![./img/v2.0/5-222620.png](./img/v2.0/5-222620.png)
 
 [Untracked]
 
 - Add: Adds the selected file to the Staged List.
 
-![./img/v1.1/5_Modified.png](./img/v1.1/5_Modified.png)
+![./img/v2.0/6-222630.png](./img/v2.0/6-222630.png)
 
 [Modified]
 
 - Add: Adds the selected file to the Staged List.
 - Undo: Reverts the selected file to the state of the last commit.
 
-![./img/v1.1/6_Staged.png](./img/v1.1/6_Staged.png)
+![./img/v2.0/7-233333.png](./img/v2.0/7-233333.png)
 
 [Staged]
 
 - Unstage: Removes the selected file from the Staged List (file content remains unchanged).
 
-![./img/v1.1/7_Committed.png](./img/v1.1/7_Committed.png)
+![./img/v2.0/8-222658.png](./img/v2.0/8-222658.png)
 
 [Committed]
 
@@ -143,24 +144,28 @@ You can unstage a file in the staged state by double-clicking on it.
 
 ### Commit
 
-![./img/v1.1/8_commit_msg.png](./img/v1.1/8_commit_msg.png)
+![./img/v2.0/commit_msg.png](./img/v2.0/commit_msg.png)
 
 - Commit: Commits the current content in the Staged List to Git.
 
 ### Clone
 
-{Image}
+![./img/v2.0/9-222817.png](./img/v2.0/9-222817.png)
 
 - Clones the repository using the stored ID, Access Token, and the entered URL to the current directory.
+
+![./img/v2.0/11-222931.png](./img/v2.0/11-222931.png)
+![./img/v2.0/10-222925.png](./img/v2.0/10-222925.png)
+
 - Cloning may take some time, and once it is completed, a message window will be displayed.
 
 ## Branch / Commit Management Guide (Branch Manager)
 
-{Image}
+![./img/v2.0/12-225054.png](./img/v2.0/12-225054.png)
 
 ### Top Left Buttons
 
-{Image}
+![./img/v2.0/13-224819.png](./img/v2.0/13-224819.png)
 
 - [+] Add a new branch.
 - [-] Delete the selected branch.
@@ -169,7 +174,7 @@ You can unstage a file in the staged state by double-clicking on it.
 
 ### Left Center Panel
 
-{Image}
+![./img/v2.0/14-224819.png](./img/v2.0/14-224819.png)
 
 - Displays all branches in the Git repository.
 - The currently checkout branch is marked with a checkmark on the left.
@@ -178,14 +183,14 @@ You can unstage a file in the staged state by double-clicking on it.
 
 ### Bottom Left Panel
 
-{Image}
+![./img/v2.0/15-224850.png](./img/v2.0/15-224850.png)
 
 - Displays the name of the currently checkout branch.
 - Displays the name of the branch clicked in the branch list (left center panel).
 
 ### Top Right Panel
 
-{Image}
+![./img/v2.0/16-225054.png](./img/v2.0/16-225054.png)
 
 - Displays a graph of commit logs.
 - Displays commit messages, authors, and checksums.
@@ -195,7 +200,7 @@ information about the commit in the bottom center panel.
 
 ### Bottom Center Panel
 
-{Image}
+![./img/v2.0/17-224956.png](./img/v2.0/17-224956.png)
 
 Top Panel:
 - Displays information about the clicked commit from the top right panel.
@@ -207,13 +212,13 @@ Bottom Panel:
 
 ### Bottom Right Panel
 
-{Image}
+![./img/v2.0/18-225020.png](./img/v2.0/18-225020.png)
 
 - Displays the changes made to the selected file.
 
 ## Login Guide
 
-{Image}
+![./img/v2.0/19-225032.png](./img/v2.0/19-225032.png)
 
 - Displays the pre-saved ID and token values.
 - If no information has been previously registered, it displays an empty string.
@@ -222,7 +227,6 @@ Bottom Panel:
 # Code of Conduct
 
 Refer to the file:
-
 [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 # Contribution Guidelines
@@ -236,5 +240,4 @@ If you are interested in contributing, please send an email to <bagzaru3690@gmai
 # Open Source Credits
 
 Refer to the file:
-
 [OpensourceCredit.txt](./OpensourceCredit.txt)
