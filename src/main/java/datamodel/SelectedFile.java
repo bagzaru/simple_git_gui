@@ -1,4 +1,4 @@
-package file;
+package datamodel;
 
 import java.io.File;
 import java.io.IOException;

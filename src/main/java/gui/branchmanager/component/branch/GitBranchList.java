@@ -1,6 +1,6 @@
 package gui.branchmanager.component.branch;
 
-import file.GitBranchData;
+import datamodel.GitBranchData;
 import gui.branchmanager.component.branch.GitBranchListMVC.GitBranchListTableController;
 import gui.branchmanager.component.branch.GitBranchListMVC.GitBranchListTableModel;
 import gui.branchmanager.component.branch.GitBranchListMVC.GitBranchListTableView;

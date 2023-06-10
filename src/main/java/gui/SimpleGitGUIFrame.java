@@ -1,8 +1,8 @@
 package gui;
 
-import file.GitBranchData;
-import file.SelectedFile;
-import file.SelectedFileChangedEventListener;
+import datamodel.GitBranchData;
+import datamodel.SelectedFile;
+import datamodel.SelectedFileChangedEventListener;
 import gui.branchmanager.BranchManager;
 import gui.filemanager.FileManager;
 import jgitmanager.JGitManager;

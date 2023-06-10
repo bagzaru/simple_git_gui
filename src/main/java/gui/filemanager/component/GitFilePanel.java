@@ -1,6 +1,6 @@
 package gui.filemanager.component;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import gui.filemanager.component.gitmenu.commited_fileGitMenu;
 import gui.filemanager.component.gitmenu.modified_fileGitMenu;
 import gui.filemanager.component.gitmenu.staged_fileGitMenu;

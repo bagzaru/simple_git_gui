@@ -7,7 +7,7 @@ import gui.filemanager.PanelRefreshUtil;
 import gui.filemanager.component.gitmenu.CloneButton;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

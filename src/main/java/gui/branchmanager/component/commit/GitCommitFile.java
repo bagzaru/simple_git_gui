@@ -1,6 +1,6 @@
 package gui.branchmanager.component.commit;
 
-import file.GitBranchData;
+import datamodel.GitBranchData;
 import gui.branchmanager.component.commit.GitCommitFileMVC.GitCommitFileTableController;
 import gui.branchmanager.component.commit.GitCommitFileMVC.GitCommitFileTableModel;
 import gui.branchmanager.component.commit.GitCommitFileMVC.GitCommitFileTableView;

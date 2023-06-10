@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import gui.filemanager.component.*;
 
 public class PanelRefreshUtil {

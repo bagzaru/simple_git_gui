@@ -15,7 +15,7 @@ import javax.swing.tree.TreePath;
 
 import gui.filemanager.PanelRefreshUtil;
 import gui.filemanager.model.FileTableModel;
-import file.SelectedFile;
+import datamodel.SelectedFile;
 
 public class FileTable extends JScrollPane {
     /** singleton instance variable */

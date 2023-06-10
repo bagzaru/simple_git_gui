@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import gui.filemanager.component.*;
 
 public class FileManager extends JPanel {

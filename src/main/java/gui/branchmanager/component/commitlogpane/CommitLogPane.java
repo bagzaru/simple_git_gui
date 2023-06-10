@@ -1,7 +1,7 @@
 package gui.branchmanager.component.commitlogpane;
 
-import file.GitBranchData;
-import file.SelectedFile;
+import datamodel.GitBranchData;
+import datamodel.SelectedFile;
 import gui.branchmanager.component.commitlogpane.tablemvc.CommitLogTableModel;
 import gui.branchmanager.component.commitlogpane.tablemvc.CommitLogTableView;
 import gui.branchmanager.component.commitlogpane.tablemvc.CommitLogTableController;

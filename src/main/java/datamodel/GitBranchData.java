@@ -1,4 +1,4 @@
-package file;
+package datamodel;
 
 import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.revwalk.RevCommit;

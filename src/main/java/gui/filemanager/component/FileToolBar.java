@@ -12,7 +12,7 @@ import gui.filemanager.FileManager;
 import gui.filemanager.PanelRefreshUtil;
 import org.apache.commons.io.FileUtils;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import jgitmanager.JGitManager;
 
 public class FileToolBar extends JToolBar {

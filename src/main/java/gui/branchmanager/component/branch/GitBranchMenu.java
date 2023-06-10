@@ -1,6 +1,6 @@
 package gui.branchmanager.component.branch;
 
-import file.GitBranchData;
+import datamodel.GitBranchData;
 import gui.branchmanager.component.branch.button.*;
 
 import javax.swing.*;

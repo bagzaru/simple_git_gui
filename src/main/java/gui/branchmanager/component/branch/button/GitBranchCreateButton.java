@@ -1,7 +1,7 @@
 package gui.branchmanager.component.branch.button;
 
-import file.GitBranchData;
-import file.SelectedFile;
+import datamodel.GitBranchData;
+import datamodel.SelectedFile;
 import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.api.errors.GitAPIException;
 

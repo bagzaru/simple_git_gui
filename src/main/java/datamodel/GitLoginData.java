@@ -1,4 +1,4 @@
-package file;
+package datamodel;
 
 public class GitLoginData {
     private String id;

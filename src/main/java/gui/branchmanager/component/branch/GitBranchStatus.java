@@ -1,7 +1,7 @@
 package gui.branchmanager.component.branch;
 
 import javax.swing.*;
-import file.*;
+import datamodel.*;
 
 import java.awt.*;
 

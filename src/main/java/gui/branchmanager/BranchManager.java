@@ -1,6 +1,6 @@
 package gui.branchmanager;
 
-import file.GitBranchData;
+import datamodel.GitBranchData;
 import gui.branchmanager.component.*;
 import gui.branchmanager.component.commitlogpane.CommitLogPane;
 

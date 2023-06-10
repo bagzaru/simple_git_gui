@@ -1,6 +1,6 @@
 package gui.filemanager.component;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import jgitmanager.JGitManager;
 
 import javax.swing.*;

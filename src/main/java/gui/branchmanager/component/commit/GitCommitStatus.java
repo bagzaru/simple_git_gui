@@ -1,7 +1,7 @@
 package gui.branchmanager.component.commit;
 
-import file.BranchDataChangeListener;
-import file.GitBranchData;
+import datamodel.BranchDataChangeListener;
+import datamodel.GitBranchData;
 import jgitmanager.CommitInfo;
 import jgitmanager.JGitManagerImprv;
 

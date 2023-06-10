@@ -1,6 +1,6 @@
 package gui.branchmanager.component.branch.GitBranchListMVC;
 
-import file.GitBranchData;
+import datamodel.GitBranchData;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

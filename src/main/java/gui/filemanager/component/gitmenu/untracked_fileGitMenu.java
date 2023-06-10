@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import jgitmanager.*;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 
 //패널 클래스
 public class untracked_fileGitMenu extends JPanel {//untracked파일 패널

@@ -7,7 +7,7 @@ import javax.swing.*;
 import gui.filemanager.PanelRefreshUtil;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

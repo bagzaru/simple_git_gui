@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import file.SelectedFile;
+import datamodel.SelectedFile;
 import gui.filemanager.FileManager;
 import gui.filemanager.PanelRefreshUtil;
 import gui.filemanager.model.StagedFileTableModel;

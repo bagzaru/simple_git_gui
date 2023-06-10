@@ -1,8 +1,8 @@
 package gui.branchmanager.component.branch.GitBranchListMVC;
 
-import file.BranchDataChangeListener;
-import file.GitBranchData;
-import file.SelectedFile;
+import datamodel.BranchDataChangeListener;
+import datamodel.GitBranchData;
+import datamodel.SelectedFile;
 import jgitmanager.JGitManager;
 import jgitmanager.JGitManagerImprv;
 import org.eclipse.jgit.api.errors.GitAPIException;
