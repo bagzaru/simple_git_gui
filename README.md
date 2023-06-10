@@ -6,6 +6,8 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하고 관리할 수 있�
 
 ## 주요 특징
 
+---
+
 1. 파일 탐색 기능: Simple-git-gui는 사용자가 Git으로 관리되는 파일 및 디렉토리를 탐색할 수 있는 기능을 제공합니다. 좌측 패널에서 파일 및 디렉토리를 클릭하여 탐색할 수 있습니다.
 
 2. Git을 통한 파일 관리 기능: Simple-git-gui를 사용하여 Git을 통해 파일을 관리할 수 있습니다. 파일의 상태에 따라 아이콘을 통해 쉽게 확인할 수 있습니다. 디렉토리를 깃 레포지토리로 만들거나, 파일의 변경사항을 Stage하거나 Unstage하고, 커밋을 생성하고, 파일을 삭제하고, 파일 이름을 변경하는 등의 작업을 할 수 있습니다.
@@ -19,15 +21,21 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하고 관리할 수 있�
 
 ## 지원 플랫폼
 
+---
+
 - Windows 10 x64 또는 그 이상
 
 ## 요구사항
+
+---
 
 - 자바 개발 키트(JDK) 17 설치
 - 버전 17의 자바 런타임 환경(JRE) 설치
 - Git 설치
 
 ## 실행 방법
+
+---
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
@@ -44,6 +52,22 @@ java -jar simple_git_gui-2.0-all.jar
 (자바 17버전에서 실행해야 합니다.)
 
 clone을 하거나 로그인을 하게 되면 ID / Access Token 정보를 저장하는 credentials.txt 파일이 생성됩니다.
+
+## Code of conduct
+
+---
+
+[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+
+## Contribution guideline
+
+---
+
+Contribution에 관심있으면 <bagzaru3690@gmail.com>에 메일 보내주세요.
+
+## 프로그램에 대한 설명
+
+---
 
 ## 모드 설정
 
