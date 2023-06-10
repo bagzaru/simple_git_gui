@@ -4,9 +4,7 @@
 
 Simple-git-gui는 Git과 연동하여 파일을 탐색하고 관리할 수 있는 GUI 파일 브라우저입니다.
 
-## 주요 특징
-
----
+# 주요 특징
 
 1. 파일 탐색 기능: Simple-git-gui는 사용자가 Git으로 관리되는 파일 및 디렉토리를 탐색할 수 있는 기능을 제공합니다. 좌측 패널에서 파일 및 디렉토리를 클릭하여 탐색할 수 있습니다.
 
@@ -19,23 +17,17 @@ Simple-git-gui는 Git과 연동하여 파일을 탐색하고 관리할 수 있�
 5. 로그인 기능: 사용자는 자신의 ID와 액세스 토큰을 등록하여 저장할 수 있으며, 이 정보를 바탕으로 클론을 진행할 수 있습니다.
 
 
-## 지원 플랫폼
-
----
+# 지원 플랫폼
 
 - Windows 10 x64 또는 그 이상
 
-## 요구사항
-
----
+# 요구사항
 
 - 자바 개발 키트(JDK) 17 설치
 - 버전 17의 자바 런타임 환경(JRE) 설치
 - Git 설치
 
-## 실행 방법
-
----
+# 실행 방법
 
 [https://github.com/bagzaru/simple_git_gui/releases/latest](https://github.com/bagzaru/simple_git_gui/releases/latest)
 
@@ -53,21 +45,7 @@ java -jar simple_git_gui-2.0-all.jar
 
 clone을 하거나 로그인을 하게 되면 ID / Access Token 정보를 저장하는 credentials.txt 파일이 생성됩니다.
 
-## Code of conduct
-
----
-
-[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
-
-## Contribution guideline
-
----
-
-Contribution에 관심있으면 <bagzaru3690@gmail.com>에 메일 보내주세요.
-
-## 프로그램에 대한 설명
-
----
+# 프로그램에 대한 설명
 
 ## 모드 설정
 
@@ -236,3 +214,23 @@ Contribution에 관심있으면 <bagzaru3690@gmail.com>에 메일 보내주세�
 - 미리 저장되어있는 ID와 Token값을 출력합니다.
 - 사전에 정보를 등록한 적이 없다면 빈 문자열을 출력합니다.
 - Log In 버튼을 누르면 입력(수정)한 ID와 Token값을 저장합니다.
+
+# Code of conduct
+
+파일 참고
+
+[CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+
+# Contribution guideline
+
+Contribution에 관심있으면 <bagzaru3690@gmail.com>에 메일 보내주세요.
+
+# License
+
+[MIT License](./LICENSE.txt)
+
+# Opensource Credit
+
+파일 참고
+
+[OpensourceCredit.txt](./OpensourceCredit.txt)
